@@ -1286,15 +1286,19 @@ const ITEMS=[
  {id:"tie",slot:"neck",name:"Kravat",price:300,d:'<path d="M93 152 h14 l-4 10 h-6z" fill="#1d3391"/><path d="M97 162 h6 l6 30 l-9 10 l-9 -10z" fill="#2b4acb"/>'},
  {id:"medal",slot:"neck",name:"Madalya",price:800,d:'<path d="M82 150 L100 180 L118 150" stroke="#d9483b" stroke-width="6" fill="none"/><circle cx="100" cy="186" r="12" fill="#ffd23f" stroke="#d9a400" stroke-width="2.5"/>'},
  {id:"sweater",slot:"body",name:"Kırmızı kazak",price:350,d:'<path d="'+BODY+'" fill="#d9483b"/><path d="M76 156 Q100 172 124 156" stroke="#a8322a" stroke-width="7" fill="none"/>'},
- {id:"stripes",slot:"body",name:"Çizgili tişört",price:350,d:'<defs><pattern id="pst" width="14" height="14" patternUnits="userSpaceOnUse"><rect width="14" height="14" fill="#f3efe6"/><rect width="14" height="7" fill="#2b4acb"/></pattern></defs><path d="'+BODY+'" fill="url(#pst)"/>'}
+ {id:"stripes",slot:"body",name:"Çizgili tişört",price:350,d:'<defs><pattern id="pst" width="14" height="14" patternUnits="userSpaceOnUse"><rect width="14" height="14" fill="#f3efe6"/><rect width="14" height="7" fill="#2b4acb"/></pattern></defs><path d="'+BODY+'" fill="url(#pst)"/>'},
+ {id:"detective",slot:"outfit",name:"Dedektif kombini",price:900,covers:["body","neck"],d:'<path d="'+BODY+'" fill="#3b2a20"/><path d="M56 192 Q58 166 82 157 M144 192 Q142 166 118 157" stroke="#5e4636" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".7"/><rect x="47" y="204" width="106" height="6" fill="#4b4336"/><path d="M84 152 H116 L121 210 H79Z" fill="#5b86b8"/><path d="M100 164 V210" stroke="#4a719e" stroke-width="1.5"/><path d="M87 152 L100 165 L91 169Z M113 152 L100 165 L109 169Z" fill="#7ba3d1"/><path d="M84 152 L79 210 M116 152 L121 210" stroke="#241812" stroke-width="3"/><path d="M82.5 156 L77.5 210 M117.5 156 L122.5 210" stroke="#8d8f96" stroke-width="1" stroke-dasharray="1.5 1.5"/><path d="M59 180 h17 v4 l-8.5 4 l-8.5 -4z M124 180 h17 v4 l-8.5 4 l-8.5 -4z" fill="#4a3628" stroke="#2a1c14" stroke-width="1"/><path d="M60 175 h14 M126 175 h14" stroke="#8d8f96" stroke-width="1.6" stroke-linecap="round"/><path d="M91 154 L100 183 L109 154" stroke="#a9adb5" stroke-width="1.4" fill="none" stroke-dasharray="1.2 1.2"/><rect x="91" y="181" width="18" height="23" rx="4" fill="#17171b"/><path d="M100 183.5 l6 2.5 v6 q0 5.5 -6 8 q-6 -2.5 -6 -8 v-6z" fill="#e2b33c" stroke="#b48a1f" stroke-width=".8"/><circle cx="100" cy="191" r="2.6" fill="#2b4acb"/>'},
+ {id:"retro",slot:"outfit",name:"Retro deri ceket",price:700,covers:["body"],d:'<path d="'+BODY+'" fill="#a23a22"/><path d="M55 194 Q57 168 78 158 M145 194 Q143 168 122 158" stroke="#cf6243" stroke-width="3" fill="none" stroke-linecap="round" opacity=".75"/><path d="M82 152 H118 L124 210 H76Z" fill="#efe6d6"/><g fill="none" stroke="#d3c6ad" stroke-width="1.6" stroke-linecap="round"><path d="M83 180 q5 -6 10 0 t10 0 t10 0"/><path d="M80 192 q5 -6 10 0 t10 0 t10 0 t10 0"/><path d="M79 204 q5 -6 10 0 t10 0 t10 0 t10 0"/><path d="M100 166 V210"/></g><g fill="#2a2320"><ellipse cx="90" cy="186" rx="4" ry="2.6" transform="rotate(-25 90 186)"/><ellipse cx="111" cy="181" rx="4" ry="2.6" transform="rotate(20 111 181)"/><ellipse cx="108" cy="198" rx="4.4" ry="2.8" transform="rotate(-15 108 198)"/><ellipse cx="88" cy="201" rx="3.6" ry="2.4" transform="rotate(30 88 201)"/></g><circle cx="100" cy="176" r="1.8" fill="#fff" stroke="#b9ad95" stroke-width=".8"/><circle cx="100" cy="193" r="1.8" fill="#fff" stroke="#b9ad95" stroke-width=".8"/><path d="M80 156 L63 173 L71 178 L67 185 L76 210 H80 L83 172Z M120 156 L137 173 L129 178 L133 185 L124 210 H120 L117 172Z" fill="#b84a2e" stroke="#74250f" stroke-width="1.5" stroke-linejoin="round"/><path d="M88 151 L99 164 L77 171 L80 154Z M112 151 L101 164 L123 171 L120 154Z" fill="#f8f2e6" stroke="#cdbfa5" stroke-width="1.2" stroke-linejoin="round"/>'},
+ {id:"suit",slot:"outfit",name:"Takım elbise",price:1000,covers:["body","neck"],d:'<path d="'+BODY+'" fill="#23222a"/><path d="M55 196 Q57 170 76 160 M145 196 Q143 170 124 160" stroke="#3c3b48" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M83 152 H117 L103 204 H97Z" fill="#c9cbd6"/><path d="M95 153 h10 l-2.5 8 h-5z" fill="#7d7368"/><path d="M97.5 161 h5 l3 28 l-5.5 9 l-5.5 -9z" fill="#958a7d"/><path d="M98 163 l5 24" stroke="#a89d90" stroke-width="1.2" opacity=".8"/><path d="M86 151 L97 155 L92 166Z M114 151 L103 155 L108 166Z" fill="#e4e6ee" stroke="#aeb1c0" stroke-width=".8" stroke-linejoin="round"/><path d="M83 152 L97 204 L87 191 L71 179 L78 173 L74 164Z M117 152 L103 204 L113 191 L129 179 L122 173 L126 164Z" fill="#2f2e39" stroke="#121117" stroke-width="1.4" stroke-linejoin="round"/><path d="M100 204 V210" stroke="#121117" stroke-width="1.6"/><path d="M121 184 q3 5 1 10" stroke="#4f8a5b" stroke-width="1.6" fill="none" stroke-linecap="round"/><g fill="#f6f6f2" stroke="#cfd0ca" stroke-width=".7"><circle cx="118" cy="180" r="3.2"/><circle cx="124" cy="180" r="3.2"/><circle cx="121" cy="176.5" r="3.2"/><circle cx="121" cy="183" r="3.2"/><circle cx="121" cy="180" r="2.4"/></g>'},
+ {id:"henley",slot:"outfit",name:"Düğmeli yaka tişört",price:500,covers:["body"],d:'<path d="'+BODY+'" fill="#5e574a"/><path d="M55 196 Q57 170 78 159 M145 196 Q143 170 122 159" stroke="#7a7261" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".8"/><path d="M64 178 Q67 196 65 210 M136 178 Q133 196 135 210" stroke="#454035" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M80 154 Q100 170 120 154" stroke="#454035" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M95.5 163 h9 v25 q-4.5 3 -9 0z" fill="#534c40" stroke="#3b362d" stroke-width="1.2" stroke-linejoin="round"/><path d="M95.5 162 L100 172 L104.5 162Z" fill="#2d2922"/><circle cx="100" cy="177" r="1.7" fill="#928a76"/><circle cx="100" cy="184" r="1.7" fill="#928a76"/>'}
 ];
 const ITEM=Object.fromEntries(ITEMS.map(i=>[i.id,i]));
-const SLOTS=[["head","Başlık"],["eyes","Gözlük"],["neck","Boyun"],["body","Kıyafet"]];
-const VB={head:"36 -14 142 86",eyes:"40 74 120 46",neck:"50 138 100 70",body:"36 144 128 70"};
+const SLOTS=[["head","Başlık"],["eyes","Gözlük"],["neck","Boyun"],["body","Kıyafet"],["outfit","Kombin"]];
+const VB={head:"36 -14 142 86",eyes:"40 74 120 46",neck:"50 138 100 70",body:"36 144 128 70",outfit:"36 144 128 70"};
 function petSVG(happy,pet,worn){
   const cat=(pet||P.pet)==="cat",fur=cat?"#f4a64a":"#c98d5a",dark=cat?"#d9822b":"#8a5a34",cream=cat?"#fff3df":"#f6e3cc",ink="#2a2a33",w=worn||P.worn;
   const it=s=>w[s]&&ITEM[w[s]]?ITEM[w[s]].d:"";
-  let s=`<svg viewBox="0 -14 200 224" role="img" aria-label="${cat?"Kedi":"Köpek"} avatarı"><path d="${BODY}" fill="${fur}"/>${it("body")}`;
+  let s=`<svg viewBox="0 -14 200 224" role="img" aria-label="${cat?"Kedi":"Köpek"} avatarı"><path d="${BODY}" fill="${fur}"/>${it("body")}${it("outfit")}`;
   if(cat)s+=`<path d="M52 64 L58 18 L92 50Z M148 64 L142 18 L108 50Z" fill="${fur}"/><path d="M61 54 L64 31 L81 48Z M139 54 L136 31 L119 48Z" fill="#f4b8c0"/>
     <ellipse cx="100" cy="98" rx="58" ry="52" fill="${fur}"/><path d="M100 48 v13 M87 50 l3 11 M113 50 l-3 11" stroke="${dark}" stroke-width="4.5" stroke-linecap="round"/>
     <ellipse cx="100" cy="119" rx="24" ry="16" fill="${cream}"/><path d="M94 110 h12 l-6 7z" fill="#e8788a"/>
@@ -1847,7 +1851,7 @@ function rShop(){
     <div class="seg"><button type="button" data-pet="cat" aria-pressed="${P.pet==="cat"}">Kedi</button><button type="button" data-pet="dog" aria-pressed="${P.pet==="dog"}">Köpek</button></div>
     <label class="field">Adı<input id="pname" type="text" maxlength="16" value="${esc(P.name)}" placeholder="Örneğin Pamuk" autocomplete="off"></label></div></section>`;
   for(const[slot,title]of SLOTS){
-    h+=`<section class="card"><h2>${title}</h2><div class="items">`+ITEMS.filter(i=>i.slot===slot).map(i=>{
+    h+=`<section class="card"><h2>${title}</h2>${slot==="outfit"?'<p class="hint">Kombin hem kıyafetin hem boyun aksesuarının yerini alır. Başlık ve gözlükle birlikte giyilebilir.</p>':""}<div class="items">`+ITEMS.filter(i=>i.slot===slot).map(i=>{
       const own=P.owned.includes(i.id),worn=P.worn[slot]===i.id;
       return`<div class="item${worn?" worn":""}"><svg viewBox="${VB[slot]}" aria-hidden="true">${i.d}</svg><b>${i.name}</b>
         <button class="btn small${own?" ghost":""}" type="button" data-item="${i.id}">${worn?"Çıkar":own?"Giy":`<span class="price">${i.price}<span class="coin"></span></span>`}</button></div>`}).join("")+"</div></section>";
@@ -1857,10 +1861,12 @@ function rShop(){
   $("pname").oninput=e=>{P.name=e.target.value.trim();save()};
   document.querySelectorAll("[data-item]").forEach(b=>b.onclick=()=>{
     const i=ITEM[b.dataset.item];
+    // kombin giyilince kapladığı yuvalar boşalır; o yuvalardan bir şey giyilince kombin çıkar
+    const wear=()=>{P.worn[i.slot]=i.id;(i.covers||[]).forEach(s=>delete P.worn[s]);const o=ITEM[P.worn.outfit];if(o&&o!==i&&(o.covers||[]).includes(i.slot))delete P.worn.outfit};
     if(!P.owned.includes(i.id)){
       if(P.coins<i.price){toast(`${i.price-P.coins} puan daha lazım`);return}
-      P.coins-=i.price;P.owned.push(i.id);P.worn[i.slot]=i.id;toast(i.name+" alındı");
-    }else if(P.worn[i.slot]===i.id)delete P.worn[i.slot];else P.worn[i.slot]=i.id;
+      P.coins-=i.price;P.owned.push(i.id);wear();toast(i.name+" alındı");
+    }else if(P.worn[i.slot]===i.id)delete P.worn[i.slot];else wear();
     save();const y=window.scrollY;render();window.scrollTo(0,y);
   });
 }
