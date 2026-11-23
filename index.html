@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>YDT Kelime Antrenmanı</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1024 1024%22%3E%3Cdefs%3E%3ClinearGradient id=%22icoSky%22 x1=%220%22 y1=%220%22 x2=%220%22 y2=%221%22%3E%3Cstop offset=%220%22 stop-color=%22%2331248a%22/%3E%3Cstop offset=%221%22 stop-color=%22%23120f33%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%221024%22 height=%221024%22 fill=%22url%28%23icoSky%29%22/%3E%3Ccircle cx=%22512%22 cy=%22512%22 r=%22372%22 fill=%22%23241b6b%22/%3E%3Ccircle cx=%22512%22 cy=%22512%22 r=%22372%22 fill=%22none%22 stroke=%22%23ffd23f%22 stroke-width=%2246%22/%3E%3Cpath d=%22M512 468 C430 420 330 420 262 452 L262 742 C330 712 430 712 512 760 C594 712 694 712 762 742 L762 452 C694 420 594 420 512 468Z%22 fill=%22%23f08a24%22/%3E%3Cpath d=%22M512 440 C436 396 344 396 284 424 L284 704 C344 676 436 676 512 722Z%22 fill=%22%23ffffff%22/%3E%3Cpath d=%22M512 440 C588 396 680 396 740 424 L740 704 C680 676 588 676 512 722Z%22 fill=%22%23ffe9b0%22/%3E%3Cpath d=%22M512 440 V722%22 stroke=%22%23d9a400%22 stroke-width=%2210%22/%3E%3Cpath d=%22M330 498 C380 484 430 488 470 506%22 stroke=%22%23ffc400%22 stroke-width=%2258%22 fill=%22none%22 stroke-linecap=%22round%22/%3E%3Cg stroke=%22%23c9cfe0%22 stroke-width=%2214%22 fill=%22none%22 stroke-linecap=%22round%22%3E%3Cpath d=%22M330 572 C380 558 430 562 470 580%22/%3E%3Cpath d=%22M330 636 C370 624 410 626 440 638%22/%3E%3C/g%3E%3Cg stroke=%22%23e3c98a%22 stroke-width=%2214%22 fill=%22none%22 stroke-linecap=%22round%22%3E%3Cpath d=%22M554 506 C594 488 644 484 694 498%22/%3E%3Cpath d=%22M554 580 C594 562 644 558 694 572%22/%3E%3Cpath d=%22M554 646 C590 630 630 626 664 634%22/%3E%3C/g%3E%3Cpolygon points=%22512.0,180.0 540.2,253.2 618.5,257.4 557.7,306.8 577.8,382.6 512.0,340.0 446.2,382.6 466.3,306.8 405.5,257.4 483.8,253.2%22 fill=%22%23ffd23f%22 stroke=%22%23241b6b%22 stroke-width=%2214%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="apple-mobile-web-app-title" content="YDT Kelime">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#15123a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Zilla+Slab:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -35,6 +41,9 @@ button{cursor:pointer}
 .wrap{max-width:640px;margin:0 auto;padding:16px 16px 56px;display:flex;flex-direction:column;gap:14px}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
 h1{font-family:var(--display);font-size:1.35rem;font-weight:700;margin:0}
+.brand{display:flex;align-items:center;gap:9px}
+.brand svg{width:32px;height:32px;border-radius:8px;flex:none}
+.brand mark,.hello mark{background:var(--marker);color:var(--marker-ink);padding:0 .15em;border-radius:3px}
 .coins{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:5px 14px 5px 7px;font-weight:800;font-variant-numeric:tabular-nums}
 .coin{width:20px;height:20px;border-radius:50%;background:var(--coin);border:2px solid rgba(0,0,0,.18);display:inline-block;flex:none}
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:5px}
@@ -168,7 +177,7 @@ input.good{border-color:var(--good)!important;background:var(--good-bg)!importan
 <body>
 <div class="wrap">
   <header class="top">
-    <h1>YDT Kelime Antrenmanı</h1>
+    <h1 class="brand"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><defs><linearGradient id="icoSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#31248a"/><stop offset="1" stop-color="#120f33"/></linearGradient></defs><rect width="1024" height="1024" fill="url(#icoSky)"/><circle cx="512" cy="512" r="372" fill="#241b6b"/><circle cx="512" cy="512" r="372" fill="none" stroke="#ffd23f" stroke-width="46"/><path d="M512 468 C430 420 330 420 262 452 L262 742 C330 712 430 712 512 760 C594 712 694 712 762 742 L762 452 C694 420 594 420 512 468Z" fill="#f08a24"/><path d="M512 440 C436 396 344 396 284 424 L284 704 C344 676 436 676 512 722Z" fill="#ffffff"/><path d="M512 440 C588 396 680 396 740 424 L740 704 C680 676 588 676 512 722Z" fill="#ffe9b0"/><path d="M512 440 V722" stroke="#d9a400" stroke-width="10"/><path d="M330 498 C380 484 430 488 470 506" stroke="#ffc400" stroke-width="58" fill="none" stroke-linecap="round"/><g stroke="#c9cfe0" stroke-width="14" fill="none" stroke-linecap="round"><path d="M330 572 C380 558 430 562 470 580"/><path d="M330 636 C370 624 410 626 440 638"/></g><g stroke="#e3c98a" stroke-width="14" fill="none" stroke-linecap="round"><path d="M554 506 C594 488 644 484 694 498"/><path d="M554 580 C594 562 644 558 694 572"/><path d="M554 646 C590 630 630 626 664 634"/></g><polygon points="512.0,180.0 540.2,253.2 618.5,257.4 557.7,306.8 577.8,382.6 512.0,340.0 446.2,382.6 466.3,306.8 405.5,257.4 483.8,253.2" fill="#ffd23f" stroke="#241b6b" stroke-width="14" stroke-linejoin="round"/></svg><span>YDT <mark>Kelime</mark></span></h1>
     <div class="coins" title="Puanın"><span class="coin"></span><span id="coins">0</span></div>
   </header>
   <div id="backRow"><button class="btn ghost small" id="back" type="button">‹ Ana menü</button></div>
@@ -1291,7 +1300,44 @@ const ITEMS=[
  {id:"retro",slot:"outfit",name:"Retro deri ceket",price:700,covers:["body"],d:'<path d="'+BODY+'" fill="#a23a22"/><path d="M55 194 Q57 168 78 158 M145 194 Q143 168 122 158" stroke="#cf6243" stroke-width="3" fill="none" stroke-linecap="round" opacity=".75"/><path d="M82 152 H118 L124 210 H76Z" fill="#efe6d6"/><g fill="none" stroke="#d3c6ad" stroke-width="1.6" stroke-linecap="round"><path d="M83 180 q5 -6 10 0 t10 0 t10 0"/><path d="M80 192 q5 -6 10 0 t10 0 t10 0 t10 0"/><path d="M79 204 q5 -6 10 0 t10 0 t10 0 t10 0"/><path d="M100 166 V210"/></g><g fill="#2a2320"><ellipse cx="90" cy="186" rx="4" ry="2.6" transform="rotate(-25 90 186)"/><ellipse cx="111" cy="181" rx="4" ry="2.6" transform="rotate(20 111 181)"/><ellipse cx="108" cy="198" rx="4.4" ry="2.8" transform="rotate(-15 108 198)"/><ellipse cx="88" cy="201" rx="3.6" ry="2.4" transform="rotate(30 88 201)"/></g><circle cx="100" cy="176" r="1.8" fill="#fff" stroke="#b9ad95" stroke-width=".8"/><circle cx="100" cy="193" r="1.8" fill="#fff" stroke="#b9ad95" stroke-width=".8"/><path d="M80 156 L63 173 L71 178 L67 185 L76 210 H80 L83 172Z M120 156 L137 173 L129 178 L133 185 L124 210 H120 L117 172Z" fill="#b84a2e" stroke="#74250f" stroke-width="1.5" stroke-linejoin="round"/><path d="M88 151 L99 164 L77 171 L80 154Z M112 151 L101 164 L123 171 L120 154Z" fill="#f8f2e6" stroke="#cdbfa5" stroke-width="1.2" stroke-linejoin="round"/>'},
  {id:"suit",slot:"outfit",name:"Takım elbise",price:1000,covers:["body","neck"],d:'<path d="'+BODY+'" fill="#23222a"/><path d="M55 196 Q57 170 76 160 M145 196 Q143 170 124 160" stroke="#3c3b48" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M83 152 H117 L103 204 H97Z" fill="#c9cbd6"/><path d="M95 153 h10 l-2.5 8 h-5z" fill="#7d7368"/><path d="M97.5 161 h5 l3 28 l-5.5 9 l-5.5 -9z" fill="#958a7d"/><path d="M98 163 l5 24" stroke="#a89d90" stroke-width="1.2" opacity=".8"/><path d="M86 151 L97 155 L92 166Z M114 151 L103 155 L108 166Z" fill="#e4e6ee" stroke="#aeb1c0" stroke-width=".8" stroke-linejoin="round"/><path d="M83 152 L97 204 L87 191 L71 179 L78 173 L74 164Z M117 152 L103 204 L113 191 L129 179 L122 173 L126 164Z" fill="#2f2e39" stroke="#121117" stroke-width="1.4" stroke-linejoin="round"/><path d="M100 204 V210" stroke="#121117" stroke-width="1.6"/><path d="M121 184 q3 5 1 10" stroke="#4f8a5b" stroke-width="1.6" fill="none" stroke-linecap="round"/><g fill="#f6f6f2" stroke="#cfd0ca" stroke-width=".7"><circle cx="118" cy="180" r="3.2"/><circle cx="124" cy="180" r="3.2"/><circle cx="121" cy="176.5" r="3.2"/><circle cx="121" cy="183" r="3.2"/><circle cx="121" cy="180" r="2.4"/></g>'},
  {id:"henley",slot:"outfit",name:"Düğmeli yaka tişört",price:500,covers:["body"],d:'<path d="'+BODY+'" fill="#5e574a"/><path d="M55 196 Q57 170 78 159 M145 196 Q143 170 122 159" stroke="#7a7261" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".8"/><path d="M64 178 Q67 196 65 210 M136 178 Q133 196 135 210" stroke="#454035" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M80 154 Q100 170 120 154" stroke="#454035" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M95.5 163 h9 v25 q-4.5 3 -9 0z" fill="#534c40" stroke="#3b362d" stroke-width="1.2" stroke-linejoin="round"/><path d="M95.5 162 L100 172 L104.5 162Z" fill="#2d2922"/><circle cx="100" cy="177" r="1.7" fill="#928a76"/><circle cx="100" cy="184" r="1.7" fill="#928a76"/>'}
+
+ ,{id:"tophat",slot:"head",name:"Silindir şapka",price:500,d:'<rect x="72" y="6" width="56" height="48" rx="4" fill="#22263a"/><rect x="72" y="40" width="56" height="9" fill="#d9483b"/><rect x="54" y="50" width="92" height="10" rx="5" fill="#22263a"/>'}
+ ,{id:"pcap",slot:"head",name:"Polis şapkası",price:500,d:'<path d="M60 52 Q62 20 100 18 Q138 20 140 52Z" fill="#1d2b57"/><rect x="60" y="46" width="80" height="11" fill="#111a3a"/><path d="M64 57 Q100 70 136 57 L131 65 Q100 79 69 65Z" fill="#0b1026"/><path d="M100 26 l3 6 l7 1 l-5 5 l1 7 l-6 -3 l-6 3 l1 -7 l-5 -5 l7 -1z" fill="#ffd23f"/>'}
+ ,{id:"pirate",slot:"head",name:"Korsan şapkası",price:500,d:'<path d="M66 48 Q100 4 134 48Z" fill="#2a2a33"/><path d="M46 58 Q100 22 154 58 Q126 46 100 46 Q74 46 46 58Z" fill="#2a2a33"/><path d="M52 55 Q100 30 148 55" stroke="#ffd23f" stroke-width="3" fill="none" stroke-linecap="round"/>'}
+ ,{id:"wizard",slot:"head",name:"Büyücü şapkası",price:500,d:'<path d="M104 -10 L136 54 L64 54Z" fill="#5b3fb3"/><ellipse cx="100" cy="55" rx="54" ry="9" fill="#4a3296"/><circle cx="100" cy="22" r="3.5" fill="#ffd23f"/><circle cx="112" cy="40" r="3" fill="#ffd23f"/><circle cx="90" cy="42" r="2.5" fill="#ffd23f"/>'}
+ ,{id:"helmet",slot:"head",name:"Astronot kaskı",price:600,d:'<circle cx="100" cy="92" r="72" fill="rgba(170,215,255,.2)" stroke="#e8ecf5" stroke-width="8"/><path d="M52 60 Q66 34 92 28" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" opacity=".8"/><rect x="62" y="152" width="76" height="13" rx="6.5" fill="#cfd6e6"/>'}
+ ,{id:"knight",slot:"head",name:"Şövalye miğferi",price:500,d:'<path d="M104 18 Q118 -10 138 2 Q120 6 112 22Z" fill="#d9483b"/><path d="M58 68 Q56 16 100 16 Q144 16 142 68Z" fill="#aeb7c8"/><path d="M58 60 H142 V70 H58Z" fill="#8792a8"/><path d="M100 16 V60" stroke="#8792a8" stroke-width="4"/>'}
+ ,{id:"chef",slot:"head",name:"Aşçı kepi",price:500,d:'<circle cx="78" cy="22" r="17" fill="#fff"/><circle cx="122" cy="22" r="17" fill="#fff"/><circle cx="100" cy="13" r="19" fill="#fff"/><rect x="70" y="26" width="60" height="30" rx="3" fill="#f4f5f8" stroke="#d5dbe8" stroke-width="2"/>'}
+ ,{id:"safari",slot:"head",name:"Kâşif şapkası",price:500,d:'<path d="M62 54 Q64 20 100 20 Q136 20 138 54Z" fill="#d8c08a"/><rect x="62" y="44" width="76" height="8" fill="#8a6a34"/><ellipse cx="100" cy="55" rx="54" ry="9" fill="#c4a96a"/>'}
+ ,{id:"mask",slot:"eyes",name:"Kahraman maskesi",price:500,d:'<path d="M54 86 Q100 74 146 86 L143 106 Q100 114 57 106Z" fill="#0f8f8a"/><ellipse cx="78" cy="96" rx="10" ry="8" fill="#fff"/><ellipse cx="122" cy="96" rx="10" ry="8" fill="#fff"/><circle cx="78" cy="96" r="4.5" fill="#2a2a33"/><circle cx="122" cy="96" r="4.5" fill="#2a2a33"/>'}
+ ,{id:"patch",slot:"eyes",name:"Korsan göz bandı",price:400,d:'<path d="M58 78 L146 106" stroke="#2a2a33" stroke-width="3.5"/><ellipse cx="122" cy="97" rx="12" ry="11" fill="#2a2a33"/>'}
+ ,{id:"goggles",slot:"eyes",name:"Laboratuvar gözlüğü",price:400,d:'<path d="M50 94 H150" stroke="#2f8a66" stroke-width="5"/><g fill="rgba(150,235,255,.45)" stroke="#3aa27a" stroke-width="5"><circle cx="78" cy="96" r="14"/><circle cx="122" cy="96" r="14"/></g>'}
+ ,{id:"cape",slot:"neck",name:"Kahraman pelerini",price:600,d:'<path d="M66 156 Q40 178 30 210 H56 Q56 180 74 162Z M134 156 Q160 178 170 210 H144 Q144 180 126 162Z" fill="#f08a24"/><path d="M68 150 Q100 166 132 150 L134 160 Q100 178 66 160Z" fill="#f9a94b"/>'}
+ ,{id:"amulet",slot:"neck",name:"Tılsım",price:400,d:'<path d="M80 150 L100 178 L120 150" stroke="#ffd23f" stroke-width="3" fill="none"/><path d="M100 172 l9 10 l-9 12 l-9 -12z" fill="#7fd8f5" stroke="#ffd23f" stroke-width="2.5"/>'}
+ ,{id:"necker",slot:"neck",name:"Aşçı fuları",price:400,d:'<path d="M74 148 Q100 162 126 148 L128 158 Q100 172 72 158Z" fill="#d9483b"/><path d="M92 162 L100 186 L108 162Z" fill="#a8322a"/>'}
+ ,{id:"binoc",slot:"neck",name:"Dürbün",price:400,d:'<path d="M82 150 L90 176 M118 150 L110 176" stroke="#5a4526" stroke-width="3"/><rect x="82" y="174" width="15" height="22" rx="5" fill="#2a2a33"/><rect x="103" y="174" width="15" height="22" rx="5" fill="#2a2a33"/><rect x="95" y="180" width="10" height="7" fill="#444a5e"/>'}
+ ,{id:"puni",slot:"body",name:"Polis üniforması",price:600,d:'<path d="'+BODY+'" fill="#1d2b57"/><path d="M82 152 L100 172 L118 152" stroke="#111a3a" stroke-width="7" fill="none"/><circle cx="100" cy="184" r="2.6" fill="#ffd23f"/><circle cx="100" cy="198" r="2.6" fill="#ffd23f"/><path d="M118 176 h14 v8 q-7 10 -14 0z" fill="#ffd23f"/>'}
+ ,{id:"hero",slot:"body",name:"Kelime Kahramanı",price:700,d:'<path d="'+BODY+'" fill="#0f8f8a"/><path d="M100 178 L84 173 V193 L100 198Z" fill="#fff"/><path d="M100 178 L116 173 V193 L100 198Z" fill="#ffe9b0"/><path d="M100 178 V198" stroke="#0b6b67" stroke-width="2"/>'}
+ ,{id:"pshirt",slot:"body",name:"Korsan gömleği",price:500,d:'<defs><pattern id="ppi" width="14" height="14" patternUnits="userSpaceOnUse"><rect width="14" height="14" fill="#f3efe6"/><rect width="14" height="7" fill="#d9483b"/></pattern></defs><path d="'+BODY+'" fill="url(#ppi)"/><rect x="52" y="196" width="96" height="9" fill="#5a4526"/><rect x="94" y="194" width="12" height="13" rx="2" fill="#ffd23f"/>'}
+ ,{id:"robe",slot:"body",name:"Büyücü cübbesi",price:600,d:'<path d="'+BODY+'" fill="#5b3fb3"/><path d="M100 152 V210" stroke="#ffd23f" stroke-width="4"/><circle cx="80" cy="182" r="3" fill="#ffd23f"/><circle cx="122" cy="192" r="2.5" fill="#ffd23f"/><circle cx="118" cy="172" r="2" fill="#ffd23f"/>'}
+ ,{id:"space",slot:"body",name:"Uzay tulumu",price:600,d:'<path d="'+BODY+'" fill="#f1f3f8"/><path d="M60 170 l16 -10 M140 170 l-16 -10" stroke="#d9483b" stroke-width="5"/><rect x="84" y="174" width="32" height="20" rx="4" fill="#2b4acb"/><circle cx="92" cy="184" r="3" fill="#ffd23f"/><circle cx="102" cy="184" r="3" fill="#d9483b"/><circle cx="110" cy="184" r="2" fill="#fff"/>'}
+ ,{id:"armor",slot:"body",name:"Şövalye zırhı",price:600,d:'<path d="'+BODY+'" fill="#aeb7c8"/><path d="M62 172 Q100 160 138 172" stroke="#8792a8" stroke-width="4" fill="none"/><path d="M86 172 h28 v14 q-14 18 -28 0z" fill="#2b4acb" stroke="#ffd23f" stroke-width="2.5"/>'}
+ ,{id:"apron",slot:"body",name:"Aşçı önlüğü",price:500,d:'<path d="'+BODY+'" fill="#f7f8fb"/><path d="M82 152 Q100 164 118 152" stroke="#d5dbe8" stroke-width="5" fill="none"/><g fill="#2a2a33"><circle cx="90" cy="178" r="2.6"/><circle cx="110" cy="178" r="2.6"/><circle cx="90" cy="192" r="2.6"/><circle cx="110" cy="192" r="2.6"/></g>'}
+ ,{id:"lab",slot:"body",name:"Laboratuvar önlüğü",price:500,d:'<path d="'+BODY+'" fill="#fdfdff"/><path d="M84 152 Q100 160 116 152 L100 184Z" fill="#7fb2ff"/><path d="M100 184 V210" stroke="#d5dbe8" stroke-width="2.5"/><rect x="112" y="184" width="18" height="15" rx="2" fill="none" stroke="#c3ccde" stroke-width="2.5"/><path d="M118 178 v12" stroke="#d9483b" stroke-width="3" stroke-linecap="round"/>'}
+ ,{id:"vest",slot:"body",name:"Kâşif yeleği",price:500,d:'<path d="'+BODY+'" fill="#b9a36b"/><path d="M84 152 Q100 162 116 152 L100 182Z" fill="#f3efe6"/><rect x="64" y="182" width="20" height="16" rx="2" fill="#a08a54"/><rect x="116" y="182" width="20" height="16" rx="2" fill="#a08a54"/>'}
 ];
+const OUTFITS=[
+ {id:"o_suit",name:"Şık takım",items:["tophat","suit"]},
+ {id:"o_police",name:"Polis",items:["pcap","sun","puni"]},
+ {id:"o_hero",name:"Kelime Kahramanı",items:["mask","cape","hero"]},
+ {id:"o_pirate",name:"Korsan",items:["pirate","patch","pshirt"]},
+ {id:"o_wizard",name:"Büyücü",items:["wizard","amulet","robe"]},
+ {id:"o_astro",name:"Astronot",items:["helmet","space"]},
+ {id:"o_knight",name:"Şövalye",items:["knight","armor"]},
+ {id:"o_chef",name:"Aşçı",items:["chef","necker","apron"]},
+ {id:"o_sci",name:"Bilim insanı",items:["goggles","lab"]},
+ {id:"o_explorer",name:"Kâşif",items:["safari","binoc","vest"]}
+],OUTFIT_BONUS=200;
 const ITEM=Object.fromEntries(ITEMS.map(i=>[i.id,i]));
 const SLOTS=[["head","Başlık"],["eyes","Gözlük"],["neck","Boyun"],["body","Kıyafet"],["outfit","Kombin"]];
 const VB={head:"36 -14 142 86",eyes:"40 74 120 46",neck:"50 138 100 70",body:"36 144 128 70",outfit:"36 144 128 70"};
@@ -1506,7 +1552,7 @@ let authTab="in",authMsg="",authBusy=false;
 function rAuth(){
   const up=authTab==="up",off=fbState!=="ready"||authBusy;
   $("view").innerHTML=`<section class="card"><div class="stage lg">${petSVG(true)}</div>
-    <p class="hello" style="text-align:center">YDT Kelime</p>
+    <p class="hello" style="text-align:center">YDT <mark>Kelime</mark></p>
     ${fbState==="fail"?`<p class="memo">Bu sayfadan hesap sunucusuna bağlanılamıyor. Hesapsız devam edebilirsin; ilerlemen yalnızca bu cihazda saklanır.</p>`
     :`<div class="seg" style="align-self:center"><button type="button" data-tab="in" aria-pressed="${!up}">Giriş yap</button><button type="button" data-tab="up" aria-pressed="${up}">Kaydol</button></div>
     <form class="form" id="aform" style="margin-top:0">
@@ -1595,6 +1641,7 @@ function rOnboard(){
   document.querySelectorAll("[data-pet]").forEach(b=>b.onclick=()=>{keep();P.pet=b.dataset.pet;rOnboard()});
   $("obgo").onclick=()=>{keep();P.ob=1;save();go("menu")};
 }
+const A2HS=/iphone|ipad|ipod/i.test(navigator.userAgent)&&!navigator.standalone;
 function rMenu(){
   const L=learned().length,due=dueList().length,hard=hardList().length,left=Math.max(0,P.goal-P.day.n),hr=new Date().getHours();
   const hi=hr<6?"Merhaba":hr<12?"Günaydın":hr<18?"İyi günler":"İyi akşamlar",name=P.name||(P.pet==="cat"?"Kedin":"Köpeğin");
@@ -1608,6 +1655,7 @@ function rMenu(){
     <div class="tiles"><div class="tile"><b>${P.streakDays}</b><span>gün serisi</span></div><div class="tile"><b>${L}</b><span>öğrenilen kelime</span></div><div class="tile"><b>${due}</b><span>tekrar bekliyor</span></div></div>
     <button class="btn big" id="start" type="button">${P.total?"Çalışmaya devam et":"Çalışmaya başla"}</button>
   </section>
+  ${A2HS&&!P.a2hs?`<section class="card"><h2>Uygulama gibi kullan</h2><p class="hint">Safari'de alttaki paylaş düğmesine dokun ve "Ana Ekrana Ekle" seçeneğini seç. Oyun ana ekranında kendi simgesiyle durur. ${fbUser?"Oradan açınca aynı hesapla giriş yapman yeterli.":"Önce hesap açarsan ilerlemen orada da gelir; hesapsız ilerleme ana ekrandaki sürüme taşınmaz."}</p><button class="btn ghost small" id="a2x" type="button" style="align-self:flex-start">Tamam, gösterme</button></section>`:""}
   <div class="menuGrid">
     <button class="mi" type="button" data-go="tset"><b>Deneme testi</b><span>${lastT?`Son: ${lastT.ok}/${lastT.n}, net ${netTxt(lastT.net)}`:"Kendini sına"}</span></button>
     <button class="mi" type="button" id="hard" ${hard?"":"disabled"}><b>Zorlandıklarım</b><span>${hard?hard+" kelime":"Şimdilik yok"}</span></button>
@@ -1616,6 +1664,7 @@ function rMenu(){
     <button class="mi" type="button" data-go="friends"><b>Arkadaşlar</b><span>${fbUser&&P.code?"Kodun #"+esc(P.code):"Hesap açınca gelir"}</span></button>
     <button class="mi" type="button" data-go="home"><b>İlerleme ve ayarlar</b><span>${fbUser?"@"+esc(P.username||""):"Hesap, günlük hedef"}</span></button>
   </div></div>`;
+  if($("a2x"))$("a2x").onclick=()=>{P.a2hs=1;save();rMenu()};
   $("start").onclick=()=>go("map");
   $("hard").onclick=()=>startPlay("hard");
   document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
@@ -1850,6 +1899,12 @@ function rShop(){
   let h=`<div style="display:flex;flex-direction:column;gap:14px"><section class="card"><div class="shopHead"><div class="stage lg">${petSVG(false)}</div>
     <div class="seg"><button type="button" data-pet="cat" aria-pressed="${P.pet==="cat"}">Kedi</button><button type="button" data-pet="dog" aria-pressed="${P.pet==="dog"}">Köpek</button></div>
     <label class="field">Adı<input id="pname" type="text" maxlength="16" value="${esc(P.name)}" placeholder="Örneğin Pamuk" autocomplete="off"></label></div></section>`;
+  P.sets=P.sets||{};
+  h+=`<section class="card"><h2>Kostüm setleri</h2><p class="hint">Bir setin bütün parçalarını alınca ${OUTFIT_BONUS} bonus puan kazanırsın ve seti tek dokunuşla giyersin.</p><ul class="miss">`+OUTFITS.map(o=>{
+    const have=o.items.filter(i=>P.owned.includes(i)).length,full=have===o.items.length,cost=o.items.filter(i=>!P.owned.includes(i)).reduce((a,i)=>a+ITEM[i].price,0);
+    return`<li style="display:flex;gap:10px;align-items:center"><span class="stage sm">${petSVG(false,P.pet,Object.fromEntries(o.items.map(i=>[ITEM[i].slot,i])))}</span>
+      <span style="flex:1;min-width:0"><b style="font-family:var(--body)">${o.name}</b><br><span class="hint">${o.items.map(i=>ITEM[i].name).join(", ")}</span><br><span class="hint">${full?"Tamamlandı":have+"/"+o.items.length+" parça · kalan "+cost+" puan"}</span></span>
+      ${full?`<button class="btn small" type="button" data-outfit="${o.id}">Seti giy</button>`:""}</li>`}).join("")+"</ul></section>";
   for(const[slot,title]of SLOTS){
     h+=`<section class="card"><h2>${title}</h2>${slot==="outfit"?'<p class="hint">Kombin hem kıyafetin hem boyun aksesuarının yerini alır. Başlık ve gözlükle birlikte giyilebilir.</p>':""}<div class="items">`+ITEMS.filter(i=>i.slot===slot).map(i=>{
       const own=P.owned.includes(i.id),worn=P.worn[slot]===i.id;
@@ -1859,6 +1914,8 @@ function rShop(){
   $("view").innerHTML=h+"</div>";
   document.querySelectorAll("[data-pet]").forEach(b=>b.onclick=()=>{P.pet=b.dataset.pet;save();rShop()});
   $("pname").oninput=e=>{P.name=e.target.value.trim();save()};
+  document.querySelectorAll("[data-outfit]").forEach(b=>b.onclick=()=>{
+    const o=OUTFITS.find(x=>x.id===b.dataset.outfit);P.worn={};for(const i of o.items)P.worn[ITEM[i].slot]=i;save();toast(o.name+" giyildi");render();window.scrollTo(0,0)});
   document.querySelectorAll("[data-item]").forEach(b=>b.onclick=()=>{
     const i=ITEM[b.dataset.item];
     // kombin giyilince kapladığı yuvalar boşalır; o yuvalardan bir şey giyilince kombin çıkar
@@ -1866,6 +1923,7 @@ function rShop(){
     if(!P.owned.includes(i.id)){
       if(P.coins<i.price){toast(`${i.price-P.coins} puan daha lazım`);return}
       P.coins-=i.price;P.owned.push(i.id);wear();toast(i.name+" alındı");
+      for(const o of OUTFITS)if(!P.sets[o.id]&&o.items.every(x=>P.owned.includes(x))){P.sets[o.id]=1;P.coins+=OUTFIT_BONUS;P.score=(P.score||0)+OUTFIT_BONUS;toast(o.name+" seti tamam! +"+OUTFIT_BONUS+" puan")}
     }else if(P.worn[i.slot]===i.id)delete P.worn[i.slot];else wear();
     save();const y=window.scrollY;render();window.scrollTo(0,y);
   });
