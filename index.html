@@ -159,6 +159,46 @@ input.good{border-color:var(--good)!important;background:var(--good-bg)!importan
 @media (prefers-reduced-motion:reduce){.tw,.bob{animation:none}}
 #ptr{height:0;overflow:hidden;display:grid;place-items:center;color:var(--muted);font-size:.85rem;font-weight:700;transition:height .15s;margin-bottom:-14px}
 html,body{overscroll-behavior-y:contain}
+.topR{display:flex;align-items:center;gap:8px}
+.bell{position:relative;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);display:grid;place-items:center;padding:0;flex:none}
+.bell svg{width:20px;height:20px;transform-origin:50% 10%}
+.bell.ring svg{animation:ring 1.8s ease-in-out infinite;color:var(--coin)}
+@keyframes ring{0%,55%,100%{transform:rotate(0)}8%{transform:rotate(-20deg)}16%{transform:rotate(18deg)}24%{transform:rotate(-14deg)}32%{transform:rotate(11deg)}40%{transform:rotate(-6deg)}48%{transform:rotate(3deg)}}
+#bellN{position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;border-radius:9px;background:var(--bad);color:#fff;font-size:.68rem;font-weight:800;display:grid;place-items:center;padding:0 4px}
+.nl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.nl button{width:100%;text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;display:flex;gap:10px;align-items:flex-start}
+.nl button.un{border-color:var(--accent)} .nl .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);margin-top:6px;flex:none} .nl button:not(.un) .dot{background:transparent}
+/* düello sahnesi: tek bir gece dünyası, temadan bağımsız */
+.fight{border-radius:16px;overflow:hidden;background:#15123a}
+.fight svg{display:block;width:100%;height:auto}
+.fight .lunge{animation:lunge .66s ease-in-out 3 .5s}
+.fight .swing{transform-origin:0 0;transform:rotate(22deg);animation:sw .66s ease-in-out 3 .5s}
+.fight .spark{opacity:0;transform-box:fill-box;transform-origin:50% 50%;animation:spark .66s linear 3 .5s}
+.fight .fres,.fight .fsus,.fight .fsc,.fight .dz,.fight .ph,.fight .fsus tspan{opacity:0}
+.fight .swing{animation:sw .66s ease-in-out 3 .5s,hold .3s 2.5s forwards}
+.fight .fsus{animation:fin .3s 2.6s forwards,fout .15s 4.2s forwards}
+.fight .fsus tspan:nth-of-type(1){animation:fin .01s 3s forwards} .fight .fsus tspan:nth-of-type(2){animation:fin .01s 3.4s forwards} .fight .fsus tspan:nth-of-type(3){animation:fin .01s 3.8s forwards}
+.fight .fres{transform-box:fill-box;transform-origin:50% 50%;animation:pop .5s 4.3s forwards}
+.fight .fsc{animation:fin .3s 4.4s forwards}
+.fight .win .swing{animation:sw .66s ease-in-out 3 .5s,hold .3s 2.5s forwards,raise .45s 4.3s forwards}
+.fight .win .hop{animation:hop .5s ease-in-out 4.7s infinite alternate}
+.fight .win .ph{animation:fin .01s 4.3s forwards} .fight .win .pn{animation:fout .01s 4.3s forwards}
+.fight .lose .swing{animation:sw .66s ease-in-out 3 .5s,hold .3s 2.5s forwards,fly .8s ease-in 4.3s forwards}
+.fight .lose .hop{transform-box:fill-box;transform-origin:50% 100%;animation:daze .5s 4.4s forwards}
+.fight .lose .dz{animation:fin .3s 4.6s forwards}
+.fight .lose .dz g{transform-box:fill-box;transform-origin:50% 50%;animation:spin 1.6s linear 4.6s infinite}
+@keyframes lunge{50%{transform:translateX(16px)}}
+@keyframes sw{0%,100%{transform:rotate(22deg)}50%{transform:rotate(74deg)}}
+@keyframes spark{0%,38%,62%,100%{opacity:0;transform:scale(.4)}50%{opacity:1;transform:scale(1.25) rotate(20deg)}}
+@keyframes raise{to{transform:translateY(-22px) rotate(-8deg)}}
+@keyframes fly{to{transform:translate(-70px,-130px) rotate(-600deg);opacity:0}}
+@keyframes hold{to{transform:rotate(66deg)}}
+@keyframes hop{to{transform:translateY(-10px)}}
+@keyframes daze{to{transform:rotate(-10deg) translateY(6px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fin{to{opacity:1}} @keyframes fout{to{opacity:0}}
+@keyframes pop{0%{opacity:0;transform:scale(.3)}65%{opacity:1;transform:scale(1.18)}100%{opacity:1;transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.fight *{animation:none!important}.fight .fres,.fight .fsc,.fight .win .ph,.fight .lose .dz{opacity:1}.fight .win .pn{opacity:0}.bell.ring svg{animation:none}}
 .mean{font-size:1.45rem;font-weight:800;margin:0}
 .intro p{margin:0}
 .speak{border:1.5px solid var(--line);background:var(--paper);border-radius:99px;padding:3px 12px;font:700 .8rem var(--body);margin-left:10px;vertical-align:middle}
@@ -181,7 +221,7 @@ html,body{overscroll-behavior-y:contain}
   <div id="ptr" aria-hidden="true"></div>
   <header class="top">
     <h1 class="brand"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><defs><linearGradient id="icoSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#31248a"/><stop offset="1" stop-color="#120f33"/></linearGradient></defs><rect width="1024" height="1024" fill="url(#icoSky)"/><circle cx="512" cy="512" r="372" fill="#241b6b"/><circle cx="512" cy="512" r="372" fill="none" stroke="#ffd23f" stroke-width="46"/><path d="M512 468 C430 420 330 420 262 452 L262 742 C330 712 430 712 512 760 C594 712 694 712 762 742 L762 452 C694 420 594 420 512 468Z" fill="#f08a24"/><path d="M512 440 C436 396 344 396 284 424 L284 704 C344 676 436 676 512 722Z" fill="#ffffff"/><path d="M512 440 C588 396 680 396 740 424 L740 704 C680 676 588 676 512 722Z" fill="#ffe9b0"/><path d="M512 440 V722" stroke="#d9a400" stroke-width="10"/><path d="M330 498 C380 484 430 488 470 506" stroke="#ffc400" stroke-width="58" fill="none" stroke-linecap="round"/><g stroke="#c9cfe0" stroke-width="14" fill="none" stroke-linecap="round"><path d="M330 572 C380 558 430 562 470 580"/><path d="M330 636 C370 624 410 626 440 638"/></g><g stroke="#e3c98a" stroke-width="14" fill="none" stroke-linecap="round"><path d="M554 506 C594 488 644 484 694 498"/><path d="M554 580 C594 562 644 558 694 572"/><path d="M554 646 C590 630 630 626 664 634"/></g><polygon points="512.0,180.0 540.2,253.2 618.5,257.4 557.7,306.8 577.8,382.6 512.0,340.0 446.2,382.6 466.3,306.8 405.5,257.4 483.8,253.2" fill="#ffd23f" stroke="#241b6b" stroke-width="14" stroke-linejoin="round"/></svg><span>YDT <mark>Kelime</mark></span></h1>
-    <div class="coins" title="Puanın"><span class="coin"></span><span id="coins">0</span></div>
+    <div class="topR"><button class="bell" id="bell" type="button" aria-label="Bildirimler"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0-6 6v4.2L4.3 16a1 1 0 0 0 .9 1.5h13.6a1 1 0 0 0 .9-1.5L18 13.2V9a6 6 0 0 0-6-6z" fill="currentColor"/><path d="M9.8 19.5a2.3 2.3 0 0 0 4.4 0z" fill="currentColor"/></svg><span id="bellN" hidden></span></button><div class="coins" title="Puanın"><span class="coin"></span><span id="coins">0</span></div></div>
   </header>
   <div id="backRow"><button class="btn ghost small" id="back" type="button">‹ Ana menü</button></div>
   <main id="view"></main>
@@ -1479,10 +1519,10 @@ function goalBar(){const g=$("gbar");if(g){g.style.width=Math.min(100,100*P.day.
 function toast(t){const e=$("toast");e.textContent=t;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("show"),2600)}
 function go(v){view=v;render();window.scrollTo(0,0)}
 function render(){
-  ensureDay();$("coins").textContent=P.coins;
+  ensureDay();$("coins").textContent=P.coins;bell();
   $("backRow").hidden=["menu","ob","play","test","sum","auth","duel"].includes(view);
   if(view!=="duel"){clearInterval(dTick);if(dUnsub){dUnsub();dUnsub=null}}
-  ({menu:rMenu,auth:rAuth,friends:rFriends,ob:rOnboard,home:rStats,tset:rTestSetup,map:rMap,duel:rDuel,play:rPlay,sum:rSum,shop:rShop,words:rWords,test:rTest})[view]();
+  ({menu:rMenu,auth:rAuth,friends:rFriends,ob:rOnboard,home:rStats,tset:rTestSetup,map:rMap,duel:rDuel,notifs:rNotifs,play:rPlay,sum:rSum,shop:rShop,words:rWords,test:rTest})[view]();
 }
 /* ================= hesap, bulut kaydı, arkadaşlar (Firebase) ================= */
 const FB_CFG={apiKey:"AIzaSyAcf5z5OmMssyzsyMqcZ59LYiqNQkZx5LA",authDomain:"ydt-kelime.firebaseapp.com",projectId:"ydt-kelime",storageBucket:"ydt-kelime.firebasestorage.app",messagingSenderId:"375780683206",appId:"1:375780683206:web:2bbc740609c4edf10e56c7"};
@@ -1502,7 +1542,7 @@ async function fbInit(){
   }catch(e){fbState="fail";if(view==="auth")render()}
 }
 async function onUser(u){
-  fbUser=u;fbState="ready";friends=null;frMsg="";giftFor=null;
+  fbUser=u;fbState="ready";friends=null;frMsg="";giftFor=null;duelFor=null;
   if(!u){
     if(P.uid){P=fresh();saveLocal();rebuildAll();normalize();queue=[];view="auth"}   // oturum kapanmış: bu telefondaki kopyayı temizle
     if(view==="auth")render();return;
@@ -1534,7 +1574,7 @@ async function pushNow(){
   await Promise.all([
     F.setDoc(F.doc(db,"saves",uid),{data:JSON.stringify(P),t:P.t||Date.now()}),
     F.setDoc(F.doc(db,"profiles",uid),{username:P.username||"",display:P.user||P.username||"",code:P.code||"",pet:P.pet,petName:P.name||"",worn:P.worn||{},
-      score:P.score||0,streak:P.streakDays||0,learned:learned().length,t:Date.now()})]);
+      score:P.score||0,streak:P.streakDays||0,learned:learned().length,sw:seenBits(),t:Date.now()})]);
 }
 // başka cihazda oynandıysa: sayfaya geri dönünce buluttaki daha yeni kaydı al (eski kayıt yenisinin üstüne yazılmasın)
 async function syncDown(){
@@ -1613,6 +1653,13 @@ function rFriends(){
   const me={uid:fbUser.uid,username:P.username,display:P.user||P.username,pet:P.pet,petName:P.name,worn:P.worn,score:P.score||0,streak:P.streakDays||0,learned:learned().length,me:true};
   const rows=[me].concat(friends||[]).sort((a,b)=>(b.score||0)-(a.score||0));
   $("view").innerHTML=`<div style="display:flex;flex-direction:column;gap:14px">
+  ${duelFor?(()=>{const cw=commonWords(duelFor),n=cw?cw.length:0,nm=esc(duelFor.display||duelFor.username||"Arkadaşın");
+    return`<section class="card"><div class="rowb"><h2>${nm} ile düello</h2><button class="btn ghost small" id="dcancel" type="button">Vazgeç</button></div>
+    <p class="hint">Hangi kelimelerden sorulsun?</p>
+    <button class="btn big" type="button" data-dmode="common" ${n>=DQ?"":"disabled"}>Ortak çalıştıklarımız (${n} kelime)</button>
+    <p class="hint">${cw===null?nm+" oyunun yeni sürümünü açınca ortak kelimeleriniz hesaplanabilecek. Şimdilik yalnızca karışık düello yapabilirsiniz.":n>=DQ?"Sorular yalnızca ikinizin de çalıştığı kelimelerden seçilir.":`İkinizin de çalıştığı en az ${DQ} kelime olmalı; şu an ${n} tane var.`}</p>
+    <button class="btn ghost big" type="button" data-dmode="mixed">Karışık (500 kelimenin tamamı)</button>
+    <p class="hint">Henüz çalışmadığınız kelimeler de çıkabilir.</p></section>`})():""}
   ${giftFor?`<section class="card"><div class="rowb"><h2>${esc(giftFor.display||giftFor.username||"Arkadaşın")} için hediye seç</h2><button class="btn ghost small" id="gcancel" type="button">Vazgeç</button></div>
     <p class="hint">Hediyenin bedeli senin puanından düşer (${P.coins} puanın var). Arkadaşın oyunu açınca hediye dolabına eklenir; o parça onda zaten varsa yarı bedeli puan olarak verilir.</p>
     <div class="items">${ITEMS.map(i=>`<div class="item"><svg viewBox="${VB[i.slot]}" aria-hidden="true">${i.d}</svg><b>${i.name}</b><button class="btn small" type="button" data-send="${i.id}" ${P.coins<i.price?"disabled":""}><span class="price">${i.price}<span class="coin"></span></span></button></div>`).join("")}</div></section>`:""}
@@ -1632,9 +1679,12 @@ function rFriends(){
   if(friends===null)reload();
   $("frel").onclick=()=>{friends=null;frMsg="";rFriends()};
   const fById=id=>(friends||[]).find(f=>f.uid===id);
-  document.querySelectorAll("[data-duel]").forEach(b=>b.onclick=async()=>{b.disabled=true;try{openDuel(await createDuel(fById(b.dataset.duel)))}catch(e){frMsg="Düello başlatılamadı. Firebase kurallarına düello bölümü eklenmemiş olabilir.";rFriends()}});
+  document.querySelectorAll("[data-duel]").forEach(b=>b.onclick=()=>{duelFor=fById(b.dataset.duel);giftFor=null;frMsg="";rFriends();window.scrollTo(0,0)});
+  if($("dcancel"))$("dcancel").onclick=()=>{duelFor=null;rFriends()};
+  document.querySelectorAll("[data-dmode]").forEach(b=>b.onclick=async()=>{const f=duelFor;duelFor=null;b.disabled=true;
+    try{openDuel(await createDuel(f,b.dataset.dmode))}catch(e){frMsg="Düello başlatılamadı. Firebase kurallarına düello bölümü eklenmemiş olabilir.";rFriends()}});
   document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{const d=(duels||[]).find(x=>x.id===b.dataset.open);if(d)openDuel(d)});
-  document.querySelectorAll("[data-gift]").forEach(b=>b.onclick=()=>{giftFor=fById(b.dataset.gift);frMsg="";rFriends();window.scrollTo(0,0)});
+  document.querySelectorAll("[data-gift]").forEach(b=>b.onclick=()=>{giftFor=fById(b.dataset.gift);duelFor=null;frMsg="";rFriends();window.scrollTo(0,0)});
   if($("gcancel"))$("gcancel").onclick=()=>{giftFor=null;rFriends()};
   document.querySelectorAll("[data-send]").forEach(b=>b.onclick=async()=>{const f=giftFor,i=ITEM[b.dataset.send];giftFor=null;
     try{await sendGift(f,i.id);frMsg=`${i.name}, ${f.display||f.username} için gönderildi.`}catch(e){frMsg="Hediye gönderilemedi, puanın geri verildi."}
@@ -1645,6 +1695,69 @@ function rFriends(){
     catch(err){frMsg=err&&err.code?"Eklenemedi. Zaten ekli olabilir ya da bağlantı yok.":(err.message||"Eklenemedi.")}
     if(view==="friends")rFriends()};
   document.querySelectorAll("[data-unf]").forEach(b=>b.onclick=async()=>{await removeFriend(b.dataset.unf);friends=null;frMsg="Listeden çıkarıldı.";if(view==="friends")rFriends()});
+}
+/* ---- bildirimler ---- */
+function notify(type,text,data){
+  P.notifs=[{id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),type,text,t:Date.now(),read:0,data:data||null}].concat(P.notifs||[]).slice(0,30);
+  save();bell();
+}
+function bell(){
+  const n=(P.notifs||[]).filter(x=>!x.read).length,b=$("bell");
+  b.hidden=["auth","ob","play","test","duel"].includes(view);b.classList.toggle("ring",n>0);
+  $("bellN").textContent=n>9?"9+":n;$("bellN").hidden=!n;b.setAttribute("aria-label",n?`Bildirimler, ${n} okunmamış`:"Bildirimler");
+}
+function scanDuels(list){
+  const me=fbUser.uid;P.dnote=P.dnote||{};P.dpaid=P.dpaid||{};
+  for(const d of list){
+    const oid=d.from===me?d.to:d.from,m=(d.p||{})[me]||{},o=(d.p||{})[oid]||{},opp=(d.from===me?d.toName:d.fromName)||"Arkadaşın";
+    if(d.to===me&&!m.done&&!m.i&&!P.dnote["i"+d.id]){P.dnote["i"+d.id]=1;notify("duel",`${opp} sana düello attı. Sıra sende.`,{duel:d.id})}
+    if(m.done&&o.done&&!P.dnote["r"+d.id]){P.dnote["r"+d.id]=1;if(!P.dpaid[d.id])notify("result",`Düello sonucu: ${opp} ile düellon bitti. Kılıç sahnesini izlemek için dokun.`,{duel:d.id});else save()}
+  }
+  const ks=Object.keys(P.dnote);if(ks.length>150){for(const k of ks.slice(0,ks.length-150))delete P.dnote[k];save()}
+}
+const ago=t=>{const m=Math.max(0,Math.round((Date.now()-t)/6e4));return m<1?"şimdi":m<60?m+" dk önce":m<1440?Math.round(m/60)+" sa önce":Math.round(m/1440)+" gün önce"};
+function rNotifs(){
+  const L=P.notifs||[],lab={duel:"Düello",result:"Düello sonucu",gift:"Hediye",due:"Tekrar"};
+  $("view").innerHTML=`<section class="card"><div class="rowb"><h2>Bildirimler</h2>${L.length?'<button class="btn ghost small" id="nclear" type="button">Hepsini sil</button>':""}</div>
+    ${L.length?`<ul class="nl">${L.map(x=>`<li><button type="button" class="${x.read?"":"un"}" data-n="${esc(x.id)}"><span class="dot"></span><span><b>${lab[x.type]||"Bildirim"}</b><br>${esc(x.text)}<br><span class="hint">${ago(x.t)}</span></span></button></li>`).join("")}</ul>`
+      :'<p class="hint">Henüz bildirim yok. Düello davetleri, düello sonuçları, hediyeler ve tekrar hatırlatmaları burada görünür.</p>'}
+    <p class="hint">Bildirimler yalnızca oyunu açtığında gelir; oyun kapalıyken telefona bildirim düşmez.</p></section>`;
+  if($("nclear"))$("nclear").onclick=()=>{P.notifs=[];save();rNotifs();bell()};
+  document.querySelectorAll("[data-n]").forEach(b=>b.onclick=async()=>{
+    const x=L.find(y=>y.id===b.dataset.n);if(!x)return;
+    if(x.type==="gift")return go("shop");if(x.type==="due")return go("map");
+    if(!fbUser||!x.data||!x.data.duel)return go("friends");
+    let d=(duels||[]).find(y=>y.id===x.data.duel);
+    if(!d)try{const sn=await fb.F.getDoc(fb.F.doc(fb.db,"duels",x.data.duel));if(sn.exists())d=Object.assign({id:x.data.duel},sn.data())}catch(e){}
+    if(d)openDuel(d);else toast("Bu düello artık bulunamıyor");
+  });
+  if(L.some(x=>!x.read)){L.forEach(x=>x.read=1);save();bell()}
+}
+async function oppProfile(uid){
+  const f=(friends||[]).find(x=>x.uid===uid);if(f)return f;
+  try{const sn=await fb.F.getDoc(fb.F.doc(fb.db,"profiles",uid));return sn.exists()?sn.data():{}}catch(e){return{}}
+}
+/* iki oyuncunun avatarı kılıç düellosu yapar. res: lw (soldaki kazanır) | rw | tie */
+function fightHTML(res,a,b){
+  const sword='<g class="swing"><path d="M-4 -10 L-4 -74 L0 -86 L4 -74 L4 -10Z" fill="#dfe5f2" stroke="#8792a8" stroke-width="1.5"/><path d="M0 -80 V-12" stroke="#fff" stroke-width="1.5" opacity=".7"/><rect x="-13" y="-12" width="26" height="6" rx="3" fill="#ffd23f" stroke="#d9a400" stroke-width="1"/><rect x="-3.5" y="-6" width="7" height="16" rx="3" fill="#8a5a34"/><circle cx="0" cy="4" r="9" fill="#fff3df" stroke="#d9822b" stroke-width="1.5"/></g>';
+  const side=(pl,cls)=>{const pet=h=>petSVG(h,pl.pet,pl.worn).replace("<svg ",'<svg x="14" y="52" width="124" height="139" ');
+    return`<g class="${cls}"><g class="lunge"><g class="hop"><g class="pn">${pet(false)}</g><g class="ph">${pet(true)}</g></g>
+      <g class="dz"><g><path d="M60 46 l3 7 l7 1 l-5 5 l1 7 l-6 -4 l-6 4 l1 -7 l-5 -5 l7 -1z" fill="#ffd23f"/><path d="M92 40 l2 5 l5 1 l-4 4 l1 5 l-4 -3 l-4 3 l1 -5 l-4 -4 l5 -1z" fill="#fff"/></g></g>
+      <g transform="translate(132 150)">${sword}</g></g></g>`};
+  const cl=res==="tie"?["",""]:res==="lw"?["win","lose"]:["lose","win"];
+  const nm=(t,x)=>`<text x="${x}" y="212" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" style="font-family:var(--body)">${esc(String(t).slice(0,14))}</text>`;
+  const sc=(v,x)=>`<text x="${x}" y="40" text-anchor="middle" font-size="28" font-weight="800" fill="#ffd23f" style="font-family:var(--body)">${+v||0}</text>`;
+  const out=res==="tie"?"BERABERE!":String(res==="lw"?a.name:b.name).toLocaleUpperCase("tr").slice(0,12)+"!";
+  return`<div class="fight ${res}"><svg viewBox="0 0 360 224" role="img" aria-label="Düello sahnesi: ${esc(a.name)} ${+a.ok||0}, ${esc(b.name)} ${+b.ok||0}">
+    <defs><linearGradient id="fSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1f6e"/><stop offset="1" stop-color="#120f33"/></linearGradient></defs>
+    <rect width="360" height="224" fill="url(#fSky)"/><g fill="#fff" opacity=".6"><circle cx="30" cy="22" r="1.4"/><circle cx="96" cy="14" r="1"/><circle cx="150" cy="30" r="1.3"/><circle cx="214" cy="12" r="1"/><circle cx="268" cy="26" r="1.5"/><circle cx="334" cy="18" r="1.1"/><circle cx="180" cy="58" r="1"/></g>
+    <ellipse cx="180" cy="232" rx="230" ry="46" fill="#221c5c"/>
+    ${side(a,cl[0])}<g transform="translate(360 0) scale(-1 1)">${side(b,cl[1])}</g>
+    <path class="spark" d="M180 96 l5 12 l13 2 l-10 9 l3 13 l-11 -7 l-11 7 l3 -13 l-10 -9 l13 -2z" fill="#ffe14d" stroke="#fff" stroke-width="1.5"/>
+    <g class="fsc">${sc(a.ok,76)}${sc(b.ok,284)}</g>${nm(a.name,76)}${nm(b.name,284)}
+    <g class="fsus"><rect x="64" y="14" width="232" height="30" rx="15" fill="#18223a" stroke="#ffd23f" stroke-width="2"/><text x="180" y="34" text-anchor="middle" font-size="13" font-weight="800" fill="#ffd23f" letter-spacing="1" style="font-family:var(--body)">VEEEEE KAZANAAANNN<tspan>.</tspan><tspan>.</tspan><tspan>.</tspan></text></g>
+    <g class="fres"><rect x="104" y="12" width="152" height="36" rx="18" fill="#ffd23f" stroke="#fff" stroke-width="2"/><text x="180" y="37" text-anchor="middle" font-size="18" font-weight="800" fill="#18223a" letter-spacing=".6" style="font-family:var(--body)">${esc(out)}</text></g>
+  </svg></div>`;
 }
 /* ---- hediye ---- */
 let giftFor=null;
@@ -1661,10 +1774,13 @@ async function claimGifts(){
     if(i){if(!P.owned.includes(i.id)){P.owned.push(i.id);msg=`${g.fromName||"Bir arkadaşın"} sana ${i.name} hediye etti. Mağazadan giyebilirsin.`}
       else{const r=Math.round(i.price/2);P.coins+=r;msg=`${g.fromName||"Bir arkadaşın"} sana ${i.name} gönderdi; sende vardı, ${r} puan eklendi.`}}
     await F.deleteDoc(F.doc(db,"gifts",d.id)).catch(()=>{})}
-  if(msg){checkSets();save();toast(msg);if(view==="menu"||view==="shop")render()}
+  if(msg){checkSets();notify("gift",msg);toast(msg);if(view==="menu"||view==="shop")render()}
 }
 /* ---- düello: iki oyuncu aynı soruları çözer; ikisi de çevrim içiyse ilerleme canlı görünür ---- */
 const DQ=10,DSEC=15;
+const seenBits=()=>BASE.map(x=>P.S[x.w]?"1":"0").join("");
+const commonWords=f=>f&&typeof f.sw==="string"?BASE.filter((x,i)=>P.S[x.w]&&f.sw[i]==="1"):null;   // null: arkadaşın sürümü eski, bilgi yok
+let duelFor=null;
 let duels=null,D=null,dUnsub=null,dTick=null;
 const duelWaiting=()=>fbUser&&duels?duels.filter(d=>!((d.p||{})[fbUser.uid]||{}).done).length:0;
 function duelState(d){
@@ -1678,13 +1794,14 @@ async function loadDuels(){
   const{F,db}=fb,me=fbUser.uid,C=F.collection(db,"duels");
   const[a,b]=await Promise.all([F.getDocs(F.query(C,F.where("to","==",me))),F.getDocs(F.query(C,F.where("from","==",me)))]);
   const out=[];for(const q of[a,b])q.forEach(d=>out.push(Object.assign({id:d.id},d.data())));
-  return out.sort((x,y)=>(y.t||0)-(x.t||0)).slice(0,12);
+  const list=out.sort((x,y)=>(y.t||0)-(x.t||0)).slice(0,12);scanDuels(list);return list;
 }
-async function createDuel(f){
+async function createDuel(f,mode){
   if(!f)throw new Error("arkadaş yok");
+  const cw=commonWords(f),pool=mode==="common"&&cw&&cw.length>=DQ?cw:BASE;mode=pool===BASE?"mixed":"common";
   const me=fbUser.uid,id=me+"_"+f.uid+"_"+Date.now();
-  const qs=shuffle(BASE).slice(0,DQ).map(it=>{const ts=["tr","en"];if(it.syn)ts.push("syn");const type=rnd(ts);return{w:it.w,type,opts:options(it,FIELD[type])}});
-  const d={from:me,to:f.uid,fromName:P.user||P.username||"",toName:f.display||f.username||"",qs,t:Date.now(),p:{}};
+  const qs=shuffle(pool).slice(0,DQ).map(it=>{const ts=["tr","en"];if(it.syn)ts.push("syn");const type=rnd(ts);return{w:it.w,type,opts:options(it,FIELD[type])}});
+  const d={mode,from:me,to:f.uid,fromName:P.user||P.username||"",toName:f.display||f.username||"",qs,t:Date.now(),p:{}};
   await fb.F.setDoc(fb.F.doc(fb.db,"duels",id),d);duels=[Object.assign({id},d)].concat(duels||[]);
   return Object.assign({id},d);
 }
@@ -1712,7 +1829,7 @@ function rDuel(){
   const q=D.d.qs[D.i],it=BYW[q.w],right=it[FIELD[q.type]],t0=Date.now();
   $("view").innerHTML=`<div style="display:flex;flex-direction:column;gap:12px"><div class="rowb"><button class="btn ghost small" id="dquit" type="button">‹ Sonra devam et</button><span class="hint">Soru ${D.i+1}/${n} · ${D.ok} doğru</span></div>
     <div class="bar"><i id="dbar" style="width:100%;transition:none"></i></div>
-    <p class="memo" id="dopp">${esc(oppTxt())}</p>
+    <p class="memo" id="dopp">${esc(oppTxt())}</p><p class="hint">${D.d.mode==="common"?"Ortak çalıştığınız kelimeler":"Karışık kelimeler"}</p>
     <section class="card">${qHead(it,q.type)}<div class="opts">${q.opts.map((o,i)=>`<button class="opt" type="button" data-v="${esc(o)}"><kbd>${i+1}</kbd><span>${esc(o)}</span></button>`).join("")}</div></section></div>`;
   $("dquit").onclick=()=>{clearInterval(dTick);go("friends")};
   const end=v=>{
@@ -1736,14 +1853,22 @@ function rDuelResult(){
     P.dpaid=P.dpaid||{};
     if(!P.dpaid[id]){P.dpaid[id]=1;const ks=Object.keys(P.dpaid);if(ks.length>60)delete P.dpaid[ks[0]];P.coins+=bonus;P.score=(P.score||0)+bonus;save();$("coins").textContent=P.coins}
   }
-  $("view").innerHTML=`<section class="card"><div class="fbHead"><div class="stage sm">${petSVG(!o.done||D.ok>=o.ok)}</div><h2>${head}</h2><span class="gain">+${D.ok*5}<span class="coin"></span></span></div>
+  let scene="";
+  if(o.done){
+    if(D.prof===undefined){D.prof=null;oppProfile(o.uid).then(pr=>{if(!D||D.d.id!==id)return;D.prof=pr||{};if(view==="duel"&&D.done)rDuelResult()})}
+    P.dnote=P.dnote||{};if(!P.dnote["r"+id]){P.dnote["r"+id]=1;save()}
+    const win=D.ok>o.ok||(D.ok===o.ok&&D.ms<o.ms),tie=D.ok===o.ok&&D.ms===o.ms;
+    scene=D.prof?fightHTML(tie?"tie":win?"lw":"rw",{name:P.user||P.username||"Sen",pet:P.pet,worn:P.worn,ok:D.ok},{name:o.name,pet:D.prof.pet==="dog"?"dog":"cat",worn:D.prof.worn&&typeof D.prof.worn==="object"?D.prof.worn:{},ok:o.ok})+'<button class="btn ghost small" id="dreplay" type="button" style="align-self:center">Tekrar izle</button>':'<p class="hint">Sahne hazırlanıyor…</p>';
+  }
+  $("view").innerHTML=`<section class="card">${scene}<div class="fbHead"><div class="stage sm">${petSVG(!o.done||D.ok>=o.ok)}</div><h2>${head}</h2><span class="gain">+${D.ok*5}<span class="coin"></span></span></div>
     <div class="tiles" style="grid-template-columns:1fr 1fr"><div class="tile"><b>${D.ok}/${n}</b><span>Sen · ${secTxt(D.ms)}</span></div>
       <div class="tile"><b>${o.done?o.ok+"/"+n:"…"}</b><span>${esc(o.name)}${o.done?" · "+secTxt(o.ms):o.i?" · "+o.i+". soruda":" · bekleniyor"}</span></div></div>
-    <p class="hint">${esc(sub)} Her doğru cevap 5 puan.</p>
+    <p class="hint">${esc(sub)} Her doğru cevap 5 puan. Sorular: ${D.d.mode==="common"?"ikinizin de çalıştığı kelimeler":"karışık"}.</p>
     ${o.done?'<button class="btn big" id="dre" type="button">Rövanş iste</button>':""}
     <button class="btn ghost" id="dback" type="button">Arkadaşlara dön</button></section>`;
   $("dback").onclick=()=>go("friends");
-  if($("dre"))$("dre").onclick=async()=>{$("dre").disabled=true;try{openDuel(await createDuel({uid:o.uid,display:o.name}))}catch(e){toast("Rövanş başlatılamadı")}};
+  if($("dreplay"))$("dreplay").onclick=()=>rDuelResult();
+  if($("dre"))$("dre").onclick=async()=>{$("dre").disabled=true;try{openDuel(await createDuel(Object.assign({},D.prof||{},{uid:o.uid,display:o.name}),D.d.mode||"mixed"))}catch(e){toast("Rövanş başlatılamadı")}};
 }
 function rOnboard(){
   $("view").innerHTML=`<section class="card"><p class="hello">Hoş geldin</p>
@@ -1760,6 +1885,7 @@ function rOnboard(){
 }
 const A2HS=/iphone|ipad|ipod/i.test(navigator.userAgent)&&!navigator.standalone;
 function rMenu(){
+  if(P.dueDay!==today()){P.dueDay=today();const n=dueList().length;if(n)notify("due",`${n} kelimenin tekrar zamanı geldi. Unutmadan bir bak.`);else save()}
   const L=learned().length,due=dueList().length,hard=hardList().length,left=Math.max(0,P.goal-P.day.n),hr=new Date().getHours();
   const hi=hr<6?"Merhaba":hr<12?"Günaydın":hr<18?"İyi günler":"İyi akşamlar",name=P.name||(P.pet==="cat"?"Kedin":"Köpeğin");
   const lastT=(P.tests||[]).slice(-1)[0];
@@ -2099,6 +2225,7 @@ function rWords(){
   };
 }
 $("back").onclick=()=>go("menu");
+$("bell").onclick=()=>go("notifs");
 /* ---- aşağı çekince yenile (çalışma, test ve düello sırasında kapalı) ---- */
 async function refreshNow(){
   if(fbUser){friends=null;await Promise.all([syncDown().catch(()=>{}),claimGifts().catch(()=>{}),loadDuels().then(l=>{duels=l}).catch(()=>{})])}
