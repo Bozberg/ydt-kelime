@@ -157,6 +157,8 @@ input.good{border-color:var(--good)!important;background:var(--good-bg)!importan
 @keyframes tw{50%{opacity:.15}} .tw{animation:tw 3.2s ease-in-out infinite}
 @keyframes bob{50%{transform:translateY(-4px)}} .bob{animation:bob 2.4s ease-in-out infinite}
 @media (prefers-reduced-motion:reduce){.tw,.bob{animation:none}}
+#ptr{height:0;overflow:hidden;display:grid;place-items:center;color:var(--muted);font-size:.85rem;font-weight:700;transition:height .15s;margin-bottom:-14px}
+html,body{overscroll-behavior-y:contain}
 .mean{font-size:1.45rem;font-weight:800;margin:0}
 .intro p{margin:0}
 .speak{border:1.5px solid var(--line);background:var(--paper);border-radius:99px;padding:3px 12px;font:700 .8rem var(--body);margin-left:10px;vertical-align:middle}
@@ -176,6 +178,7 @@ input.good{border-color:var(--good)!important;background:var(--good-bg)!importan
 </head>
 <body>
 <div class="wrap">
+  <div id="ptr" aria-hidden="true"></div>
   <header class="top">
     <h1 class="brand"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><defs><linearGradient id="icoSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#31248a"/><stop offset="1" stop-color="#120f33"/></linearGradient></defs><rect width="1024" height="1024" fill="url(#icoSky)"/><circle cx="512" cy="512" r="372" fill="#241b6b"/><circle cx="512" cy="512" r="372" fill="none" stroke="#ffd23f" stroke-width="46"/><path d="M512 468 C430 420 330 420 262 452 L262 742 C330 712 430 712 512 760 C594 712 694 712 762 742 L762 452 C694 420 594 420 512 468Z" fill="#f08a24"/><path d="M512 440 C436 396 344 396 284 424 L284 704 C344 676 436 676 512 722Z" fill="#ffffff"/><path d="M512 440 C588 396 680 396 740 424 L740 704 C680 676 588 676 512 722Z" fill="#ffe9b0"/><path d="M512 440 V722" stroke="#d9a400" stroke-width="10"/><path d="M330 498 C380 484 430 488 470 506" stroke="#ffc400" stroke-width="58" fill="none" stroke-linecap="round"/><g stroke="#c9cfe0" stroke-width="14" fill="none" stroke-linecap="round"><path d="M330 572 C380 558 430 562 470 580"/><path d="M330 636 C370 624 410 626 440 638"/></g><g stroke="#e3c98a" stroke-width="14" fill="none" stroke-linecap="round"><path d="M554 506 C594 488 644 484 694 498"/><path d="M554 580 C594 562 644 558 694 572"/><path d="M554 646 C590 630 630 626 664 634"/></g><polygon points="512.0,180.0 540.2,253.2 618.5,257.4 557.7,306.8 577.8,382.6 512.0,340.0 446.2,382.6 466.3,306.8 405.5,257.4 483.8,253.2" fill="#ffd23f" stroke="#241b6b" stroke-width="14" stroke-linejoin="round"/></svg><span>YDT <mark>Kelime</mark></span></h1>
     <div class="coins" title="Puanın"><span class="coin"></span><span id="coins">0</span></div>
@@ -1243,7 +1246,7 @@ const STOP=new Set("etmek olmak bir çok ve yapmak vermek şey olan zor var yerd
 const toks=s=>new Set(s.toLocaleLowerCase("tr").split(/[\s,()]+/).filter(t=>t&&!STOP.has(t)&&t[0]!=="-"));
 const mk=o=>(o.tok=toks(o.tr+" "+(o.tag||"")),o);
 const BASE=RAW.trim().split("\n").map((l,i)=>{const[w,pos,trf,syn,ant,ex]=l.split("|");const[tr,tag]=trf.split("#");return mk({w,pos,tr,tag,syn,ant,ex,trx:TRS[i],mn:MN[i]||"",set:Math.floor(i/50)+1})});
-const NSETS=Math.ceil(BASE.length/50);
+const NSETS=Math.ceil(BASE.length/50),BYW=Object.fromEntries(BASE.map(x=>[x.w,x]));
 const POS={v:"fiil",adj:"sıfat",n:"isim",pv:"phrasal verb",conj:"bağlaç"},setName=n=>"Set "+n+(n===7?" · Phrasal verb":n===8?" · Bağlaçlar 1":n===9?" · Bağlaçlar 2":""),KEY="ydt-kelime-v2",ACTIVE=6,IV=[1,3,7,14,30];
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -1277,7 +1280,7 @@ function ensureDay(){const t=today();if(P.day.d!==t)P.day={d:t,n:0,done:false,ne
 let ALL=[];
 function rebuildAll(){ALL=P.custom.map(c=>mk({w:c.w,pos:"",tr:c.tr,syn:c.syn||"",ant:"",ex:c.ex||"",set:0,custom:true})).concat(BASE)}
 const learned=()=>ALL.filter(x=>P.S[x.w]&&P.S[x.w].s===4);
-const dueList=()=>{const t=today();return learned().filter(x=>P.S[x.w].due<=t)};
+const dueList=()=>{const t=today(),now=Date.now();return learned().filter(x=>{const s=P.S[x.w];return s.due<=t&&(!s.at||now-s.at>6*36e5)})};
 const hardList=()=>ALL.filter(x=>P.S[x.w]&&P.S[x.w].x>=2);
 
 /* ---------- avatar ---------- */
@@ -1425,10 +1428,10 @@ function judge(ok,typed){
         note=s.debt?`Güzel. Üst üste ${s.debt+1} kez daha doğru bilirsen ilerleyecek.`:"Pekiştirme neredeyse tamam. Bir kez daha doğru bilirsen sıradaki adıma geçecek.";
       }else{
         s.s=cur.skip?3:cur.step+1;
-        if(s.s>=4){s.s=4;s.lv=0;s.due=today()+IV[0];gain+=25;sess.learned++;note="Bu kelimeyi öğrendin (+25). Yarın tekrar sorulacak.";refill()}
+        if(s.s>=4){s.s=4;s.lv=0;s.due=today()+IV[0];s.at=Date.now();gain+=25;sess.learned++;note="Bu kelimeyi öğrendin (+25). Yarın tekrar sorulacak.";refill()}
         else{queue.splice(Math.min(5,queue.length),0,it);note=cur.skip?"Biliyormuşsun. Son adım olarak yazma sorusu gelecek.":"Sıradaki adım birkaç soru sonra gelecek."}
       }
-    }else if(kind==="review"){s.lv=Math.min(s.lv+1,IV.length-1);s.due=today()+IV[s.lv];note=`Hâlâ aklında. Sonraki tekrar ${IV[s.lv]} gün sonra.`}
+    }else if(kind==="review"){s.lv=Math.min(s.lv+1,IV.length-1);s.due=today()+IV[s.lv];s.at=Date.now();note=`Hâlâ aklında. Sonraki tekrar ${IV[s.lv]} gün sonra.`}
     else if(kind==="hard"){s.x=Math.max(0,s.x-1);note=s.x<2?"Bu kelime zorlandıkların listesinden çıktı.":"İyi gidiyor, biraz daha tekrar gerekiyor."}
     else note="Hâlâ aklında.";
     if(P.streak===5)note+=" Seri bonusu başladı: her doğruya +5.";
@@ -1477,8 +1480,9 @@ function toast(t){const e=$("toast");e.textContent=t;e.classList.add("show");cle
 function go(v){view=v;render();window.scrollTo(0,0)}
 function render(){
   ensureDay();$("coins").textContent=P.coins;
-  $("backRow").hidden=["menu","ob","play","test","sum","auth"].includes(view);
-  ({menu:rMenu,auth:rAuth,friends:rFriends,ob:rOnboard,home:rStats,tset:rTestSetup,map:rMap,play:rPlay,sum:rSum,shop:rShop,words:rWords,test:rTest})[view]();
+  $("backRow").hidden=["menu","ob","play","test","sum","auth","duel"].includes(view);
+  if(view!=="duel"){clearInterval(dTick);if(dUnsub){dUnsub();dUnsub=null}}
+  ({menu:rMenu,auth:rAuth,friends:rFriends,ob:rOnboard,home:rStats,tset:rTestSetup,map:rMap,duel:rDuel,play:rPlay,sum:rSum,shop:rShop,words:rWords,test:rTest})[view]();
 }
 /* ================= hesap, bulut kaydı, arkadaşlar (Firebase) ================= */
 const FB_CFG={apiKey:"AIzaSyAcf5z5OmMssyzsyMqcZ59LYiqNQkZx5LA",authDomain:"ydt-kelime.firebaseapp.com",projectId:"ydt-kelime",storageBucket:"ydt-kelime.firebasestorage.app",messagingSenderId:"375780683206",appId:"1:375780683206:web:2bbc740609c4edf10e56c7"};
@@ -1498,12 +1502,13 @@ async function fbInit(){
   }catch(e){fbState="fail";if(view==="auth")render()}
 }
 async function onUser(u){
-  fbUser=u;fbState="ready";friends=null;frMsg="";
+  fbUser=u;fbState="ready";friends=null;frMsg="";giftFor=null;
   if(!u){
     if(P.uid){P=fresh();saveLocal();rebuildAll();normalize();queue=[];view="auth"}   // oturum kapanmış: bu telefondaki kopyayı temizle
     if(view==="auth")render();return;
   }
   try{await pull()}catch(e){toast("Buluttaki kayıt okunamadı. Bu telefondaki kayıtla devam ediliyor.")}
+  duels=null;claimGifts().catch(()=>{});loadDuels().then(l=>{duels=l;if(view==="menu")render()}).catch(()=>{});
   if(view==="auth")go(P.ob?"menu":"ob");else if(view==="menu"||view==="home")render();
 }
 const newCode=()=>{const al="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let c="";for(let i=0;i<6;i++)c+=al[Math.floor(Math.random()*al.length)];return c};
@@ -1539,7 +1544,7 @@ async function syncDown(){
   if(!r||(r.t||0)<=(P.t||0))return;
   P=Object.assign(fresh(),r);P.uid=fbUser.uid;normalize();rebuildAll();saveLocal();queue=[];
   toast("Diğer cihazındaki ilerleme yüklendi");
-  if(["play","test","sum","map"].includes(view)){T=null;go("menu")}else render();
+  if(["play","test","sum","map","duel"].includes(view)){T=null;D=null;go("menu")}else render();
 }
 document.addEventListener("visibilitychange",()=>{
   if(document.visibilityState==="hidden"){if(dirty)pushNow().catch(()=>{})}
@@ -1608,25 +1613,137 @@ function rFriends(){
   const me={uid:fbUser.uid,username:P.username,display:P.user||P.username,pet:P.pet,petName:P.name,worn:P.worn,score:P.score||0,streak:P.streakDays||0,learned:learned().length,me:true};
   const rows=[me].concat(friends||[]).sort((a,b)=>(b.score||0)-(a.score||0));
   $("view").innerHTML=`<div style="display:flex;flex-direction:column;gap:14px">
+  ${giftFor?`<section class="card"><div class="rowb"><h2>${esc(giftFor.display||giftFor.username||"Arkadaşın")} için hediye seç</h2><button class="btn ghost small" id="gcancel" type="button">Vazgeç</button></div>
+    <p class="hint">Hediyenin bedeli senin puanından düşer (${P.coins} puanın var). Arkadaşın oyunu açınca hediye dolabına eklenir; o parça onda zaten varsa yarı bedeli puan olarak verilir.</p>
+    <div class="items">${ITEMS.map(i=>`<div class="item"><svg viewBox="${VB[i.slot]}" aria-hidden="true">${i.d}</svg><b>${i.name}</b><button class="btn small" type="button" data-send="${i.id}" ${P.coins<i.price?"disabled":""}><span class="price">${i.price}<span class="coin"></span></span></button></div>`).join("")}</div></section>`:""}
   <section class="card"><h2>Senin kodun</h2><div class="rowb"><p class="score" style="font-size:2.1rem;letter-spacing:.06em">#${esc(P.code||"")}</p><button class="btn ghost small" id="fcopy" type="button">Kodu kopyala</button></div>
     <p class="hint">Bu kodu arkadaşına gönder. Biriniz diğerinin kodunu ekleyince ikiniz de birbirinizin listesinde görünürsünüz.</p>
     <form class="typing" id="fform"><input id="fcode" type="text" maxlength="8" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" placeholder="#ARKADAŞ KODU" aria-label="Arkadaş kodu"><button class="btn" type="submit">Ekle</button></form>
     <p class="hint" id="fmsg" style="font-weight:600" ${frMsg?"":"hidden"}>${esc(frMsg)}</p></section>
   <section class="card"><div class="rowb"><h2>Sıralama</h2><button class="btn ghost small" id="frel" type="button">Yenile</button></div>
-    ${friends===null?'<p class="hint">Yükleniyor…</p>':`<ul class="miss">${rows.map((f,i)=>`<li style="display:flex;gap:10px;align-items:center${f.me?";outline:2px solid var(--accent)":""}">
+    ${friends===null?'<p class="hint">Yükleniyor…</p>':`<ul class="miss">${rows.map((f,i)=>`<li style="display:flex;gap:10px;align-items:center;flex-wrap:wrap${f.me?";outline:2px solid var(--accent)":""}">
       <b style="min-width:1.4em;font-family:var(--body)">${i+1}</b><span class="stage sm">${petSVG(false,f.pet==="dog"?"dog":"cat",f.worn&&typeof f.worn==="object"?f.worn:{})}</span>
       <span style="flex:1;min-width:0"><b style="font-family:var(--body)">${esc(f.display||f.username||"?")}${f.me?" (sen)":""}</b><br><span class="hint">@${esc(f.username||"")} · ${+f.streak||0} gün seri · ${+f.learned||0} kelime</span></span>
-      <span class="gain">${+f.score||0}<span class="coin"></span></span>${f.me?"":`<button class="btn ghost small" type="button" data-unf="${esc(f.uid)}" aria-label="Arkadaşlıktan çıkar">Çıkar</button>`}</li>`).join("")}</ul>
-      ${rows.length<2?'<p class="hint">Henüz arkadaşın yok. Yukarıya bir arkadaşının kodunu yaz.</p>':'<p class="hint">Sıralama toplam puana göre. Mağazada harcadığın puanlar sıralamanı düşürmez.</p>'}`}</section></div>`;
-  const reload=()=>loadFriends().then(l=>{friends=l;if(view==="friends")rFriends()}).catch(()=>{friends=friends||[];frMsg="Liste yüklenemedi. İnternetini kontrol edip Yenile'ye bas.";if(view==="friends")rFriends()});
+      <span class="gain">${+f.score||0}<span class="coin"></span></span>${f.me?"":`<span style="flex:1 0 100%;display:flex;gap:8px;flex-wrap:wrap"><button class="btn small" type="button" data-duel="${esc(f.uid)}">Düello</button><button class="btn ghost small" type="button" data-gift="${esc(f.uid)}">Hediye gönder</button><button class="btn ghost small" type="button" data-unf="${esc(f.uid)}">Çıkar</button></span>`}</li>`).join("")}</ul>
+      ${rows.length<2?'<p class="hint">Henüz arkadaşın yok. Yukarıya bir arkadaşının kodunu yaz.</p>':'<p class="hint">Sıralama toplam puana göre. Mağazada harcadığın puanlar sıralamanı düşürmez.</p>'}`}</section>
+  <section class="card"><h2>Düellolar</h2><p class="hint">Sıralamadan bir arkadaşına "Düello" de: ikiniz aynı ${DQ} soruyu çözersiniz, soru başına ${DSEC} saniye. Çok doğru yapan kazanır, eşitlikte hızlı olan. İkiniz aynı anda oyundaysanız birbirinizin ilerlemesini canlı görürsünüz; değilseniz rakibin sonra oynar.</p>
+    ${duels===null?'<p class="hint">Yükleniyor…</p>':duels.length?`<ul class="miss">${duels.map(d=>{const st=duelState(d);return`<li style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:0"><b style="font-family:var(--body)">${esc(st.opp)}</b><br><span class="hint">${st.txt}</span></span><button class="btn small${st.mine?"":" ghost"}" type="button" data-open="${esc(d.id)}">${st.mine?"Oyna":"Bak"}</button></li>`}).join("")}</ul>`:'<p class="hint">Henüz düello yok.</p>'}</section></div>`;
+  const reload=()=>Promise.all([loadFriends(),loadDuels().catch(()=>duels||[])]).then(([l,dl])=>{friends=l;duels=dl;if(view==="friends")rFriends()}).catch(()=>{friends=friends||[];frMsg="Liste yüklenemedi. İnternetini kontrol edip Yenile'ye bas.";if(view==="friends")rFriends()});
   if(friends===null)reload();
   $("frel").onclick=()=>{friends=null;frMsg="";rFriends()};
+  const fById=id=>(friends||[]).find(f=>f.uid===id);
+  document.querySelectorAll("[data-duel]").forEach(b=>b.onclick=async()=>{b.disabled=true;try{openDuel(await createDuel(fById(b.dataset.duel)))}catch(e){frMsg="Düello başlatılamadı. Firebase kurallarına düello bölümü eklenmemiş olabilir.";rFriends()}});
+  document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{const d=(duels||[]).find(x=>x.id===b.dataset.open);if(d)openDuel(d)});
+  document.querySelectorAll("[data-gift]").forEach(b=>b.onclick=()=>{giftFor=fById(b.dataset.gift);frMsg="";rFriends();window.scrollTo(0,0)});
+  if($("gcancel"))$("gcancel").onclick=()=>{giftFor=null;rFriends()};
+  document.querySelectorAll("[data-send]").forEach(b=>b.onclick=async()=>{const f=giftFor,i=ITEM[b.dataset.send];giftFor=null;
+    try{await sendGift(f,i.id);frMsg=`${i.name}, ${f.display||f.username} için gönderildi.`}catch(e){frMsg="Hediye gönderilemedi, puanın geri verildi."}
+    if(view==="friends")rFriends()});
   $("fcopy").onclick=async()=>{try{await navigator.clipboard.writeText("#"+P.code);toast("Kod kopyalandı")}catch(e){toast("Kopyalanamadı, kodu elle yaz: #"+P.code)}};
   $("fform").onsubmit=async e=>{e.preventDefault();const v=$("fcode").value;if(!v.trim())return;
     try{const pr=await addFriend(v);frMsg=(pr.display||pr.username||"Arkadaşın")+" eklendi.";friends=null}
     catch(err){frMsg=err&&err.code?"Eklenemedi. Zaten ekli olabilir ya da bağlantı yok.":(err.message||"Eklenemedi.")}
     if(view==="friends")rFriends()};
   document.querySelectorAll("[data-unf]").forEach(b=>b.onclick=async()=>{await removeFriend(b.dataset.unf);friends=null;frMsg="Listeden çıkarıldı.";if(view==="friends")rFriends()});
+}
+/* ---- hediye ---- */
+let giftFor=null;
+function checkSets(){P.sets=P.sets||{};for(const o of OUTFITS)if(!P.sets[o.id]&&o.items.every(x=>P.owned.includes(x))){P.sets[o.id]=1;P.coins+=OUTFIT_BONUS;P.score=(P.score||0)+OUTFIT_BONUS}}
+async function sendGift(f,itemId){
+  const i=ITEM[itemId],me=fbUser.uid;if(!i||!f||P.coins<i.price)throw new Error("puan");
+  P.coins-=i.price;save();
+  try{await fb.F.setDoc(fb.F.doc(fb.db,"gifts",me+"_"+f.uid+"_"+Date.now()),{from:me,to:f.uid,fromName:P.user||P.username||"",item:itemId,t:Date.now()})}
+  catch(e){P.coins+=i.price;save();throw e}
+}
+async function claimGifts(){
+  const{F,db}=fb,q=await F.getDocs(F.query(F.collection(db,"gifts"),F.where("to","==",fbUser.uid)));let msg="";
+  for(const d of q.docs){const g=d.data(),i=ITEM[g.item];
+    if(i){if(!P.owned.includes(i.id)){P.owned.push(i.id);msg=`${g.fromName||"Bir arkadaşın"} sana ${i.name} hediye etti. Mağazadan giyebilirsin.`}
+      else{const r=Math.round(i.price/2);P.coins+=r;msg=`${g.fromName||"Bir arkadaşın"} sana ${i.name} gönderdi; sende vardı, ${r} puan eklendi.`}}
+    await F.deleteDoc(F.doc(db,"gifts",d.id)).catch(()=>{})}
+  if(msg){checkSets();save();toast(msg);if(view==="menu"||view==="shop")render()}
+}
+/* ---- düello: iki oyuncu aynı soruları çözer; ikisi de çevrim içiyse ilerleme canlı görünür ---- */
+const DQ=10,DSEC=15;
+let duels=null,D=null,dUnsub=null,dTick=null;
+const duelWaiting=()=>fbUser&&duels?duels.filter(d=>!((d.p||{})[fbUser.uid]||{}).done).length:0;
+function duelState(d){
+  const me=fbUser.uid,oid=d.from===me?d.to:d.from,m=(d.p||{})[me]||{},o=(d.p||{})[oid]||{},opp=(d.from===me?d.toName:d.fromName)||"Arkadaşın",n=(d.qs||[]).length;
+  if(!m.done)return{opp,mine:true,txt:o.done?`Sıra sende. Rakibin ${o.ok}/${n} yaptı.`:d.from===me?"Sen başlattın, henüz oynamadın.":"Sana meydan okudu. Sıra sende."};
+  if(!o.done)return{opp,mine:false,txt:`Sen ${m.ok}/${n} yaptın. Rakibin bekleniyor.`};
+  const win=m.ok>o.ok||(m.ok===o.ok&&m.ms<o.ms),tie=m.ok===o.ok&&m.ms===o.ms;
+  return{opp,mine:false,txt:`${tie?"Berabere":win?"Kazandın":"Kaybettin"}: ${m.ok} - ${o.ok}`};
+}
+async function loadDuels(){
+  const{F,db}=fb,me=fbUser.uid,C=F.collection(db,"duels");
+  const[a,b]=await Promise.all([F.getDocs(F.query(C,F.where("to","==",me))),F.getDocs(F.query(C,F.where("from","==",me)))]);
+  const out=[];for(const q of[a,b])q.forEach(d=>out.push(Object.assign({id:d.id},d.data())));
+  return out.sort((x,y)=>(y.t||0)-(x.t||0)).slice(0,12);
+}
+async function createDuel(f){
+  if(!f)throw new Error("arkadaş yok");
+  const me=fbUser.uid,id=me+"_"+f.uid+"_"+Date.now();
+  const qs=shuffle(BASE).slice(0,DQ).map(it=>{const ts=["tr","en"];if(it.syn)ts.push("syn");const type=rnd(ts);return{w:it.w,type,opts:options(it,FIELD[type])}});
+  const d={from:me,to:f.uid,fromName:P.user||P.username||"",toName:f.display||f.username||"",qs,t:Date.now(),p:{}};
+  await fb.F.setDoc(fb.F.doc(fb.db,"duels",id),d);duels=[Object.assign({id},d)].concat(duels||[]);
+  return Object.assign({id},d);
+}
+const duelOpp=()=>{const me=fbUser.uid,oid=D.d.from===me?D.d.to:D.d.from;return Object.assign({uid:oid,name:(D.d.from===me?D.d.toName:D.d.fromName)||"Rakibin"},(D.d.p||{})[oid]||{})};
+const oppTxt=()=>{const o=duelOpp(),n=D.d.qs.length;return o.done?`${o.name} bitirdi: ${o.ok}/${n} doğru`:o.i?`${o.name} şu an ${Math.min(n,o.i+1)}. soruda, ${o.ok} doğru`:`${o.name} henüz başlamadı`};
+function openDuel(d){
+  const m=(d.p||{})[fbUser.uid]||{};
+  D={d,i:m.i||0,ok:m.ok||0,ms:m.ms||0,done:!!m.done,lock:false};
+  if(dUnsub)dUnsub();
+  try{dUnsub=fb.F.onSnapshot(fb.F.doc(fb.db,"duels",d.id),sn=>{
+    if(!D||D.d.id!==d.id||!sn.exists())return;D.d=Object.assign({id:d.id},sn.data());
+    if(duels){const k=duels.findIndex(x=>x.id===d.id);if(k>=0)duels[k]=D.d}
+    if(view!=="duel")return;if(D.done)rDuel();else{const e=$("dopp");if(e)e.textContent=oppTxt()}},()=>{})}catch(e){dUnsub=null}
+  view="duel";render();window.scrollTo(0,0);     // go() dinleyiciyi kapatmasın diye doğrudan
+}
+const duelPush=()=>{const pth="p."+fbUser.uid;return fb.F.updateDoc(fb.F.doc(fb.db,"duels",D.d.id),{[pth]:{i:D.i,ok:D.ok,ms:D.ms,done:D.done}}).catch(()=>{})};
+const secTxt=ms=>(Math.round(ms/100)/10).toString().replace(".",",")+" sn";
+function rDuel(){
+  clearInterval(dTick);
+  if(!D||!fbUser){view="friends";render();return}
+  const n=D.d.qs.length;
+  while(!D.done&&D.i<n&&!BYW[D.d.qs[D.i].w])D.i++;          // listede olmayan kelime (eski sürüm) atlanır
+  if(!D.done&&D.i>=n){D.done=true;duelPush()}
+  if(D.done)return rDuelResult();
+  const q=D.d.qs[D.i],it=BYW[q.w],right=it[FIELD[q.type]],t0=Date.now();
+  $("view").innerHTML=`<div style="display:flex;flex-direction:column;gap:12px"><div class="rowb"><button class="btn ghost small" id="dquit" type="button">‹ Sonra devam et</button><span class="hint">Soru ${D.i+1}/${n} · ${D.ok} doğru</span></div>
+    <div class="bar"><i id="dbar" style="width:100%;transition:none"></i></div>
+    <p class="memo" id="dopp">${esc(oppTxt())}</p>
+    <section class="card">${qHead(it,q.type)}<div class="opts">${q.opts.map((o,i)=>`<button class="opt" type="button" data-v="${esc(o)}"><kbd>${i+1}</kbd><span>${esc(o)}</span></button>`).join("")}</div></section></div>`;
+  $("dquit").onclick=()=>{clearInterval(dTick);go("friends")};
+  const end=v=>{
+    if(D.lock)return;D.lock=true;clearInterval(dTick);
+    D.ms+=Math.min(DSEC*1000,Date.now()-t0);const ok=v===right;if(ok)D.ok++;
+    document.querySelectorAll(".opt").forEach(x=>{x.disabled=true;if(x.dataset.v===right)x.classList.add("right");else if(x.dataset.v===v)x.classList.add("wrong")});
+    D.i++;if(D.i>=n){D.done=true;const g=D.ok*5;P.coins+=g;P.score=(P.score||0)+g;save()}
+    duelPush();
+    setTimeout(()=>{if(!D)return;D.lock=false;if(view==="duel")rDuel()},ok?600:1300);
+  };
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>end(b.dataset.v));
+  dTick=setInterval(()=>{const left=DSEC*1000-(Date.now()-t0),b=$("dbar");if(b)b.style.width=Math.max(0,100*left/(DSEC*1000))+"%";if(left<=0)end(null)},200);
+}
+function rDuelResult(){
+  const n=D.d.qs.length,o=duelOpp(),id=D.d.id;let head,sub;
+  if(!o.done){head="Sen bitirdin";sub=`${o.name} soruları çözünce sonuç burada belirecek. Beklemek zorunda değilsin; sonuca sonra Arkadaşlar ekranından da bakabilirsin.`}
+  else{
+    const win=D.ok>o.ok||(D.ok===o.ok&&D.ms<o.ms),tie=D.ok===o.ok&&D.ms===o.ms,bonus=tie?20:win?50:0;
+    head=tie?"Berabere":win?"Kazandın!":"Bu sefer olmadı";
+    sub=(D.ok===o.ok&&!tie?"Doğru sayınız eşit, hızlı olan kazandı. ":"")+(bonus?`Düello ödülü: ${bonus} puan.`:"Rövanş isteyebilirsin.");
+    P.dpaid=P.dpaid||{};
+    if(!P.dpaid[id]){P.dpaid[id]=1;const ks=Object.keys(P.dpaid);if(ks.length>60)delete P.dpaid[ks[0]];P.coins+=bonus;P.score=(P.score||0)+bonus;save();$("coins").textContent=P.coins}
+  }
+  $("view").innerHTML=`<section class="card"><div class="fbHead"><div class="stage sm">${petSVG(!o.done||D.ok>=o.ok)}</div><h2>${head}</h2><span class="gain">+${D.ok*5}<span class="coin"></span></span></div>
+    <div class="tiles" style="grid-template-columns:1fr 1fr"><div class="tile"><b>${D.ok}/${n}</b><span>Sen · ${secTxt(D.ms)}</span></div>
+      <div class="tile"><b>${o.done?o.ok+"/"+n:"…"}</b><span>${esc(o.name)}${o.done?" · "+secTxt(o.ms):o.i?" · "+o.i+". soruda":" · bekleniyor"}</span></div></div>
+    <p class="hint">${esc(sub)} Her doğru cevap 5 puan.</p>
+    ${o.done?'<button class="btn big" id="dre" type="button">Rövanş iste</button>':""}
+    <button class="btn ghost" id="dback" type="button">Arkadaşlara dön</button></section>`;
+  $("dback").onclick=()=>go("friends");
+  if($("dre"))$("dre").onclick=async()=>{$("dre").disabled=true;try{openDuel(await createDuel({uid:o.uid,display:o.name}))}catch(e){toast("Rövanş başlatılamadı")}};
 }
 function rOnboard(){
   $("view").innerHTML=`<section class="card"><p class="hello">Hoş geldin</p>
@@ -1661,7 +1778,7 @@ function rMenu(){
     <button class="mi" type="button" id="hard" ${hard?"":"disabled"}><b>Zorlandıklarım</b><span>${hard?hard+" kelime":"Şimdilik yok"}</span></button>
     <button class="mi" type="button" data-go="shop"><b>Mağaza</b><span>${P.coins} puanın var</span></button>
     <button class="mi" type="button" data-go="words"><b>Kelimeler</b><span>${ALL.length} kelime, ${NSETS} set</span></button>
-    <button class="mi" type="button" data-go="friends"><b>Arkadaşlar</b><span>${fbUser&&P.code?"Kodun #"+esc(P.code):"Hesap açınca gelir"}</span></button>
+    <button class="mi" type="button" data-go="friends"><b>Arkadaşlar</b><span>${fbUser&&duelWaiting()?duelWaiting()+" düello seni bekliyor":fbUser&&P.code?"Kodun #"+esc(P.code):"Hesap açınca gelir"}</span></button>
     <button class="mi" type="button" data-go="home"><b>İlerleme ve ayarlar</b><span>${fbUser?"@"+esc(P.username||""):"Hesap, günlük hedef"}</span></button>
   </div></div>`;
   if($("a2x"))$("a2x").onclick=()=>{P.a2hs=1;save();rMenu()};
@@ -1696,7 +1813,7 @@ function rStats(){
     <div class="rowb"><span>Günlük hedef (doğru cevap). Ödülü ${P.goal*5} puan</span><div class="seg">${[10,20,30].map(g=>`<button type="button" data-goal="${g}" aria-pressed="${P.goal===g}">${g}</button>`).join("")}</div></div>
     <div class="rowb"><span>Günde en fazla yeni kelime</span><div class="seg">${[10,15,25].map(g=>`<button type="button" data-newmax="${g}" aria-pressed="${(P.newMax||15)===g}">${g}</button>`).join("")}</div></div>
     <label class="field">Yeni kelimeler hangi setten gelsin?<select id="focus"><option value="0">Sırayla (önerilen)</option>${Array.from({length:NSETS},(_,i)=>`<option value="${i+1}"${P.focus===i+1?" selected":""}>${setName(i+1)}</option>`).join("")}</select></label>
-    <p class="hint">Yeni kelime önce tanıtım kartıyla gösterilir, sonra dört adımdan geçer: anlam, eş ya da zıt anlam, cümlede seçme, yazma. Yanlış yaptığın kelimeyi önce kendin yazarsın, sonra kelime bir adım geri gider ve üst üste 3 kez doğru bilene kadar farklı soru tipleriyle sık sık sorulur. Öğrendiğin kelime 1, 3, 7, 14 ve 30 gün sonra tekrar sorulur; unuttuysan yeniden çalışmaya alınır. Tekrarlar her zaman yeni kelimelerden önce gelir.</p></section></div>`;
+    <p class="hint">Yeni kelime önce tanıtım kartıyla gösterilir, sonra dört adımdan geçer: anlam, eş ya da zıt anlam, cümlede seçme, yazma. Yanlış yaptığın kelimeyi önce kendin yazarsın, sonra kelime bir adım geri gider ve üst üste 3 kez doğru bilene kadar farklı soru tipleriyle sık sık sorulur. Öğrendiğin kelime 1, 3, 7, 14 ve 30 gün sonra tekrar sorulur (gün gece 00:00'da değişir; gece geç saatte öğrendiğin kelime en az 6 saat sonra sorulur); unuttuysan yeniden çalışmaya alınır. Tekrarlar her zaman yeni kelimelerden önce gelir.</p></section></div>`;
   $("suser").oninput=e=>{P.user=e.target.value.trim();save()};
   if($("sout"))$("sout").onclick=signOutNow;
   if($("sin"))$("sin").onclick=()=>go("auth");
@@ -1982,6 +2099,18 @@ function rWords(){
   };
 }
 $("back").onclick=()=>go("menu");
+/* ---- aşağı çekince yenile (çalışma, test ve düello sırasında kapalı) ---- */
+async function refreshNow(){
+  if(fbUser){friends=null;await Promise.all([syncDown().catch(()=>{}),claimGifts().catch(()=>{}),loadDuels().then(l=>{duels=l}).catch(()=>{})])}
+  render();toast(fbUser?"Güncellendi":"Güncellendi (hesapsız: yalnızca bu cihaz)");
+}
+let ptrY=null,ptrD=0,ptrBusy=false;
+addEventListener("touchstart",e=>{ptrD=0;ptrY=(!ptrBusy&&window.scrollY<=0&&!["play","test","duel","auth","ob"].includes(view))?e.touches[0].clientY:null},{passive:true});
+addEventListener("touchmove",e=>{if(ptrY===null)return;ptrD=e.touches[0].clientY-ptrY;const el=$("ptr");
+  if(ptrD>14){el.style.height=Math.min(60,ptrD*.45)+"px";el.textContent=ptrD>120?"Bırak, yenilensin":"Yenilemek için çek"}else el.style.height="0"},{passive:true});
+addEventListener("touchend",()=>{if(ptrY===null)return;const el=$("ptr"),fire=ptrD>120;ptrY=null;
+  if(!fire){el.style.height="0";return}
+  ptrBusy=true;el.textContent="Yenileniyor…";refreshNow().catch(()=>{}).then(()=>{ptrBusy=false;el.style.height="0"})});
 document.addEventListener("input",e=>{const w=e.target.dataset&&e.target.dataset.note;if(!w)return;const v=e.target.value.trim();if(v)P.notes[w]=v;else delete P.notes[w];save()});
 document.addEventListener("keydown",e=>{
   if(e.target.tagName==="INPUT"||e.target.tagName==="SELECT")return;
