@@ -1435,7 +1435,9 @@ function drillType(it,step){
 }
 function next(){
   answered=false;count++;ensureDay();
-  if(mode==="hard"){
+  if(mode==="rev"){
+    if(revQ.length){const it=revQ.shift(),S=P.S[it.w]||{s:0},step=Math.floor(Math.random()*(Math.min(3,Math.max(1,S.s))+1));cur={it,step,type:qtype(it,step),kind:"rev"}}else cur=null;
+  }else if(mode==="hard"){
     const pool=hardList();
     if(!pool.length)cur=null;
     else{let it=rnd(pool);if(pool.length>1)while(it===lastHard)it=rnd(pool);lastHard=it;const step=Math.floor(Math.random()*4);cur={it,step,type:qtype(it,step),kind:"hard"}}
@@ -1461,7 +1463,7 @@ function judge(ok,typed){
   const{it,kind}=cur,s=P.S[it.w]||(P.S[it.w]={s:0,lv:0,due:0,x:0});s.i=1;
   const debt0=s.debt||0;let gain=0,note="";P.total++;
   if(ok){
-    P.ok++;P.streak++;P.day.n++;sess.ok++;gain=(debt0>0?5:10)+(P.streak>=5?5:0);
+    P.ok++;P.streak++;P.day.n++;sess.ok++;gain=(debt0>0||kind==="rev"?5:10)+(P.streak>=5?5:0);
     if(kind==="learn"){
       if(debt0>0){            // pekiştirme: adım ilerlemez, borç azalır
         s.debt=debt0-1;queue.splice(Math.min(s.debt?3:5,queue.length),0,it);
@@ -1480,6 +1482,7 @@ function judge(ok,typed){
   }else{
     P.streak=0;s.x++;sess.wrong++;sess.missed.add(it.w);
     if(kind==="hard")note="Bu kelime listede kalıyor, yine gelecek.";
+    else if(kind==="rev"){revQ.splice(Math.min(3,revQ.length),0,it);note="Bu kelime birkaç soru sonra yine sorulacak; doğru bilene kadar turdan çıkmaz."}
     else{
       // öğrenme sırasında yanlış: bir adım geri. Öğrenilmiş kelime unutulduysa 2. adımdan yeniden.
       s.s=kind==="learn"?Math.max(0,cur.step-1):1;s.debt=2;
@@ -1522,7 +1525,7 @@ function render(){
   ensureDay();$("coins").textContent=P.coins;bell();
   $("backRow").hidden=["menu","ob","play","test","sum","auth","duel"].includes(view);
   if(view!=="duel"){clearInterval(dTick);if(dUnsub){dUnsub();dUnsub=null}}
-  ({menu:rMenu,auth:rAuth,friends:rFriends,ob:rOnboard,home:rStats,tset:rTestSetup,map:rMap,duel:rDuel,notifs:rNotifs,play:rPlay,sum:rSum,shop:rShop,words:rWords,test:rTest})[view]();
+  ({menu:rMenu,auth:rAuth,friends:rFriends,ob:rOnboard,home:rStats,tset:rTestSetup,map:rMap,rev:rRev,duel:rDuel,notifs:rNotifs,play:rPlay,sum:rSum,shop:rShop,words:rWords,test:rTest})[view]();
 }
 /* ================= hesap, bulut kaydı, arkadaşlar (Firebase) ================= */
 const FB_CFG={apiKey:"AIzaSyAcf5z5OmMssyzsyMqcZ59LYiqNQkZx5LA",authDomain:"ydt-kelime.firebaseapp.com",projectId:"ydt-kelime",storageBucket:"ydt-kelime.firebasestorage.app",messagingSenderId:"375780683206",appId:"1:375780683206:web:2bbc740609c4edf10e56c7"};
@@ -1870,6 +1873,39 @@ function rDuelResult(){
   if($("dreplay"))$("dreplay").onclick=()=>rDuelResult();
   if($("dre"))$("dre").onclick=async()=>{$("dre").disabled=true;try{openDuel(await createDuel(Object.assign({},D.prof||{},{uid:o.uid,display:o.name}),D.d.mode||"mixed"))}catch(e){toast("Rövanş başlatılamadı")}};
 }
+/* ---- tekrar bölümü: bugün öğrendiklerim + genel tekrar ---- */
+let revQ=[],revName="",rsrc="all",rlen=20;
+function todayWords(){
+  const set=new Set(P.day.w||[]),t0=new Date();t0.setHours(0,0,0,0);
+  for(const x of ALL){const s=P.S[x.w];if(s&&s.s===4&&!s.lv&&s.at>=t0.getTime())set.add(x.w)}   // bugün "öğrenildi" olanlar
+  return ALL.filter(x=>set.has(x.w)&&P.S[x.w]);
+}
+function startRev(pool,name){revQ=pool.slice();revName=name;startPlay("rev")}
+function genPool(){
+  const t=today(),key=x=>{const s=P.S[x.w];return(s.s===4&&s.due<=t?2:0)+(s.x>=2?1:0)};   // zamanı gelenler ve zorlandıkların öne
+  const L=shuffle(ALL.filter(x=>P.S[x.w]&&(rsrc==="all"||x.set===+rsrc))).sort((a,b)=>key(b)-key(a));
+  return shuffle(rlen?L.slice(0,rlen):L);
+}
+function rRev(){
+  const tw=todayWords(),all=ALL.filter(x=>P.S[x.w]),sets=[...new Set(all.map(x=>x.set))].filter(Boolean).sort((a,b)=>a-b);
+  if(rsrc!=="all"&&!sets.includes(+rsrc))rsrc="all";
+  const n=all.filter(x=>rsrc==="all"||x.set===+rsrc).length,k=rlen?Math.min(rlen,n):n;
+  $("view").innerHTML=`<div style="display:flex;flex-direction:column;gap:14px">
+  <section class="card"><h2>Bugün öğrendiklerim</h2>
+    <p class="hint">Bugün ilk kez açtığın ve bugün öğrendiğin kelimeler. Günü kapatmadan bir tur atarsan yarınki tekrarda çok daha kolay hatırlarsın.</p>
+    <button class="btn big" id="rtoday" type="button" ${tw.length?"":"disabled"}>${tw.length?`Tekrar et (${tw.length} kelime)`:"Bugün henüz yeni kelime yok"}</button>
+    ${tw.length?`<p class="hint">${tw.slice(0,12).map(x=>esc(x.w)).join(", ")}${tw.length>12?" ve "+(tw.length-12)+" kelime daha":""}</p>`:""}</section>
+  <section class="card"><h2>Genel tekrar</h2>
+    <p class="hint">Şimdiye kadar çalıştığın kelimelerden karışık bir tur. Tekrar zamanı gelenler ve zorlandıkların tura önce alınır.</p>
+    <label class="field">Hangi kelimelerden?<select id="rsrc"><option value="all">Çalıştığım tüm kelimeler (${all.length})</option>${sets.map(i=>`<option value="${i}"${rsrc===String(i)?" selected":""}>${setName(i)} (${all.filter(x=>x.set===i).length})</option>`).join("")}</select></label>
+    <div class="rowb"><span>Bir turda kaç kelime</span><div class="seg">${[20,40,0].map(g=>`<button type="button" data-rlen="${g}" aria-pressed="${rlen===g}">${g||"Hepsi"}</button>`).join("")}</div></div>
+    <button class="btn big" id="rgen" type="button" ${n?"":"disabled"}>${n?`Tekrar et (${k} kelime)`:"Henüz çalışılmış kelime yok"}</button></section>
+  <p class="hint">Tekrarda her doğru 5 puan ve günlük hedefe sayılır. Yanlış yaptığın kelime doğru bilene kadar aynı turda yeniden sorulur. Buradaki tekrar, kelimelerin 1, 3, 7, 14 ve 30 günlük tekrar takvimini değiştirmez.</p></div>`;
+  $("rtoday").onclick=()=>startRev(shuffle(tw),"Bugün öğrendiklerim");
+  $("rgen").onclick=()=>startRev(genPool(),"Genel tekrar");
+  $("rsrc").onchange=e=>{rsrc=e.target.value;rRev()};
+  document.querySelectorAll("[data-rlen]").forEach(b=>b.onclick=()=>{rlen=+b.dataset.rlen;rRev()});
+}
 function rOnboard(){
   $("view").innerHTML=`<section class="card"><p class="hello">Hoş geldin</p>
     <p class="hint">YDT kelimelerini oyun gibi çalış. Her doğru cevap puan kazandırır, puanlarla çalışma arkadaşına kıyafet alırsın.</p>
@@ -1900,6 +1936,7 @@ function rMenu(){
   </section>
   ${A2HS&&!P.a2hs?`<section class="card"><h2>Uygulama gibi kullan</h2><p class="hint">Safari'de alttaki paylaş düğmesine dokun ve "Ana Ekrana Ekle" seçeneğini seç. Oyun ana ekranında kendi simgesiyle durur. ${fbUser?"Oradan açınca aynı hesapla giriş yapman yeterli.":"Önce hesap açarsan ilerlemen orada da gelir; hesapsız ilerleme ana ekrandaki sürüme taşınmaz."}</p><button class="btn ghost small" id="a2x" type="button" style="align-self:flex-start">Tamam, gösterme</button></section>`:""}
   <div class="menuGrid">
+    <button class="mi wide" type="button" data-go="rev"><b>Tekrar</b><span>Bugün öğrendiklerim: ${todayWords().length} kelime · Genel tekrar: ${ALL.filter(x=>P.S[x.w]).length} kelime</span></button>
     <button class="mi" type="button" data-go="tset"><b>Deneme testi</b><span>${lastT?`Son: ${lastT.ok}/${lastT.n}, net ${netTxt(lastT.net)}`:"Kendini sına"}</span></button>
     <button class="mi" type="button" id="hard" ${hard?"":"disabled"}><b>Zorlandıklarım</b><span>${hard?hard+" kelime":"Şimdilik yok"}</span></button>
     <button class="mi" type="button" data-go="shop"><b>Mağaza</b><span>${P.coins} puanın var</span></button>
@@ -1951,7 +1988,8 @@ function rPlay(){
   let h=`<div style="display:flex;flex-direction:column;gap:12px"><div class="rowb"><button class="btn ghost small" id="quit" type="button">‹ Bitir</button><span class="hint" id="gtxt">Bugün ${P.day.n}/${P.goal}</span></div>
     <div class="bar"><i id="gbar" style="width:${Math.min(100,100*P.day.n/P.goal)}%"></i></div><section class="card" aria-live="polite">`;
   if(!cur){
-    if(mode==="hard")h+='<p class="word tr">Zorlandığın kelime kalmadı</p><p class="prompt">Hepsini toparladın. Normal çalışmaya dönebilirsin.</p>';
+    if(mode==="rev")h+=`<p class="word tr">Tekrar bitti</p><p class="prompt">${esc(revName)}: bu turdaki bütün kelimeleri doğru bildin.</p>`;
+    else if(mode==="hard")h+='<p class="word tr">Zorlandığın kelime kalmadı</p><p class="prompt">Hepsini toparladın. Normal çalışmaya dönebilirsin.</p>';
     else{
       const more=ALL.some(x=>!P.S[x.w]),lots=dueList().length>=15;
       h+=`<p class="word tr">Bugünlük bu kadar</p><p class="prompt">${more?"Bugünün yeni kelimelerini ve tekrarlarını bitirdin. Kelimelerin kalıcı olması için en iyisi yarın tekrarlarla devam etmek.":"Listedeki bütün kelimeleri çalıştın. Tekrar zamanı gelenler ana menüde görünecek."}</p>
@@ -1964,7 +2002,7 @@ function rPlay(){
     if($("extra"))$("extra").onclick=()=>{extraMode=true;next()};
     return;
   }
-  const{it,type,step,kind}=cur,names=["Anlam","Eş/zıt anlam","Cümle","Yazma"],tag={review:"Tekrar",extra:"Ek tekrar",hard:"Zorlandıkların"}[kind]||(kind==="learn"&&P.S[cur.it.w]&&P.S[cur.it.w].debt>0?`Pekiştirme · üst üste ${P.S[cur.it.w].debt+1} doğru gerekli`:"");
+  const{it,type,step,kind}=cur,names=["Anlam","Eş/zıt anlam","Cümle","Yazma"],tag={review:"Tekrar",extra:"Ek tekrar",hard:"Zorlandıkların",rev:revName+" · kalan "+(revQ.length+1)}[kind]||(kind==="learn"&&P.S[cur.it.w]&&P.S[cur.it.w].debt>0?`Pekiştirme · üst üste ${P.S[cur.it.w].debt+1} doğru gerekli`:"");
   if(type==="intro"){
     h+=`<div class="steps"><span class="on">Yeni kelime</span><span class="tag">Önce tanı, sonra sorulacak</span></div>
       <div class="intro" style="display:flex;flex-direction:column;gap:10px"><p class="word"><mark>${esc(it.w)}</mark>${it.pos?`<span class="pos">${POS[it.pos]}</span>`:""}${CAN_SPEAK?'<button class="speak" id="say" type="button">Dinle</button>':""}</p>
@@ -1973,7 +2011,7 @@ function rPlay(){
       ${it.ex?`<p class="ex">${esc(it.ex).replace("___","<mark>"+esc(it.w)+"</mark>")}</p>`:""}${it.trx?`<p class="hint">${esc(it.trx)}</p>`:""}${memoHtml(it,true)}</div>
       <div class="rowb"><button class="btn ghost" id="known" type="button">Zaten biliyorum</button><button class="btn" id="got" type="button">Anladım, devam</button></div></section></div>`;
     $("view").innerHTML=h;$("quit").onclick=endPlay;
-    const seen=()=>{if(!P.S[it.w])P.day.newN=(P.day.newN||0)+1;P.S[it.w]=Object.assign(P.S[it.w]||{s:0,lv:0,due:0,x:0},{i:1});save()};
+    const seen=()=>{if(!P.S[it.w]){P.day.newN=(P.day.newN||0)+1;(P.day.w=P.day.w||[]).push(it.w)}P.S[it.w]=Object.assign(P.S[it.w]||{s:0,lv:0,due:0,x:0},{i:1});save()};
     if(CAN_SPEAK)$("say").onclick=()=>speak(it.w);
     $("got").onclick=()=>{seen();queue.splice(Math.min(3,queue.length),0,it);next()};
     $("known").onclick=()=>{seen();answered=false;cur={it,step:0,type:"tr",kind:"learn",skip:true};render()};
@@ -2077,11 +2115,11 @@ function rSum(){
   $("view").innerHTML=`<div style="display:flex;flex-direction:column;gap:14px"><section class="card">
     <div class="fbHead"><div class="stage sm">${petSVG(sess.ok>=sess.wrong)}</div><h2>Bu çalışmanın özeti</h2></div>
     <div class="tiles"><div class="tile"><b>${sess.ok}</b><span>doğru</span></div><div class="tile"><b>${sess.wrong}</b><span>yanlış</span></div><div class="tile"><b>${sess.learned}</b><span>yeni öğrenilen</span></div></div>
-    <p class="hint">${miss.length?"Kaçırdığın kelimeler bir sonraki çalışmada ilk sırada gelecek ve her biri üst üste 3 kez doğru bilinene kadar sorulacak.":tot?"Bu çalışmada hiç yanlışın yok.":""}</p>
-    <button class="btn big" id="sgo" type="button">${miss.length?"Kaçırdıklarımla devam et":"Çalışmaya devam et"}</button>
+    <p class="hint">${mode==="rev"?(miss.length?"Kaçırdığın kelimeler bu turda doğru bilinene kadar yeniden soruldu. İki kez kaçırdıkların Zorlandıklarım listesine girer.":tot?"Bu turda hiç yanlışın yok.":""):miss.length?"Kaçırdığın kelimeler bir sonraki çalışmada ilk sırada gelecek ve her biri üst üste 3 kez doğru bilinene kadar sorulacak.":tot?"Bu çalışmada hiç yanlışın yok.":""}</p>
+    <button class="btn big" id="sgo" type="button">${mode==="rev"?"Tekrar bölümüne dön":miss.length?"Kaçırdıklarımla devam et":"Çalışmaya devam et"}</button>
     <button class="btn ghost" id="shome" type="button">Ana menü</button></section>
     ${miss.length?`<section class="card"><h2>Kaçırdıkların</h2><ul class="miss">${miss.map(x=>`<li><b>${esc(x.w)}</b> = ${esc(x.tr)}${memo(x)?`<br><span class="hint">${esc(memo(x))}</span>`:""}</li>`).join("")}</ul></section>`:""}</div>`;
-  $("sgo").onclick=()=>startPlay(mode==="hard"&&hardList().length?"hard":"normal");
+  $("sgo").onclick=()=>mode==="rev"?go("rev"):startPlay(mode==="hard"&&hardList().length?"hard":"normal");
   $("shome").onclick=()=>go("menu");
 }
 const MAPP=[[92,290],[262,384],[104,484],[258,584],[100,686],[256,786],[108,888],[250,986],[106,1086],[252,1184]];
