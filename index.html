@@ -1555,12 +1555,21 @@ async function onUser(u){
   if(view==="auth")go(P.ob?"menu":"ob");else if(view==="menu"||view==="home")render();
 }
 const newCode=()=>{const al="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";let c="";for(let i=0;i<6;i++)c+=al[Math.floor(Math.random()*al.length)];return c};
+// iki kayıt birleşirken satın alınanlar asla kaybolmaz: hangisi yeni olursa olsun dolaplar birleştirilir
+function mergeKeep(o){
+  let ch=false;P.owned=P.owned||[];P.sets=P.sets||{};
+  for(const id of(o&&o.owned)||[])if(!P.owned.includes(id)){P.owned.push(id);ch=true}
+  for(const k in(o&&o.sets)||{})if(!P.sets[k]){P.sets[k]=1;ch=true}
+  return ch;
+}
 async function pull(){
   const{F,db}=fb,uid=fbUser.uid,snap=await F.getDoc(F.doc(db,"saves",uid));
   if(P.uid&&P.uid!==uid)P=fresh();                       // bu telefonda başka bir hesabın kaydı vardı
   if(snap.exists()){
     let r=null;try{r=JSON.parse(snap.data().data)}catch(e){}
-    if(r&&!(P.uid===uid&&(P.t||0)>(r.t||0)))P=Object.assign(fresh(),r);   // buluttaki daha yeniyse onu al
+    if(r){const same=P.uid===uid,keep=same&&(P.t||0)>(r.t||0),other=keep?r:same?P:null;
+      if(!keep)P=Object.assign(fresh(),r);            // buluttaki daha yeniyse onu al
+      if(other)mergeKeep(other)}
   }
   // kayıt yoksa (yeni hesap) bu telefondaki ilerleme hesaba taşınır
   P.uid=uid;P.username=(fbUser.email||"").split("@")[0];delete P.guest;
@@ -1584,8 +1593,9 @@ async function syncDown(){
   if(!fb||!fbUser||P.uid!==fbUser.uid||dirty)return;
   const snap=await fb.F.getDoc(fb.F.doc(fb.db,"saves",fbUser.uid));if(!snap.exists())return;
   let r=null;try{r=JSON.parse(snap.data().data)}catch(e){}
-  if(!r||(r.t||0)<=(P.t||0))return;
-  P=Object.assign(fresh(),r);P.uid=fbUser.uid;normalize();rebuildAll();saveLocal();queue=[];
+  if(!r)return;
+  if((r.t||0)<=(P.t||0)){if(mergeKeep(r))save();return}
+  const old=P;P=Object.assign(fresh(),r);P.uid=fbUser.uid;const mg=mergeKeep(old);normalize();rebuildAll();saveLocal();queue=[];if(mg)save();
   toast("Diğer cihazındaki ilerleme yüklendi");
   if(["play","test","sum","map","duel"].includes(view)){T=null;D=null;go("menu")}else render();
 }
