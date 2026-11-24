@@ -1545,7 +1545,7 @@ async function fbInit(){
   }catch(e){fbState="fail";if(view==="auth")render()}
 }
 async function onUser(u){
-  fbUser=u;fbState="ready";friends=null;frMsg="";giftFor=null;duelFor=null;
+  fbUser=u;fbState="ready";vaultN=-1;friends=null;frMsg="";giftFor=null;duelFor=null;
   if(!u){
     if(P.uid){P=fresh();saveLocal();rebuildAll();normalize();queue=[];view="auth"}   // oturum kapanmış: bu telefondaki kopyayı temizle
     if(view==="auth")render();return;
@@ -1580,9 +1580,31 @@ async function pull(){
   }
   saveLocal();await pushNow();
 }
+// kasa: alınan parçaların ayrı tutulan, yalnızca büyüyebilen listesi (Firestore kuralı listeden parça silinmesine izin vermez)
+let vaultN=-1;
+const ownN=()=>(P.owned||[]).length+Object.keys(P.sets||{}).length;
+async function vaultSync(){
+  if(!fb||!fbUser||P.uid!==fbUser.uid)return;
+  const{F,db}=fb,uid=fbUser.uid,ref=F.doc(db,"vault",uid);
+  try{
+    const sn=await F.getDoc(ref),v=sn.exists()?sn.data():{},vo=v.owned||[],vs=v.sets||[];
+    if(P.uid!==uid)return;
+    const so0={};for(const k of vs)so0[k]=1;
+    const ch=mergeKeep({owned:vo,sets:so0}),so=Object.keys(P.sets||{});
+    if(P.owned.some(x=>!vo.includes(x))||so.some(k=>!vs.includes(k)))
+      await F.setDoc(ref,{owned:[...new Set(vo.concat(P.owned))],sets:[...new Set(vs.concat(so))],t:Date.now()});
+    vaultN=ownN();
+    if(ch){save();if(view==="shop"||view==="menu")render()}
+  }catch(e){vaultN=ownN()}          // kasa kuralı henüz yayınlanmadıysa sessizce geç
+}
 async function pushNow(){
   if(!fb||!fbUser||P.uid!==fbUser.uid)return;
-  const{F,db}=fb,uid=fbUser.uid;dirty=false;
+  const{F,db}=fb,uid=fbUser.uid;
+  // yazmadan önce buluttaki kayda bak: orada olup burada olmayan parça varsa ekle (eski bir cihaz üstüne yazmış olabilir)
+  try{const sn=await F.getDoc(F.doc(db,"saves",uid));if(sn.exists()&&P.uid===uid&&mergeKeep(JSON.parse(sn.data().data)))saveLocal()}catch(e){}
+  if(!fbUser||P.uid!==uid||fbUser.uid!==uid)return;
+  dirty=false;
+  if(vaultN!==ownN())vaultSync().catch(()=>{});
   await Promise.all([
     F.setDoc(F.doc(db,"saves",uid),{data:JSON.stringify(P),t:P.t||Date.now()}),
     F.setDoc(F.doc(db,"profiles",uid),{username:P.username||"",display:P.user||P.username||"",code:P.code||"",pet:P.pet,petName:P.name||"",worn:P.worn||{},
@@ -2276,7 +2298,7 @@ $("back").onclick=()=>go("menu");
 $("bell").onclick=()=>go("notifs");
 /* ---- aşağı çekince yenile (çalışma, test ve düello sırasında kapalı) ---- */
 async function refreshNow(){
-  if(fbUser){friends=null;await Promise.all([syncDown().catch(()=>{}),claimGifts().catch(()=>{}),loadDuels().then(l=>{duels=l}).catch(()=>{})])}
+  if(fbUser){friends=null;await Promise.all([syncDown().catch(()=>{}),vaultSync().catch(()=>{}),claimGifts().catch(()=>{}),loadDuels().then(l=>{duels=l}).catch(()=>{})])}
   render();toast(fbUser?"Güncellendi":"Güncellendi (hesapsız: yalnızca bu cihaz)");
 }
 let ptrY=null,ptrD=0,ptrBusy=false;
