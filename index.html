@@ -1786,6 +1786,7 @@ try{
 P.notes=P.notes||{};if(!P.ob&&(P.total>0||P.name))P.ob=1;
 const memo=it=>P.notes[it.w]||it.mn||"";
 const memoHtml=(it,edit)=>`${memo(it)?`<p class="memo"><b>Çağrışım:</b> ${esc(memo(it))}</p>`:""}${edit?`<label class="field">${P.notes[it.w]?"Kendi çağrışımın":memo(it)?"Kendi çağrışımını yaz (seninki daha iyi akılda kalır)":"Bu kelimeyi neye benzetiyorsun? Kendi çağrışımını yaz"}<input type="text" data-note="${esc(it.w)}" value="${esc(P.notes[it.w]||"")}" maxlength="160" autocomplete="off" placeholder="Örneğin: illumination, sarı ışık gibi parlak"></label>`:""}`;
+const addC=x=>{P.coins+=x;P.earn=(P.earn||0)+x},subC=x=>{P.coins-=x;P.spent=(P.spent||0)+x};
 const saveLocal=()=>{try{localStorage.setItem(KEY,JSON.stringify(P))}catch(e){}};
 let dirty=false,pushT=null;
 const save=()=>{P.t=Date.now();saveLocal();if(fbUser&&P.uid===fbUser.uid){dirty=true;clearTimeout(pushT);pushT=setTimeout(()=>pushNow().catch(()=>{}),6000)}};
@@ -1793,6 +1794,9 @@ function normalize(){
   P.notes=P.notes||{};P.worn=P.worn||{};P.owned=P.owned||[];P.custom=P.custom||[];P.S=P.S||{};P.tests=P.tests||[];
   if(!P.day||typeof P.day.d!=="number")P.day={d:today(),n:0,done:false,newN:0,bonus:0};
   if(!P.ob&&(P.total>0||P.name))P.ob=1;
+  // puan defteri: eski kayıtta yoksa bugünkü puandan başlat; defteri bilmeyen eski bir sürüm puanı değiştirdiyse farkı deftere işle
+  if(typeof P.earn!=="number"){P.earn=P.coins||0;P.spent=0}
+  {const df=(P.coins||0)-(P.earn-(P.spent||0));if(df>0)P.earn+=df;else if(df<0)P.spent=(P.spent||0)-df}
   if(typeof P.focus==="number")P.focus=P.focus?(STOPBY["s"+P.focus]?"s"+P.focus:"c1"):0;
   if(P.focus&&!STOPBY[P.focus])P.focus=0;
   if(!P.sv){P.score=Math.max(P.score||0,(P.coins||0)+P.owned.reduce((a,id)=>a+(ITEM[id]?ITEM[id].price:0),0));P.sv=2}
@@ -1896,7 +1900,9 @@ function build(){
   const hot=L.filter(x=>P.S[x.w].debt>0),rest=L.filter(x=>!(P.S[x.w].debt>0));
   queue=hot.concat(f?rest.filter(x=>x.stop===f):rest).slice(0,ACTIVE);refill();
 }
-const newLeft=()=>dueList().filter(inW).length>=15?0:Math.max(0,(P.newMax||15)+(P.day.bonus||0)-(P.day.newN||0)-queue.filter(x=>!P.S[x.w]).length);
+// günlük yeni kelime hakkı kelimeler ve bağlaçlar için ayrı sayılır (eski kayıtta tek sayı vardı: o, kelimelere yazılır)
+const dayW=()=>{const d=P.day;if(!d.nw)d.nw={uzay:d.newN||0,ates:0};if(!d.bw)d.bw={uzay:d.bonus||0,ates:0};return d};
+const newLeft=()=>{const d=dayW();return dueList().filter(inW).length>=15?0:Math.max(0,(P.newMax||15)+(d.bw[playW]||0)-(d.nw[playW]||0)-queue.filter(x=>!P.S[x.w]).length)};
 function refill(){
   const inQ=new Set(queue.map(x=>x.w)),f=P.focus||0,un=x=>!P.S[x.w]&&!inQ.has(x.w);
   const lrn=shuffle(ALL.filter(x=>inW(x)&&!inQ.has(x.w)&&P.S[x.w]&&P.S[x.w].s<4));
@@ -1944,8 +1950,9 @@ function options(it,field){
 }
 function judge(ok,typed){
   answered=true;ensureDay();
-  const{it,kind}=cur,s=P.S[it.w]||(P.S[it.w]={s:0,lv:0,due:0,x:0});s.i=1;
+  const{it,kind}=cur,s=P.S[it.w]||(P.S[it.w]={s:0,lv:0,due:0,x:0});s.i=1;s.u=Date.now();
   const debt0=s.debt||0;let gain=0,note="";P.total++;
+  const ws=(P.wst=P.wst||{})[it.world||"uzay"]=P.wst[it.world||"uzay"]||{t:0,ok:0};ws.t++;if(ok)ws.ok++;
   if(ok){
     P.ok++;P.streak++;P.day.n++;sess.ok++;gain=(debt0>0||kind==="rev"?5:10)+(P.streak>=5?5:0);
     if(kind==="learn"){
@@ -1962,7 +1969,7 @@ function judge(ok,typed){
     else note="Hâlâ aklında.";
     if(P.streak===5)note+=" Seri bonusu başladı: her doğruya +5.";
     if(!P.day.done&&P.day.n>=P.goal){P.day.done=true;P.streakDays++;P.lastGoal=today();const gb=P.goal*5;gain+=gb;toast(`Günlük hedef tamam! +${gb} puan`)}
-    P.coins+=gain;P.score=(P.score||0)+gain;
+    addC(gain);P.score=(P.score||0)+gain;
   }else{
     P.streak=0;s.x++;sess.wrong++;sess.missed.add(it.w);
     if(kind==="hard")note="Bu kelime listede kalıyor, yine gelecek.";
@@ -2072,14 +2079,57 @@ function mergeKeep(o){
   for(const k in(o&&o.sets)||{})if(!P.sets[k]){P.sets[k]=1;ch=true}
   return ch;
 }
+/* İki kaydı birleştirir (o → P). Hiçbir cihazın yaptığı ilerleme ötekinin üstüne yazılıp silinmez:
+   kelimede en son işlem gören durum, sayılarda büyük olan, listelerde birleşim alınır. */
+const wRank=a=>(a.s||0)*100+(a.lv||0)*10+(a.i?1:0);
+function wBetter(b,a){
+  const tb=b.u||0,ta=a.u||0;
+  if(tb&&ta&&tb!==ta)return tb>ta;                    // ikisinde de zaman varsa sonuncusu geçerli
+  const rb=wRank(b),ra=wRank(a);return rb!==ra?rb>ra:(b.due||0)>(a.due||0);
+}
+function mergeSave(o){
+  if(!o||typeof o!=="object")return false;
+  const sig=()=>JSON.stringify([P.S,P.owned,P.sets,P.score,P.earn,P.spent,P.total,P.ok,P.day,P.notes,P.custom,P.tests,P.wst,P.streakDays,P.lastGoal,P.dpaid]),b0=sig();
+  if(typeof P.earn!=="number"){P.earn=P.coins||0;P.spent=0}
+  mergeKeep(o);
+  P.S=P.S||{};for(const w in o.S||{}){const a=P.S[w],b=o.S[w];if(b&&typeof b==="object"&&(!a||wBetter(b,a)))P.S[w]=b}
+  // puan: defter varsa defterden, yoksa (eski kayıt) o kaydın puanı başlangıç sayılır
+  const oe=typeof o.earn==="number"?o.earn:(o.coins||0),os=typeof o.earn==="number"?(o.spent||0):0;
+  P.earn=Math.max(P.earn||0,oe);P.spent=Math.max(P.spent||0,os);P.coins=P.earn-P.spent;
+  if((o.lastGoal||0)>(P.lastGoal||0)){P.streakDays=o.streakDays||0;P.lastGoal=o.lastGoal}
+  else if((o.lastGoal||0)===(P.lastGoal||0))P.streakDays=Math.max(P.streakDays||0,o.streakDays||0);
+  for(const k of["score","total","ok","ob"])P[k]=Math.max(P[k]||0,o[k]||0);
+  const d=o.day;
+  if(d&&typeof d.d==="number"){
+    if(!P.day||d.d>P.day.d)P.day=d;
+    else if(d.d===P.day.d){const m=P.day;m.n=Math.max(m.n||0,d.n||0);m.newN=Math.max(m.newN||0,d.newN||0);m.bonus=Math.max(m.bonus||0,d.bonus||0);m.done=!!(m.done||d.done);
+      m.w=[...new Set((m.w||[]).concat(d.w||[]))];
+      for(const f of["nw","bw"])if(d[f]||m[f]){const x=m[f]||(f==="nw"?{uzay:m.newN||0,ates:0}:{uzay:m.bonus||0,ates:0}),y=d[f]||{};for(const k in y)x[k]=Math.max(x[k]||0,y[k]||0);m[f]=x}}
+  }
+  P.notes=P.notes||{};for(const k in o.notes||{})if(!P.notes[k])P.notes[k]=o.notes[k];
+  P.custom=P.custom||[];for(const c of o.custom||[])if(c&&c.w&&!P.custom.some(x=>x.w===c.w))P.custom.push(c);
+  P.tests=P.tests||[];{const have=new Set(P.tests.map(x=>JSON.stringify(x)));for(const x of o.tests||[])if(!have.has(JSON.stringify(x)))P.tests.push(x)}
+  if(o.wst){P.wst=P.wst||{};for(const k in o.wst){const x=P.wst[k]||(P.wst[k]={t:0,ok:0}),y=o.wst[k]||{};x.t=Math.max(x.t,y.t||0);x.ok=Math.max(x.ok,y.ok||0)}}
+  if(o.dpaid){P.dpaid=P.dpaid||{};for(const k in o.dpaid)P.dpaid[k]=1}
+  if(!P.code&&o.code)P.code=o.code;
+  return sig()!==b0;
+}
+// buluttaki kaydı (r) bu cihazdakiyle birleştirir. Dönüş: "replaced" (ayarlar buluttan alındı) | "merged" | "same"
+function absorb(r,preferLocal){
+  const rr=r.rst||0,pr=P.rst||0,uid=fbUser.uid;
+  if(rr>pr){P=Object.assign(fresh(),r);P.uid=uid;normalize();rebuildAll();saveLocal();return"replaced"}   // öbür cihazda "her şeyi sıfırla" yapılmış
+  if(rr<pr)return"same";
+  if(!preferLocal&&(r.t||0)>(P.t||0)){const old=P;P=Object.assign(fresh(),r);P.uid=uid;const ch=mergeSave(old);normalize();rebuildAll();saveLocal();return ch?"replaced+":"replaced"}
+  if(mergeSave(r)){normalize();rebuildAll();saveLocal();return"merged"}
+  return"same";
+}
 async function pull(){
   const{F,db}=fb,uid=fbUser.uid,snap=await F.getDoc(F.doc(db,"saves",uid));
   if(P.uid&&P.uid!==uid)P=fresh();                       // bu telefonda başka bir hesabın kaydı vardı
   if(snap.exists()){
     let r=null;try{r=JSON.parse(snap.data().data)}catch(e){}
-    if(r){const same=P.uid===uid,keep=same&&(P.t||0)>(r.t||0),other=keep?r:same?P:null;
-      if(!keep)P=Object.assign(fresh(),r);            // buluttaki daha yeniyse onu al
-      if(other)mergeKeep(other)}
+    if(r){if(P.uid===uid)absorb(r);                      // aynı hesap: iki kaydı birleştir
+      else P=Object.assign(fresh(),r)}
   }
   // kayıt yoksa (yeni hesap) bu telefondaki ilerleme hesaba taşınır
   P.uid=uid;P.username=(fbUser.email||"").split("@")[0];delete P.guest;
@@ -2111,7 +2161,7 @@ async function pushNow(){
   if(!fb||!fbUser||P.uid!==fbUser.uid)return;
   const{F,db}=fb,uid=fbUser.uid;
   // yazmadan önce buluttaki kayda bak: orada olup burada olmayan parça varsa ekle (eski bir cihaz üstüne yazmış olabilir)
-  try{const sn=await F.getDoc(F.doc(db,"saves",uid));if(sn.exists()&&P.uid===uid&&mergeKeep(JSON.parse(sn.data().data)))saveLocal()}catch(e){}
+  try{const sn=await F.getDoc(F.doc(db,"saves",uid));if(sn.exists()&&P.uid===uid){const st=absorb(JSON.parse(sn.data().data),true);if(st!=="same"){P.t=Date.now();saveLocal();if(st==="replaced"){queue=[];if(["play","test","sum","map","duel"].includes(view)){T=null;D=null;go("menu")}else render()}}}}catch(e){}
   if(!fbUser||P.uid!==uid||fbUser.uid!==uid)return;
   dirty=false;
   if(vaultN!==ownN())vaultSync().catch(()=>{});
@@ -2122,14 +2172,16 @@ async function pushNow(){
 }
 // başka cihazda oynandıysa: sayfaya geri dönünce buluttaki daha yeni kaydı al (eski kayıt yenisinin üstüne yazılmasın)
 async function syncDown(){
-  if(!fb||!fbUser||P.uid!==fbUser.uid||dirty)return;
+  if(!fb||!fbUser||P.uid!==fbUser.uid)return;
   const snap=await fb.F.getDoc(fb.F.doc(fb.db,"saves",fbUser.uid));if(!snap.exists())return;
   let r=null;try{r=JSON.parse(snap.data().data)}catch(e){}
-  if(!r)return;
-  if((r.t||0)<=(P.t||0)){if(mergeKeep(r))save();return}
-  const old=P;P=Object.assign(fresh(),r);P.uid=fbUser.uid;const mg=mergeKeep(old);normalize();rebuildAll();saveLocal();queue=[];if(mg)save();
-  toast("Diğer cihazındaki ilerleme yüklendi");
-  if(["play","test","sum","map","duel"].includes(view)){T=null;D=null;go("menu")}else render();
+  if(!r||P.uid!==fbUser.uid)return;
+  const busy=["play","test","duel"].includes(view),st=absorb(r,busy||dirty);   // çalışma sürerken ekran değiştirilmez, yalnızca eksikler eklenir
+  if(st==="same")return;
+  if(st!=="replaced")save();                             // bu cihazda fazladan ilerleme vardı: birleşmiş hali buluta yaz
+  if(st==="merged"){if(!busy)render();return}
+  queue=[];toast("Diğer cihazındaki ilerleme yüklendi");
+  if(["sum","map","play","test","duel"].includes(view)){T=null;D=null;go("menu")}else render();
 }
 document.addEventListener("visibilitychange",()=>{
   if(document.visibilityState==="hidden"){if(dirty)pushNow().catch(()=>{})}
@@ -2306,18 +2358,18 @@ function fightHTML(res,a,b){
 }
 /* ---- hediye ---- */
 let giftFor=null;
-function checkSets(){P.sets=P.sets||{};for(const o of OUTFITS)if(!P.sets[o.id]&&o.items.every(x=>P.owned.includes(x))){P.sets[o.id]=1;P.coins+=OUTFIT_BONUS;P.score=(P.score||0)+OUTFIT_BONUS}}
+function checkSets(){P.sets=P.sets||{};for(const o of OUTFITS)if(!P.sets[o.id]&&o.items.every(x=>P.owned.includes(x))){P.sets[o.id]=1;addC(OUTFIT_BONUS);P.score=(P.score||0)+OUTFIT_BONUS}}
 async function sendGift(f,itemId){
   const i=ITEM[itemId],me=fbUser.uid;if(!i||!f||P.coins<i.price)throw new Error("puan");
-  P.coins-=i.price;save();
+  subC(i.price);save();
   try{await fb.F.setDoc(fb.F.doc(fb.db,"gifts",me+"_"+f.uid+"_"+Date.now()),{from:me,to:f.uid,fromName:P.user||P.username||"",item:itemId,t:Date.now()})}
-  catch(e){P.coins+=i.price;save();throw e}
+  catch(e){addC(i.price);save();throw e}
 }
 async function claimGifts(){
   const{F,db}=fb,q=await F.getDocs(F.query(F.collection(db,"gifts"),F.where("to","==",fbUser.uid)));let msg="";
   for(const d of q.docs){const g=d.data(),i=ITEM[g.item];
     if(i){if(!P.owned.includes(i.id)){P.owned.push(i.id);msg=`${g.fromName||"Bir arkadaşın"} sana ${i.name} hediye etti. Mağazadan giyebilirsin.`}
-      else{const r=Math.round(i.price/2);P.coins+=r;msg=`${g.fromName||"Bir arkadaşın"} sana ${i.name} gönderdi; sende vardı, ${r} puan eklendi.`}}
+      else{const r=Math.round(i.price/2);addC(r);msg=`${g.fromName||"Bir arkadaşın"} sana ${i.name} gönderdi; sende vardı, ${r} puan eklendi.`}}
     await F.deleteDoc(F.doc(db,"gifts",d.id)).catch(()=>{})}
   if(msg){checkSets();notify("gift",msg);toast(msg);if(view==="menu"||view==="shop")render()}
 }
@@ -2381,7 +2433,7 @@ function rDuel(){
     if(D.lock)return;D.lock=true;clearInterval(dTick);
     D.ms+=Math.min(DSEC*1000,Date.now()-t0);const ok=v===right;if(ok)D.ok++;
     document.querySelectorAll(".opt").forEach(x=>{x.disabled=true;if(x.dataset.v===right)x.classList.add("right");else if(x.dataset.v===v)x.classList.add("wrong")});
-    D.i++;if(D.i>=n){D.done=true;const g=D.ok*5;P.coins+=g;P.score=(P.score||0)+g;save()}
+    D.i++;if(D.i>=n){D.done=true;const g=D.ok*5;addC(g);P.score=(P.score||0)+g;save()}
     duelPush();
     setTimeout(()=>{if(!D)return;D.lock=false;if(view==="duel")rDuel()},ok?600:1300);
   };
@@ -2396,7 +2448,7 @@ function rDuelResult(){
     head=tie?"Berabere":win?"Kazandın!":"Bu sefer olmadı";
     sub=(D.ok===o.ok&&!tie?"Doğru sayınız eşit, hızlı olan kazandı. ":"")+(bonus?`Düello ödülü: ${bonus} puan.`:"Rövanş isteyebilirsin.");
     P.dpaid=P.dpaid||{};
-    if(!P.dpaid[id]){P.dpaid[id]=1;const ks=Object.keys(P.dpaid);if(ks.length>60)delete P.dpaid[ks[0]];P.coins+=bonus;P.score=(P.score||0)+bonus;save();$("coins").textContent=P.coins}
+    if(!P.dpaid[id]){P.dpaid[id]=1;const ks=Object.keys(P.dpaid);if(ks.length>60)delete P.dpaid[ks[0]];addC(bonus);P.score=(P.score||0)+bonus;save();$("coins").textContent=P.coins}
   }
   let scene="";
   if(o.done){
@@ -2486,9 +2538,9 @@ function rMenu(){
     <button class="mi" type="button" data-go="tset"><b>Deneme testi</b><span>${lastT?`Son: ${lastT.ok}/${lastT.n}, net ${netTxt(lastT.net)}`:"Kendini sına"}</span></button>
     <button class="mi" type="button" id="hard" ${hard?"":"disabled"}><b>Zorlandıklarım</b><span>${hard?hard+" kelime":"Şimdilik yok"}</span></button>
     <button class="mi" type="button" data-go="shop"><b>Mağaza</b><span>${P.coins} puanın var</span></button>
-    <button class="mi" type="button" data-go="words"><b>Kelimeler</b><span>${ALL.length} kelime, ${NSETS} set</span></button>
+    <button class="mi" type="button" data-go="words"><b>Kelime listesi</b><span>${ALL.filter(x=>x.world!=="ates").length} kelime, ${ALL.filter(x=>x.world==="ates").length} bağlaç</span></button>
     <button class="mi" type="button" data-go="friends"><b>Arkadaşlar</b><span>${fbUser&&duelWaiting()?duelWaiting()+" düello seni bekliyor":fbUser&&P.code?"Kodun #"+esc(P.code):"Hesap açınca gelir"}</span></button>
-    <button class="mi" type="button" data-go="home"><b>İlerleme</b><span>${learned().length}/${ALL.length} kelime öğrenildi</span></button>
+    <button class="mi" type="button" data-go="home"><b>İlerleme</b><span>Kelime ${wProg("uzay")} · Bağlaç ${wProg("ates")}</span></button>
   </div></div>`;
   if($("a2x"))$("a2x").onclick=()=>{P.a2hs=1;save();rMenu()};
   $("start").onclick=()=>go("map");
@@ -2507,13 +2559,21 @@ function rTestSetup(){
   document.querySelectorAll("[data-tlen]").forEach(b=>b.onclick=()=>{tlen=+b.dataset.tlen;rTestSetup()});
   $("tstart").onclick=startTest;
 }
+const wAll=w=>ALL.filter(x=>(x.world||"uzay")===w),wProg=w=>{const L=wAll(w);return L.filter(x=>P.S[x.w]&&P.S[x.w].s===4).length+"/"+L.length};
 function rStats(){
-  const sets=Array.from({length:NSETS},(_,i)=>{const ws=BASE.filter(x=>x.set===i+1),n=ws.filter(x=>P.S[x.w]&&P.S[x.w].s===4).length;
-    return`<div>${setName(i+1)} · ${n}/${ws.length}<span class="bar thin"><i style="width:${100*n/ws.length}%"></i></span></div>`}).join("");
+  const card=(w,title)=>{
+    const L=wAll(w),n=L.filter(x=>P.S[x.w]&&P.S[x.w].s===4).length,st=L.filter(x=>P.S[x.w]&&P.S[x.w].s<4).length,a=(P.wst||{})[w],due=dueList().filter(x=>(x.world||"uzay")===w).length;
+    const bars=stopsOf(w).map(o=>{const ws=BASE.filter(x=>x.stop===o.id),k=ws.filter(x=>P.S[x.w]&&P.S[x.w].s===4).length;
+      return`<div>${o.name} · ${k}/${ws.length}<span class="bar thin"><i style="width:${100*k/ws.length}%"></i></span></div>`}).join("");
+    return`<section class="card"><h2>${title}</h2>
+    <div class="tiles"><div class="tile"><b>${n}/${L.length}</b><span>öğrenilen</span></div><div class="tile"><b>${st}</b><span>çalışılıyor</span></div><div class="tile"><b>${a&&a.t?Math.round(100*a.ok/a.t)+"%":"–"}</b><span>doğruluk</span></div></div>
+    ${due?`<p class="hint">Tekrar zamanı gelen: ${due}</p>`:""}<div class="sets">${bars}</div></section>`};
   $("view").innerHTML=`<div style="display:flex;flex-direction:column;gap:14px">
-  <section class="card"><h2>İlerleme</h2>
-    <div class="tiles"><div class="tile"><b>${learned().length}/${ALL.length}</b><span>öğrenilen</span></div><div class="tile"><b>${P.total?Math.round(100*P.ok/P.total)+"%":"–"}</b><span>doğruluk</span></div><div class="tile"><b>${P.streakDays}</b><span>gün serisi</span></div></div>
-    <div class="sets">${sets}</div></section>
+  ${card("uzay","Kelimeler · Uzay")}
+  ${card("ates","Bağlaçlar · Ateş Diyarı")}
+  <section class="card"><h2>Genel</h2>
+    <div class="tiles"><div class="tile"><b>${P.streakDays}</b><span>gün serisi</span></div><div class="tile"><b>${P.day.n}/${P.goal}</b><span>bugünkü hedef</span></div><div class="tile"><b>${P.total?Math.round(100*P.ok/P.total)+"%":"–"}</b><span>toplam doğruluk</span></div></div>
+    <p class="hint">Kelimelerin ve bağlaçların ilerlemesi ayrı tutulur. Günlük hedef, puan ve gün serisi ikisi için ortaktır. Konu bazında doğruluk bu sürümden itibaren sayılmaya başladı.</p></section>
   <button class="btn ghost" id="toset" type="button">Ayarlara git</button></div>`;
   $("toset").onclick=()=>go("set");
 }
@@ -2562,7 +2622,7 @@ function rPlay(){
     }
     h+='<button class="btn ghost" id="home2" type="button">Ana menüye dön</button></section></div>';
     $("view").innerHTML=h;$("quit").onclick=$("home2").onclick=endPlay;
-    if($("more"))$("more").onclick=()=>{P.day.bonus=(P.day.bonus||0)+10;save();refill();next()};
+    if($("more"))$("more").onclick=()=>{const d=dayW();d.bw[playW]=(d.bw[playW]||0)+10;save();refill();next()};
     if($("extra"))$("extra").onclick=()=>{extraMode=true;next()};
     return;
   }
@@ -2575,7 +2635,7 @@ function rPlay(){
       ${it.ex?`<p class="ex">${esc(it.ex).replace("___","<mark>"+esc(it.w)+"</mark>")}</p>`:""}${it.trx?`<p class="hint">${esc(it.trx)}</p>`:""}${memoHtml(it,true)}</div>
       <div class="rowb"><button class="btn ghost" id="known" type="button">Zaten biliyorum</button><button class="btn" id="got" type="button">Anladım, devam</button></div></section></div>`;
     $("view").innerHTML=h;$("quit").onclick=endPlay;
-    const seen=()=>{if(!P.S[it.w]){P.day.newN=(P.day.newN||0)+1;(P.day.w=P.day.w||[]).push(it.w)}P.S[it.w]=Object.assign(P.S[it.w]||{s:0,lv:0,due:0,x:0},{i:1});save()};
+    const seen=()=>{if(!P.S[it.w]){const d=dayW(),k=it.world||"uzay";d.nw[k]=(d.nw[k]||0)+1;P.day.newN=(P.day.newN||0)+1;(P.day.w=P.day.w||[]).push(it.w)}P.S[it.w]=Object.assign(P.S[it.w]||{s:0,lv:0,due:0,x:0},{i:1,u:Date.now()});save()};
     if(CAN_SPEAK)$("say").onclick=()=>speak(it.w);
     $("got").onclick=()=>{seen();queue.splice(Math.min(3,queue.length),0,it);next()};
     $("known").onclick=()=>{seen();answered=false;cur={it,step:0,type:"tr",kind:"learn",skip:true};render()};
@@ -2630,7 +2690,7 @@ function finishTest(){
   clearInterval(tTimer);const n=T.qs.length;let ok=0,wrong=0;
   for(const q of T.qs){if(q.ans===null)continue;q.ans===q.it[FIELD[q.type]]?ok++:wrong++}
   Object.assign(T,{done:true,time:Math.min(Date.now(),T.end)-T.start,ok,wrong,blank:n-ok-wrong,net:ok-wrong/4});
-  T.gain=ok*5+(T.net>=n*.9?50:0);P.coins+=T.gain;P.score=(P.score||0)+T.gain;
+  T.gain=ok*5+(T.net>=n*.9?50:0);addC(T.gain);P.score=(P.score||0)+T.gain;
   P.tests=(P.tests||[]).concat({d:today(),n,ok,wrong,net:T.net}).slice(-10);save();
   if(view==="test"){render();window.scrollTo(0,0)}
 }
@@ -2791,8 +2851,8 @@ function rShop(){
     const wear=()=>{P.worn[i.slot]=i.id;(i.covers||[]).forEach(s=>delete P.worn[s]);const o=ITEM[P.worn.outfit];if(o&&o!==i&&(o.covers||[]).includes(i.slot))delete P.worn.outfit};
     if(!P.owned.includes(i.id)){
       if(P.coins<i.price){toast(`${i.price-P.coins} puan daha lazım`);return}
-      P.coins-=i.price;P.owned.push(i.id);wear();toast(i.name+" alındı");
-      for(const o of OUTFITS)if(!P.sets[o.id]&&o.items.every(x=>P.owned.includes(x))){P.sets[o.id]=1;P.coins+=OUTFIT_BONUS;P.score=(P.score||0)+OUTFIT_BONUS;toast(o.name+" seti tamam! +"+OUTFIT_BONUS+" puan")}
+      subC(i.price);P.owned.push(i.id);wear();toast(i.name+" alındı");
+      for(const o of OUTFITS)if(!P.sets[o.id]&&o.items.every(x=>P.owned.includes(x))){P.sets[o.id]=1;addC(OUTFIT_BONUS);P.score=(P.score||0)+OUTFIT_BONUS;toast(o.name+" seti tamam! +"+OUTFIT_BONUS+" puan")}
     }else if(P.worn[i.slot]===i.id)delete P.worn[i.slot];else wear();
     save();const y=window.scrollY;render();window.scrollTo(0,y);
   });
@@ -2847,7 +2907,7 @@ function rWords(){
   let armed=false;
   $("reset").onclick=function(){
     if(!armed){armed=true;this.textContent="Emin misin? Tekrar dokun";setTimeout(()=>{armed=false;if(this.isConnected)this.textContent="Her şeyi sıfırla"},4000);return}
-    const keep={uid:P.uid,username:P.username,code:P.code,guest:P.guest};P=Object.assign(fresh(),keep);save();rebuildAll();queue=[];count=0;toast("Sıfırlandı");go("ob");
+    const keep={uid:P.uid,username:P.username,code:P.code,guest:P.guest,rst:Date.now()};P=Object.assign(fresh(),keep);save();rebuildAll();queue=[];count=0;toast("Sıfırlandı");go("ob");
   };
 }
 $("back").onclick=()=>go("menu");
