@@ -1240,7 +1240,7 @@ Türk tarihi hakkında derin bir bilgisi var.
 Hükümet kirliliği azaltmak için yeni bir önlem aldı.
 Bu sorunun kolay bir çözümü yok.
 Sıkı çalışma başarının anahtarıdır.`.split("\n");
-/* hazır çağrışımlar (ilk 50 kelime, RAW ile aynı sırada) */
+/* hazır çağrışımlar (RAW ile aynı sırada) */
 const MN=`Oyunlardaki "achievement" rozetini düşün: rozeti kazandın, yani başardın.
 "A, bando'n gitti!" Bando seni yolun ortasında terk edip gitmiş.
 Klavyedeki "Alt" tuşu: basınca diğer tuşların görevi değişir. Alternatif de "değişik seçenek" demek.
@@ -1281,7 +1281,7 @@ Hazard ile "hasar" benzer: hasar veren şey tehlikelidir.
 "Consider" düşünmek: üzerinde düşünmeye değecek kadar çok.
 Araba "rölanti"de bekliyor, gitmeye isteksiz: reluctant.
 "Scare" korkutmak demek: su kıt olunca insanlar korkar.
-"Efe fişek gibi çalışıyor": çok verimli.
+"E, fişek gibiyim!" diyor Bora: çok çalışıyor ama hiç vakit harcamıyor, yani çok verimli.
 Türkçede de var: alışveriş "kompleks"inde kaybolursun çünkü karmaşıktır.
 "Enişte" çok eski kafalı, antika adam: ancient.
 Film "sekans"ı gibi: her sahne bir öncekinin sonucudur.
@@ -1290,7 +1290,457 @@ ThreaT ve TehdiT: ikisi de T ile başlar, T ile biter.
 "A, bro!" diyerek yanına yaklaştı: approach.
 "Evi dens" dolaşan dedektif evde kanıt buldu.
 "Short" kısa demek: bir şey kısa gelirse yetmez, kıtlık olur.
-"Bana fit olmak yarar": bene-fit.`.split("\n");
+"Bana fit olmak yarar": bene-fit.
+"Pörpıs" diye amaçsızca mırıldanma: her "purpose" sorusunda kendine sor, "Benim amacım ne?"
+İçinde "port" (liman) var: gemi limana yanaşınca binme fırsatı doğar, kaçırma.
+"Ekvayır" korosuna (choir) katıldın ve yeni bir yetenek edindin.
+"Antre"de bekliyorsun: misafir daha gelmeden kapıdasın, çünkü geleceğini önceden bekliyordun.
+"As" kartını eline alıp değerini tartıyorsun: assess = değerlendirmek.
+"Sus!" gibi okunur (siis): herkes susunca gürültü durur, sona erer.
+"Deterjan" bitince çamaşırların hali günden güne kötüleşir.
+"Distinguished" beyefendi kalabalıkta hemen ayırt edilir.
+Türkçedeki "eleme" maçı: kaybeden elenir, yani ortadan kaldırılır.
+"En-hans": Hans'ı en iyi hale getirdin, geliştirdin.
+"Ex" (dışarı) + "seed": tohum saksının dışına taştı, sınırı aştı.
+"Flu" (grip) ateşi: bir çıkar bir iner, dalgalanır.
+"Hint" yolunda inek durmuş, trafiği engelliyor: hinder.
+"In" + "habitat": bir habitatın içinde yaşamak.
+"Neg" (negatif) + "lekt": derse negatif ilgi, yani ihmal.
+"Pür su" peşinde koşan susamış adam: suyun peşinden gidiyor.
+"Resim" gibi: resmin sana çok benziyor.
+"Three + five": üç fidan beş oldu, bahçe gelişip serpildi.
+"Util" = alet çantası (utility): aleti alıp kullanırsın.
+"Vanish" leke çıkarıcı: leke ortadan kaybolur.
+"Kontör" at: herkes biraz kontör atarak katkıda bulunuyor.
+"Establishment": dükkânın tabelasında "Est. 1990" yazar, yani 1990'da kuruldu.
+"Jeneratör" elektrik üretir. Generate = üretmek.
+Arabanın "indicator"ı (sinyal lambası) nereye döneceğini gösterir.
+"Interpreter" = tercüman: söyleneni yorumlayıp aktarır.
+"Just" = adil, haklı: yaptığını haklı çıkarmak.
+"Over" + "come": engelin üstünden gelip geçtin, üstesinden geldin.
+"Post" = sonra: sonraya postaladın, erteledin.
+"Restricted area": girişi kısıtlı bölge tabelası.
+"Ambi" = iki (ambidextrous gibi): iki anlama da çekilebilir, belirsiz.
+"Komple" hepsini içeren: kapsamlı. Com- = hepsi bir arada.
+"Delil bırakmış": tesadüf değil, bilerek, kasıtlı yapmış.
+"In" (değil) + "evit" (avoid gibi): kaçınılamaz, kaçınılmaz.
+"Man, do it!" diye emrediyorlar: yapmak zorunlu.
+"Prevail" eden, her yere yayılan: yaygın.
+"Sub" + "sequence" (sıra): sırada bir sonraki.
+"Vulnır" = yaralanır: oyunlarda zırhsız karakter savunmasızdır.
+"Sign" = işaret: işaret konacak kadar önemli.
+"Rely" = güvenmek + "able": güvenilebilir.
+Spor salonundaki "fleks" ve esneme hareketi: flexible = esnek.
+Kargo kolisinin üstünde "FRAGILE" yazar: içi kırılacak eşya.
+Çanta etiketinde "genuine leather" yazar: taklit değil, gerçek deri.
+"Host" (ev sahibi) kapıda sopayla bekliyor: düşmanca bir karşılama.
+"Permanent marker": silinmeyen, kalıcı kalem.
+"Reli" yarışıyla alakası var mı? Var: relevant = konuyla ilgili.
+"Remote control" = uzaktan kumanda. Remote = uzak.
+Türkçeye "sofistike" diye geçti: gelişmiş, ince işlenmiş.
+"Deka" = on (dekatlon 10 dal): decade = on yıl.
+"Family" aç kaldı: famine = kıtlık.
+"İmparator" masaya yumruğunu vurdu: büyük bir etki bıraktı.
+"In" + "come": cebine içeri gelen para, gelir.
+Strateji oyunlarında "resource" toplarsın: odun, altın, yani kaynak.
+İnternetteki "challenge" akımları: sana meydan okuyan zor görev.
+Arabanın "akü"sü: enerjiyi biriktirir.
+"Adaptör": cihazı prize uydurur. Adapt = uyum sağlamak.
+"A + locate": her şeye bir yer (location) ayırmak, tahsis etmek.
+"Kolları" taşıyamadı ve bina çöktü.
+"Kompanse etmek" diye Türkçede de var: açığı telafi etmek.
+Sitelerdeki "Confirm" düğmesi: onayla.
+"Converter": PDF'i Word'e dönüştüren program.
+"De" (uzak) + "private": özel eşyalarından uzak bıraktılar, mahrum ettiler.
+"Dedektör" metali fark eder. Detect = saptamak.
+"Vote" = oy: bütün oylarını tek kişiye adadın.
+"Mini" kelimesi içinde: minileşmek, küçülüp azalmak.
+"Dis" + "rupt" (kırılmak): akış kırıldı, kesintiye uğradı.
+"Counter"da (tezgâhta) eski arkadaşınla karşılaştın.
+"Endurance" yarışı: dayanıklılık yarışı. Endure = dayanmak.
+"Sure" = emin: emin olmak için garanti altına almak.
+Oyunlarda "exploit": açığı kendi çıkarına kullanmak, sömürmek.
+"İmplant" dişe takılır, plan da hayata geçirilir: implement = uygulamak.
+"Poz" verdirmek gibi: istemediği halde dayatmak.
+"Investigator" = dedektif: olayı araştırır, soruşturur.
+"Modifiye" araba: üzerinde değişiklik yapılmış.
+"Persiv" diye okunur: "perspektif"ine göre algılarsın.
+"Solve" = çözmek: re-solve, sorunu kökten halletmek.
+"Tain" tutmak gibi: elinde tutmak. Contain (içinde tutmak) ile aynı kök.
+"Press" = bastırmak: sub-press, alta bastırmak.
+"Under" + "mine" (maden): altını oymak, baltalamak.
+"Ad" + "verse" (ters): ters, olumsuz koşullar.
+"Arabacı" kafasına göre yol seçiyor: keyfi, rastgele.
+"Bu şarj aleti telefonla compatible mı?" Yani uyumlu mu?
+"Kontra" = karşı: herkesin birbirine kontra çıktığı, tartışmalı konu.
+"Convention" = toplantı, gelenek: herkesin alıştığı, geleneksel yol.
+"Elit" kulübe girmeye hak kazandın: eligible = uygun, hak sahibi.
+"Exceed" (aşmak) kelimesinden: sınırı aşan, aşırı.
+Şarkılardaki "Explicit" etiketi: içeriği açık açık söylüyor.
+"Fiz" + "able": fizik olarak yapılabilir, uygulanabilir.
+"İmmm, ens!" diye bakakaldın: ölçülemeyecek kadar büyük, muazzam.
+"Inherit" = miras almak: doğuştan gelen, özünde var olan.
+"Intensive course" = yoğun kurs. Intense = yoğun.
+"Abi sil at": eskimiş, artık kullanılmıyor.
+"Applause" (alkış) alacak kadar akla yatkın bir açıklama.
+"Pro" dalgıç dibe iner ve "found": derinde buldu. Profound = derin.
+"Prom" gecesinin en öne çıkan, en tanınan ismi.
+"B" harfi bile okunmaz (satıl): o kadar ince, zor fark edilir.
+"Tedi" ayıyla saatlerce aynı oyun: sıkıcı ve yorucu.
+"Dry" (kuru) ile akraba: toprak kupkuru, kuraklık.
+"In" + "sight" (görüş): içini görmek, iç görü.
+Türkçedeki "fenomen": herkesin konuştuğu olay, olgu.
+Otobüsteki "priority seat": öncelikli koltuk.
+"Teleskop" ve "mikroskop": ikisi de görüş alanını, yani kapsamı belirler.
+"Portrait" (portre) kişinin özelliklerini gösterir: trait = karakter özelliği.
+"A, bol iş!" Fazla mesai yasası kaldırıldı: abolish = yürürlükten kaldırmak.
+"Avukat" ile aynı kök: müvekkilini savunur.
+"Aleve" su dökünce ateş hafifler: acıyı hafifletmek.
+"Tribute" = hürmet: başarıyı birine bağlamak, ona atfetmek.
+"Coincidence" = tesadüf: iki olay aynı ana denk geldi.
+"Kompliman" yapıp her dediğine uyuyor: comply = kurallara uymak.
+"Kontra" + "diction" (söz): karşı söz söylemek, çelişmek.
+"Dedektif" ipuçlarından sonuç çıkarır: deduce.
+"Picture" içinde: resmini çizer gibi anlatmak, tasvir etmek.
+İçinde "terör" sesi var: korkutup vazgeçirmek, caydırmak.
+"Amfi" sesi yükseltir, sen de sözünü yükseltip vurgularsın.
+"E, vokal!" O şarkıcının sesi eski anıları uyandırıyor.
+"Facile" = kolay (Fransızca), "facility" = tesis: işi kolaylaştırmak.
+"Foster family" = koruyucu aile: çocuğun gelişmesine yardım eder.
+"Prevalent" (yaygın) ile akraba: yayılıp üstün gelmek, galip gelmek.
+"Force" = güç: yeniden güç vermek, pekiştirmek.
+Türkçedeki "spekülasyon": kesin bilgi olmadan tahmin yürütmek.
+"Stimülan" ilaç gibi: uyarır, canlandırır.
+"Sustainable" = sürdürülebilir. Sustain = sürdürmek.
+Türkçedeki "tolerans": hoş görmek, katlanmak.
+Silahın "tetiği" trigger'dır; oyun kolundaki arka tuşlar da öyle. Tetiklemek.
+ATM'deki "Withdraw" seçeneği: hesaptan para çekmek. Geri çekmek.
+Trafikteki "YIELD" levhası: yol ver. Tarla da ürün verir.
+"Ab!" diye ansızın "rupt" (kopmak): aniden kesilen, beklenmedik.
+"Caution! Wet floor" levhası: dikkatli, tedbirli ol.
+"Co" + "here": parçaların hepsi burada bir arada duruyor, tutarlı.
+"Kon-sayz": "size"ı küçük, kısa ve öz.
+"Dert" diye başlar: dert getiren, zararlı.
+"Distinguish" ile akraba: ötekilerden belirgin biçimde ayrı.
+"Drama" gibi sert ve köklü bir değişiklik.
+"Labor" = emek: çok emek verilmiş, ayrıntılı ve özenli.
+"Fut" (ayak) ile denizi boşaltmak: boşuna, nafile.
+"Metre"yle milim milim ölçen: titiz, çok dikkatli.
+"Not" defterine kötü diye yazılmış: kötü şöhretli.
+"Pre" = ön + "eleme": ön eleme turu, ilk aşama.
+"Re-dan-dan": aynı şeyi tekrar tekrar söylemek gereksiz, fazlalık.
+"Silikon" gibi: bükülür ama eski haline döner, dayanıklı.
+Türkçedeki "spontane": plansız, kendiliğinden.
+"Super" (üst) + "face" (yüz): yalnızca yüzeyde, yüzeysel.
+"Tango" yaparken partnerini elinle tutarsın: elle tutulur, somut.
+"Un" + "precedent" (emsal): emsali yok, eşi görülmemiş.
+"Via" = yol: yürünebilecek bir yol var, uygulanabilir.
+"Bir dağ" gibi oku: sırtında dağ gibi bir yük.
+Türkçedeki "defo": eksik, kusurlu. Deficiency = eksiklik.
+"Di" = iki: iki seçenek arasında kalmak, ikilem.
+"In" + "cent": cebine giren her cent seni teşvik eder.
+"Pre" (önce) + "judge" (yargılamak): tanımadan yargılamak, ön yargı.
+"Re" + "medi" (medikal): yeniden sağlığa kavuşturan çare, ilaç.
+"Knowledge" içinde: bildiğini kabul etmek.
+"Adopt, don't shop": hayvanı satın alma, sahiplen. Benimsemek.
+Türkçedeki "analiz": inceleyip parçalarına ayırmak.
+"Prove" (kanıtla) içinde: kanıtladın, onay aldın.
+Futboldaki "asist": gole yardım etmek.
+"Obtain" ile kafiyeli ve yakın anlamlı: obtain = elde etmek, attain = çabayla ulaşmak.
+Sınavdaki "attempt 1/3": üç deneme hakkından biri. Girişim.
+"Kondüktör" treni, orkestra şefi (conductor) konseri yürütür.
+"Consumer" = tüketici. Consume = tüketmek.
+"River" içinde: nehir kaynağından doğar, kelime de kökünden türer.
+"Distribütör" firma malları bayilere dağıtır.
+"Domino" taşı hepsini devirir: sahaya hâkim olmak.
+"Able" = yapabilir: en-able, yapabilir hale getirmek. Ayarlardaki "Enable" düğmesi.
+"Tahmini varış: ETA" (estimated time of arrival). Estimate = tahmin etmek.
+"Ex" = dışarı: include'un tersi, dışarıda bırakmak.
+"ID" = kimlik: kimliğini belirlemek, tanımlamak.
+"İllüstrasyon": resimle, örnekle açıklamak.
+"In" + "volve" (dönmek): içine çekip dahil etmek, içermek.
+"Part" + "parti": partinin bir parçası ol, katıl.
+"Promosyon": ürünü tanıtmak, satışı teşvik etmek.
+Bilgisayardaki "recovery" modu: sistemi kurtarıp eski haline getirir. İyileşmek.
+"Re" + "place": yerine yenisini koymak.
+Anketteki "RSVP / response": yanıt ver. Respond = yanıt vermek.
+"Abstract art" = soyut sanat.
+"Access" = erişim: erişilebilir. "Access denied" yazısını hatırla.
+Hastanedeki "akut": aniden başlayan, şiddetli.
+"Anniversary" (yıl dönümü) ile aynı kök: yılda bir olan, yıllık.
+"Proper" içinde: yerine uygun, yerinde.
+"Beware of the dog!" levhası: farkında ol, dikkat et.
+"Kapasite"si var: yapabilir, yetenekli.
+"Kıvam" (consistency) hep aynı: tutarlı, istikrarlı.
+Matematikteki "sabit" (constant): hiç değişmez, sürekli.
+"Dans" pisti tıklım tıklım: yoğun, sık.
+Havalimanındaki "Domestic flights": iç hatlar. Yurt içi.
+"E-norm-us": normun dışında, kocaman.
+"Evidence" = kanıt: kanıtı olan, apaçık.
+"External disk": harici disk. Dış.
+"Frekans" ile aynı kök: sık sık olan.
+"Matür": meyve olgunlaştı, insan da olgunlaşır.
+Sosyal medyadaki "mutual friends": ortak arkadaşlar. Karşılıklı.
+"Rulo" saman balyaları: kırsal manzara.
+"Bana atitüt yapma!" Tavır, tutum.
+Bilgisayar "komponenti": ekran kartı, işlemci, yani parça.
+"Kon-flikt": iki taraf birbirine "fiske" atıyor, çatışma.
+"On demand" yayın: talep ettiğin an izlersin.
+"Environmentally friendly": çevre dostu.
+Güneş kremindeki "faktör 50": koruma etkeni.
+"Out" + "come": sonunda dışarı çıkan şey, sonuç.
+"Porsiyon" ile akraba: pay, oran.
+"Repütasyon": oyunlarda itibar puanı.
+"Sörvey" doldurur musunuz? Sitelerdeki memnuniyet anketi.
+Arabanın gaz pedalı "accelerator": basınca hızlanır.
+"Company" = eşlik eden kişi: birine arkadaşlık etmek, eşlik etmek.
+"Excuse me" özür diler, "accuse" suçlar: biri özür, biri suçlama.
+"I appreciate it": teşekkür ederken söylenir, değerini biliyorum demek.
+Oyunlardaki "boost": gücünü ve hızını bir anda artırır.
+Ekran görüntüsü "screen capture": ekranı yakalamak.
+"Clear" = net: netleştirmek, açıklığa kavuşturmak.
+Programcının "compile" etmesi: kod parçalarını derleyip tek dosya yapmak.
+İçinde "damn" (lanet olsun) var: yapılanı sert biçimde kınamak.
+"Fine" (sınır, son) içinde: sınırların içine hapsetmek.
+"Konsültasyon": doktora danışmak.
+"Dekay" olmuş diş: çürümüş diş.
+"Defans"a kafa tutan forvet: meydan okumak, karşı gelmek.
+"Disposable" bardak: kullan at bardak. Dispose = atmak.
+"Solve" içinde: şeker çayda çözünür.
+"Elevator" = asansör: yukarı kaldırır.
+"Force" = güç: kuralı güç kullanarak uygulamak. "Law enforcement" = polis.
+"Ekstrakt": bitkiden çıkarılan öz. Çekip çıkarmak.
+"Grab" (kapmak) ile akraba: konuyu kapmak, kavramak.
+"Hezeyan" gibi: bir ileri bir geri, karar veremiyor, tereddüt ediyor.
+Trafikteki "MERGE" levhası: şeritler birleşiyor.
+"Migren" değil "migrate": göçmen kuşlar güneye göç eder.
+Sosyal medyadaki "quote" paylaşımı: birinin sözünü alıntılamak.
+"Re" + "sign": bir imza daha atıp işten ayrıldı, istifa etti.
+Türkçedeki "absürt": saçma.
+"Ampul" bol bol ışık verir: bol, yeterli.
+"Otantik" restoran: özgün, gerçek.
+"Pazar"da penguen satılıyor: çok tuhaf.
+Türkçedeki "kronik" hastalık: uzun süren.
+"Dominant" karakter: baskın gelen.
+"Eagle" (kartal) avına sabırsızlıkla süzülür: istekli, hevesli.
+"Fertilizer" = gübre: toprağı verimli yapar.
+Arabanın "idle" hali: motor çalışıyor ama araba boşta duruyor.
+"İmmün sistem" = bağışıklık sistemi.
+"Legal" ile aynı kök: yasal, meşru.
+"Mod"a peşinde koşmaz, gösterişi sevmez: mütevazı.
+Türkçedeki "naif": saf, toy.
+"Optimist": bardağın dolu tarafını gören, iyimser.
+"Rijit" çerçeve: bükülmez, katı.
+"Sincerely yours": mektubun sonunda "içtenlikle".
+"Urgent!" konulu e-posta: acil.
+"Vasat" değil "vast": uçsuz bucaksız bir çöl düşün.
+"Ans" = önce (ancient gibi): senden önce gelenler, atalar.
+"Bound" = sınır: kriketteki ve haritadaki sınır çizgisi.
+Belgesellerdeki "habitat": hayvanın doğal yaşam alanı.
+"Majör" = büyük: büyük kısım, çoğunluk.
+"Motivasyon" ile aynı kök: insanı harekete geçiren neden.
+"Poor" (fakir) ile akraba: yoksulluk.
+Türkçedeki "semptom": hastalık belirtisi.
+Elindekini "yukarı verip" bırakmak: pes ettim, alın sizin olsun. Vazgeçmek.
+Takvimden işi alıp "öteye koymak": ertelemek.
+Hakem düdüğü çalıp "off" dedi: maç iptal.
+Planı kâğıttan "dışarı taşıyıp" gerçek hayata geçirmek: yerine getirmek.
+Yolun "karşısından gelirken" eski arkadaşına rastladın.
+Çocuğun "arkasından bakıp" onu gözetmek: ilgilenmek.
+Dosyanın "içine bakmak": incelemek, araştırmak.
+Başını kaldırıp "yukarı bakarak" hayran olduğun kişi.
+Birine "tepeden bakmak": küçümsemek.
+"Makyaj" (make-up) gibi: gerçeği kapatıp hikâye uydurmak.
+Açığı "kapatmak için" bir şey yapmak: telafi etmek.
+Yükü sırtına "koyup onunla" yürümek: katlanmak.
+Depodaki benzin "koşup dışarı çıktı": bitti, tükendi.
+Programın "setup" dosyası: kurulum. Kurmak.
+Direksiyonu "üstüne almak": yönetimi devralmak.
+Sesi kısar gibi teklifi "aşağı çevirmek": reddetmek.
+Sonunda "dönüp dışarı çıkan" gerçek: ortaya çıkmak.
+Çocuğu "yukarı getirmek": büyütmek, yetiştirmek.
+Bir değişikliği "ortaya getirmek": yol açmak.
+Araba "kırılıp aşağı çöktü": bozuldu.
+Kafesi "kırıp dışarı çıkan" yangın ya da savaş: patlak vermek.
+Rakamları (figures) çözüp sonucu "dışarı çıkarmak": anlamak.
+Gizli bilgiyi "bulup dışarı çıkarmak": öğrenmek.
+Biriyle "yan yana ilerlemek": iyi geçinmek.
+Engelin "üstünden geçmek": atlatmak.
+"Rid" = kurtulmuş: istemediğin şeyden kurtulmak.
+Kapıyı açıp "içeri vermek": direnmeyi bırakıp boyun eğmek.
+Düğme "on" konumunda, makine çalışmaya devam ediyor.
+Koşuda öndekiyle "aynı hizada kalmak": ayak uydurmak.
+Listeden birini "dışarıda bırakmak": dahil etmemek.
+Tuttuğun ipi "aşağı bıraktın": sana güvenen düştü, hayal kırıklığı.
+"Geçip uzaklara gitmek": vefat etmenin kibar söylenişi.
+Yerdeki şeyi "yukarı almak", arkadaşını arabayla almak.
+Parmağınla "işaret edip göstermek": belirtmek.
+"Reliable" (güvenilir) ile aynı kök: birine yaslanmak, güvenmek.
+"Result" = sonuç: şu sonucun "içine" varmak, yol açmak.
+Cetvelle (ruler) üstünü çizip "dışarı atmak": elemek.
+Sahnede perde "yukarı" kalkar ve o görünür: çıkagelmek.
+TDK "Türk Dil Kurumu" için durur: anlamına gelmek.
+Yeni bir hobiyi yerden "alıp kaldırmak": başlamak.
+"Giye giye" bitirmek: eskitmek, yıpratmak.
+"Account" = hesap: bir şeyin hesabını vermek, açıklamak.
+Telefon "backup"ı: yedekleme. Arkasında durmak, desteklemek.
+Şekeri bıçakla "kesip azaltmak": kısmak.
+"Deal" = anlaşma: sorunla masaya oturup başa çıkmak.
+"Without" = -sız: onsuz yapmak, idare etmek.
+Okuldan "dışarı düşmek": bırakmak.
+Yolun "sonunda" kendini bir yerde bulmak.
+Ödevi "elinle içeri vermek": teslim etmek.
+Telefonda "hold on": hatta kal, bekle. Tutunmak, dayanmak.
+"How ever?" Nasıl olur da? Önceki cümleye itiraz ediyorsun: ancak. Genelde noktalı virgülden sonra, virgülle gelir.
+Üç kelime: never + the + less. "Asla daha az değil": engel var ama sonuç azalmadı, yine de oldu.
+"Al, though!" Yağmur yağsa da al şemsiyeni çık: -mesine rağmen. Arkasından tam cümle gelir.
+"De-spite": inadına (spite) yapmak. Hastalığa rağmen, inadına işe gitti. Arkasından isim gelir.
+"Where" + "as": biri burada, öbürü nerede? İki şeyi karşılaştırır: oysa.
+Bir elinde artılar, "öbür elinde" eksiler: öte yandan.
+"Kontra" atmak: söylenenin tam tersini savunmak, aksine.
+Fotoğraftaki "kontrast": siyah ile beyazın farkı. -in aksine.
+"If" = eğer, "even" = bile: eğer olsa bile.
+"Because" + "of": of'tan sonra isim gelir. Because of the rain = yağmur yüzünden.
+"Owe" = borçlu olmak: bu sonucu şuna borçluyuz, onun yüzünden.
+İki anlamı var: "-den beri" ve "-dığı için". Cümlenin sonucu varsa sebep bildiriyordur.
+"Teşekkürler ona": onun sayesinde. Genelde iyi sonuçlarda kullanılır.
+"Result" = sonuç: şunun sonucu olarak.
+"There" + "for": işte bunun için, bu nedenle. Matematikteki ∴ işareti.
+"Sequence" = sıra: sırayla gelen sonuç, dolayısıyla.
+Kısa ve resmi: "Hans geç kaldı, hence ceza aldı." Bu yüzden.
+"So" + "that": şöyle olsun diye. Arkasından can, could, will gelir.
+"Order" = düzen, sıra: bir şeyi yapmak için sıraya koymak. -mek için.
+"More" + "over": üstüne daha fazlası, üstelik.
+"Add" = eklemek: buna ek olarak.
+"Beside" = yanında: bunun yanında, ayrıca.
+"Well" iyi demek değil burada: onun kadar iyi, onun yanı sıra, hem de.
+"Un" olumsuz yapar: if not. Çalışmazsan = unless you study.
+"Provide" = sağlamak: şu şart sağlanırsa, şartıyla.
+"Long" = uzun: şu durum sürdüğü sürece.
+"Case" = durum: öyle bir durum olur diye. Şemsiye al, yağmur yağar diye.
+"Other" + "wise": öbür türlü, yoksa.
+"Soon" = yakında: olur olmaz, -er -mez.
+"Till" ile aynı: şu ana kadar. Kısaltması 'til.
+"When" + "ever": her ne zaman olursa.
+"Mean" (orta) + "while" (süre): arada geçen sürede, bu arada.
+"O zamana gelindiğinde": ben vardığımda film bitmişti bile.
+"Bir kez": bir kez öğrenince unutmazsın. -ince.
+"A while" = bir süre: o süre içinde, -iken. Karşılaştırmada "oysa" anlamı da var.
+"Instance" = örnek olay: örnek olarak. For example ile aynı.
+"Such" = böyle: şunlar gibi. Arkasından örnek listesi gelir.
+"Başka kelimelerle": yani, başka bir deyişle.
+"Fact" = gerçek: gerçekte, aslında.
+"Stead" = yer (homestead): onun yerine.
+"I'd rather" = tercih ederim: onu yapmaktansa bunu.
+"Regard" = dikkate almak + "less": dikkate almaksızın, ne olursa olsun.
+"Accord" = uyum: şunun söylediğine uygun olarak, ona göre.
+"As" + "if": sanki öyleymiş gibi.
+"Term" = terim: şu terimle bakınca, şu açıdan.
+"Apart" = ayrı: şundan ayrı tutarsak, onun dışında.
+"Like" (gibi) + "wise" (biçimde): aynı biçimde.
+"Weather" ile aynı okunur: hava yağmurlu mu değil mi belli değil. Olup olmadığı.
+"Far" = uzak: bildiğim yere kadar, bildiğim kadarıyla (as far as I know).
+"Half" = yarı: onun yarısı, onun tarafı olarak, onun adına.
+"Although"un güçlüsü: "even" (bile) eklenince vurgu artar. -diği halde.
+"Spite" = inat: inadına. Despite ile aynı; bunda "of" var, onda yok.
+"Nevertheless" ile ikiz: none + the + less. Yine de.
+Kısacık: "Ucuz, yet kaliteli." Ama, yine de. Cümle başında "henüz" değildir.
+"Öyle olsa bile": yine de.
+"Converse" ayakkabıyı ters giymek: tam tersine.
+"Un" + "like": onun gibi değil, ondan farklı olarak.
+"Kontra": beklenenin tersine. Contrary to popular belief = sanılanın aksine.
+"All be it": öyle olsa da. Arkasından genelde sıfat gelir: albeit slowly.
+"No matter" = fark etmez: ne kadar olursa olsun fark etmez.
+"Opposite" = karşıt: şunun karşıtı olarak.
+"Due date" = son gün: bir şey yüzünden vakti gelmek. Nedeniyle. Arkasından isim gelir.
+"Account" = hesap: şunun hesabına yazılan, onun yüzünden.
+"Now" = artık: artık öyle olduğuna göre.
+"Görüyorum ki": öyle olduğunu gördüğüme göre, madem.
+"Ground" = zemin, dayanak: şu gerekçeye dayanarak.
+"View" = görüş: şu göz önüne alındığında.
+"Thus" = "this way": bu şekilde, böylece. Resmi yazılarda.
+"According to" ile akraba: buna göre, buna uygun olarak.
+"Consequence" = sonuç: bunun sonucu olarak.
+"There" + "by": onun yoluyla, böylelikle. Arkasından -ing gelir.
+"İşte bu neden": işte bu yüzden.
+"In order to" ile aynı: -mek için. So as not to = -memek için.
+"Aim" = nişan almak, hedef: şu hedefle. Arkasından -ing gelir.
+"Fear" = korku: şöyle olur korkusuyla.
+"View" = bakış: şuna bakarak, şu niyetle. Arkasından -ing gelir.
+"Only" = yalnızca: yalnızca şu şartla. Cümle başındaysa devrik yapı gelir.
+"Kondisyon" = koşul: şu koşulla.
+"Suppose" = varsaymak: diyelim ki öyle oldu.
+"Event" = olay: şöyle bir olay halinde. Uçaktaki anons: in the event of an emergency.
+"Olsa da olmasa da": iki ihtimalde de sonuç aynı.
+"O olmasaydı": but for your help = yardımın olmasaydı.
+"Ya da başka": yoksa. Tehdit gibi: Sus, or else!
+"Since" = -den beri, "ever" vurgu: o günden bugüne hep.
+"Tam o an": gördüğüm an tanıdım. As soon as ile aynı.
+"Meanwhile" ile aynı: aradaki zamanda.
+Dikkat, "eventually" = sonunda. "Belki" demek değildir.
+"Sub" + "sequence": sırada sonra gelen, sonradan.
+"Priority" = öncelik: ondan önce.
+"Buraya kadar uzak": şimdiye kadar. So far so good.
+"Further" (daha ileri) + "more": dahası.
+"Daha fazlası ne?": üstelik.
+"Bahsetmeye bile gerek yok": o da cabası.
+"Along" = boyunca: onunla yan yana, birlikte.
+"Name" = ad: adını verirsek, yani.
+"Partikül" = küçük parça: özellikle şu parça.
+"Hepsinin üstünde": her şeyden önce.
+"Whole" = bütün: bütüne bakınca, genel olarak.
+"Short" = kısa: kısacası.
+"Regard" = bakmak: şuna bakarak, onunla ilgili olarak.
+"A Ford" marka arabayı almaya param yeter mi?
+"Anons" yapmak: duyurmak.
+"Argüman" ile aynı kök: argüman sunup tartışmak.
+Havalimanındaki "baggage claim": bavul benim diye iddia edip alırsın.
+"Com" + "pair" (çift): iki şeyi çift yapıp karşılaştırmak.
+"Complaint box" = şikâyet kutusu. Complain = şikâyet etmek.
+"Conclusion" = sonuç bölümü: yazıyı bitirmek, sonuca varmak.
+"Definition" = tanım. HD'deki D de "definition": netlik.
+"Dessert" (tatlı) gibi oku: çok çalıştın, tatlıyı hak ettin.
+"Termin" (bitiş tarihi) içinde: tarihi belirlemek.
+"Internet Explorer" ve "Dora the Explorer": keşfeden.
+"Niyet" ettiğin yöne "tend" (yönelmek): amaçlamak.
+Roket "launch" edilir, ürün de piyasaya öyle fırlatılır.
+"Observatory" = gözlemevi. Observe = gözlemlemek.
+"Opposite" = karşı: karşısında durmak.
+"Work permit" = çalışma izni.
+"Pre" (önce) + "vent": olay olmadan önce davranıp önlemek.
+"Purpose" ile karıştırma: pro-pose, öne poz koymak, teklif etmek. Evlenme teklifi de "propose".
+"Recommended for you": senin için önerilenler.
+"Geri et" gibi oku: geri dönüp "keşke yapmasaydım" demek.
+"Rezistans" = direnç: direnmek.
+"Strangle" (boğmak) gibi sıkı bir boğuşma: mücadele etmek.
+"Sufle" sönünce aşçı acı çeker.
+"Survivor" yarışması: hayatta kalan kazanır.
+"Warning!" uyarı yazısı.
+Mağaza sitesinde "Available": stokta var. Değilse "unavailable".
+"Common sense" = sağduyu, herkeste olan ortak akıl: yaygın.
+"Currently playing": şu an çalan şarkı. Güncel.
+"Family" gibi tanıdık: aşina.
+"Jeneratör" gibi durmadan veren: cömert.
+"Order" = düzen: düzenin içinde, sıradan. Tersi "extraordinary".
+"Partikül": belli bir küçük parça, belirli.
+"Properly" = düzgünce: işi doğru dürüst, uygun biçimde yapmak.
+"Response" = yanıt: hesabını verebilen, sorumlu.
+"Simülasyon" gerçeğine benzer: benzer.
+Türkçedeki "tipik": tam ondan beklenen.
+"Uni" = tek (unicorn tek boynuz): tek, eşsiz.
+"Value" = değer: değerli.
+"Varyasyon" ve "varyete": çeşitli.
+"Will" = irade, istek: istekli.
+"Aware" + ness: farkında olma hali. "Awareness day" = farkındalık günü.
+"Behave yourself!" = uslu dur: davranış.
+"Community" sekmesi: oyundaki oyuncu topluluğu.
+Oyunlardaki "damage" puanı: verdiğin hasar.
+"Efor" sarf etmek: çaba.
+"Influencer": takipçilerini etkileyen kişi.
+"Know" = bilmek: bilgi.
+"Mezura" ile ölçersin; önlem de ölçülü alınır.
+"Solve" = çözmek: çözüm. Kimyada "solüsyon" da çözeltidir.
+"Succeed" fiilinin ismi. "Success story" = başarı hikâyesi.`.split("\n");
 const STOP=new Set("etmek olmak bir çok ve yapmak vermek şey olan zor var yerde bu de da ne her olarak için ki".split(" "));
 const toks=s=>new Set(s.toLocaleLowerCase("tr").split(/[\s,()]+/).filter(t=>t&&!STOP.has(t)&&t[0]!=="-"));
 const mk=o=>(o.tok=toks(o.tr+" "+(o.tag||"")),o);
@@ -1438,19 +1888,21 @@ let extraMode=false,sess={ok:0,wrong:0,learned:0,missed:new Set()};
 function startPlay(m){mode=m;extraMode=false;sess={ok:0,wrong:0,learned:0,missed:new Set()};if(m==="normal")build();view="play";next();window.scrollTo(0,0)}
 function endPlay(){go(sess.ok+sess.wrong>0?"sum":"menu")}
 let view=(P.uid||P.guest)?(P.ob?"menu":"ob"):"auth",mode="normal",queue=[],count=0,cur=null,answered=false,lastHard=null;
+// kelimeler ve bağlaçlar ayrı konular: bir çalışma turunda yalnızca girilen dünyanın kelimeleri sorulur
+let playW="uzay";
+const inW=x=>(x.world||"uzay")===playW;
 function build(){
-  const f=P.focus||0,L=shuffle(ALL.filter(x=>P.S[x.w]&&P.S[x.w].s<4)).sort((a,b)=>(P.S[b.w].debt||0)-(P.S[a.w].debt||0));
+  const f=P.focus||0,L=shuffle(ALL.filter(x=>inW(x)&&P.S[x.w]&&P.S[x.w].s<4)).sort((a,b)=>(P.S[b.w].debt||0)-(P.S[a.w].debt||0));
   const hot=L.filter(x=>P.S[x.w].debt>0),rest=L.filter(x=>!(P.S[x.w].debt>0));
   queue=hot.concat(f?rest.filter(x=>x.stop===f):rest).slice(0,ACTIVE);refill();
 }
-const newLeft=()=>dueList().length>=15?0:Math.max(0,(P.newMax||15)+(P.day.bonus||0)-(P.day.newN||0)-queue.filter(x=>!P.S[x.w]).length);
+const newLeft=()=>dueList().filter(inW).length>=15?0:Math.max(0,(P.newMax||15)+(P.day.bonus||0)-(P.day.newN||0)-queue.filter(x=>!P.S[x.w]).length);
 function refill(){
   const inQ=new Set(queue.map(x=>x.w)),f=P.focus||0,un=x=>!P.S[x.w]&&!inQ.has(x.w);
-  const lrn=shuffle(ALL.filter(x=>!inQ.has(x.w)&&P.S[x.w]&&P.S[x.w].s<4));
+  const lrn=shuffle(ALL.filter(x=>inW(x)&&!inQ.has(x.w)&&P.S[x.w]&&P.S[x.w].s<4));
   const cand=(f?lrn.filter(x=>x.stop===f).concat(shuffle(BASE.filter(x=>x.stop===f&&un(x)))):[])
-    .concat(lrn.filter(x=>!f||x.stop!==f),ALL.filter(x=>x.custom&&un(x)));
-  const fw=f?STOPBY[f].world:"uzay";   // seçili durak bitince önce aynı dünyanın öbür durakları
-  for(const o of stopsOf(fw).concat(STOPS.filter(o=>o.world!==fw)))if(o.id!==f)cand.push(...shuffle(BASE.filter(x=>x.stop===o.id&&un(x))));
+    .concat(lrn.filter(x=>!f||x.stop!==f),ALL.filter(x=>x.custom&&inW(x)&&un(x)));
+  for(const o of stopsOf(playW))if(o.id!==f)cand.push(...shuffle(BASE.filter(x=>x.stop===o.id&&un(x))));   // seçili durak bitince aynı dünyanın öbür durakları
   let allow=newLeft();
   while(queue.length<ACTIVE&&cand.length){const x=cand.shift();if(!P.S[x.w]){if(allow<=0)continue;allow--}queue.push(x)}
 }
@@ -1474,11 +1926,11 @@ function next(){
     if(!pool.length)cur=null;
     else{let it=rnd(pool);if(pool.length>1)while(it===lastHard)it=rnd(pool);lastHard=it;const step=Math.floor(Math.random()*4);cur={it,step,type:qtype(it,step),kind:"hard"}}
   }else{
-    const due=dueList();
+    const due=dueList().filter(inW);
     if(due.length&&(queue.length===0||count%2===0)){const it=rnd(due),step=Math.floor(Math.random()*4);cur={it,step,type:qtype(it,step),kind:"review"}}
     else if(queue.length){const it=queue.shift(),S=P.S[it.w],step=S?S.s:0;
       cur=(!S||(!S.i&&S.s===0))?{it,step:0,type:"intro",kind:"learn"}:{it,step,type:S.debt>0?drillType(it,step):qtype(it,step),kind:"learn"}}
-    else{const l=learned();if(extraMode&&l.length){const it=rnd(l),step=Math.floor(Math.random()*4);cur={it,step,type:qtype(it,step),kind:"extra"}}else cur=null}
+    else{const l=learned().filter(inW);if(extraMode&&l.length){const it=rnd(l),step=Math.floor(Math.random()*4);cur={it,step,type:qtype(it,step),kind:"extra"}}else cur=null}
   }
   render();
 }
@@ -1964,36 +2416,40 @@ function rDuelResult(){
   if($("dre"))$("dre").onclick=async()=>{$("dre").disabled=true;try{openDuel(await createDuel(Object.assign({},D.prof||{},{uid:o.uid,display:o.name}),D.d.mode||"mixed"))}catch(e){toast("Rövanş başlatılamadı")}};
 }
 /* ---- tekrar bölümü: bugün öğrendiklerim + genel tekrar ---- */
-let revQ=[],revName="",rsrc="all",rlen=20;
+let revQ=[],revName="",rsrc={uzay:"w:uzay",ates:"w:ates"},rlen=20;
 function todayWords(){
   const set=new Set(P.day.w||[]),t0=new Date();t0.setHours(0,0,0,0);
   for(const x of ALL){const s=P.S[x.w];if(s&&s.s===4&&!s.lv&&s.at>=t0.getTime())set.add(x.w)}   // bugün "öğrenildi" olanlar
   return ALL.filter(x=>set.has(x.w)&&P.S[x.w]);
 }
 function startRev(pool,name){revQ=pool.slice();revName=name;startPlay("rev")}
-function genPool(){
+const revF=w=>{const v=rsrc[w];return v.startsWith("w:")?x=>(x.world||"uzay")===w:x=>x.stop===v};
+function genPool(w){
   const t=today(),key=x=>{const s=P.S[x.w];return(s.s===4&&s.due<=t?2:0)+(s.x>=2?1:0)};   // zamanı gelenler ve zorlandıkların öne
-  const L=shuffle(ALL.filter(x=>P.S[x.w]&&srcF(rsrc)(x))).sort((a,b)=>key(b)-key(a));
+  const L=shuffle(ALL.filter(x=>P.S[x.w]&&revF(w)(x))).sort((a,b)=>key(b)-key(a));
   return shuffle(rlen?L.slice(0,rlen):L);
 }
 function rRev(){
-  const tw=todayWords(),all=ALL.filter(x=>P.S[x.w]),cnt=v=>all.filter(srcF(v)).length;
-  if(rsrc!=="all"&&!cnt(rsrc))rsrc="all";
-  const n=cnt(rsrc),k=rlen?Math.min(rlen,n):n;
+  const tw=todayWords(),all=ALL.filter(x=>P.S[x.w]);
+  const card=(w,title,noun,text)=>{
+    const mine=all.filter(x=>(x.world||"uzay")===w),cnt=id=>mine.filter(x=>x.stop===id).length;
+    if(!rsrc[w].startsWith("w:")&&!cnt(rsrc[w]))rsrc[w]="w:"+w;
+    const n=mine.filter(revF(w)).length,k=rlen?Math.min(rlen,n):n;
+    return`<section class="card"><h2>${title}</h2><p class="hint">${text}</p>
+    <label class="field">Hangi ${noun}?<select data-rsrc="${w}"><option value="w:${w}">Çalıştığım tüm ${w==="ates"?"bağlaçlar":"kelimeler"} (${mine.length})</option>${stopsOf(w).map(o=>cnt(o.id)?`<option value="${o.id}"${rsrc[w]===o.id?" selected":""}>${o.name} (${cnt(o.id)})</option>`:"").join("")}</select></label>
+    <button class="btn big" data-rgen="${w}" type="button" ${n?"":"disabled"}>${n?`Tekrar et (${k} ${w==="ates"?"bağlaç":"kelime"})`:`Henüz çalışılmış ${w==="ates"?"bağlaç":"kelime"} yok`}</button></section>`};
   $("view").innerHTML=`<div style="display:flex;flex-direction:column;gap:14px">
   <section class="card"><h2>Bugün öğrendiklerim</h2>
-    <p class="hint">Bugün ilk kez açtığın ve bugün öğrendiğin kelimeler. Günü kapatmadan bir tur atarsan yarınki tekrarda çok daha kolay hatırlarsın.</p>
+    <p class="hint">Bugün ilk kez açtığın ve bugün öğrendiğin kelimeler ve bağlaçlar. Günü kapatmadan bir tur atarsan yarınki tekrarda çok daha kolay hatırlarsın.</p>
     <button class="btn big" id="rtoday" type="button" ${tw.length?"":"disabled"}>${tw.length?`Tekrar et (${tw.length} kelime)`:"Bugün henüz yeni kelime yok"}</button>
     ${tw.length?`<p class="hint">${tw.slice(0,12).map(x=>esc(x.w)).join(", ")}${tw.length>12?" ve "+(tw.length-12)+" kelime daha":""}</p>`:""}</section>
-  <section class="card"><h2>Genel tekrar</h2>
-    <p class="hint">Şimdiye kadar çalıştığın kelimelerden karışık bir tur. İstersen yalnızca bağlaçları ya da tek bir durağı seçebilirsin. Tekrar zamanı gelenler ve zorlandıkların tura önce alınır.</p>
-    <label class="field">Hangi kelimelerden?<select id="rsrc"><option value="all">Çalıştığım tüm kelimeler (${all.length})</option>${srcOpts(rsrc,cnt)}</select></label>
-    <div class="rowb"><span>Bir turda kaç kelime</span><div class="seg">${[20,40,0].map(g=>`<button type="button" data-rlen="${g}" aria-pressed="${rlen===g}">${g||"Hepsi"}</button>`).join("")}</div></div>
-    <button class="btn big" id="rgen" type="button" ${n?"":"disabled"}>${n?`Tekrar et (${k} kelime)`:"Henüz çalışılmış kelime yok"}</button></section>
+  ${card("uzay","Kelime tekrarı","kelimelerden","Şimdiye kadar çalıştığın kelimelerden karışık bir tur. Tekrar zamanı gelenler ve zorlandıkların tura önce alınır.")}
+  ${card("ates","Bağlaç tekrarı","bağlaçlardan","Yalnızca bağlaçlar. Hepsini karışık tekrar edebilir ya da Zıtlık, Sebep gibi tek bir grubu seçebilirsin.")}
+  <section class="card"><div class="rowb"><span>Bir turda kaç soru</span><div class="seg">${[20,40,0].map(g=>`<button type="button" data-rlen="${g}" aria-pressed="${rlen===g}">${g||"Hepsi"}</button>`).join("")}</div></div></section>
   <p class="hint">Tekrarda her doğru 5 puan ve günlük hedefe sayılır. Yanlış yaptığın kelime doğru bilene kadar aynı turda yeniden sorulur. Buradaki tekrar, kelimelerin 1, 3, 7, 14 ve 30 günlük tekrar takvimini değiştirmez.</p></div>`;
   $("rtoday").onclick=()=>startRev(shuffle(tw),"Bugün öğrendiklerim");
-  $("rgen").onclick=()=>startRev(genPool(),"Genel tekrar");
-  $("rsrc").onchange=e=>{rsrc=e.target.value;rRev()};
+  document.querySelectorAll("[data-rgen]").forEach(b=>b.onclick=()=>startRev(genPool(b.dataset.rgen),b.dataset.rgen==="ates"?"Bağlaç tekrarı":"Kelime tekrarı"));
+  document.querySelectorAll("[data-rsrc]").forEach(e=>e.onchange=()=>{rsrc[e.dataset.rsrc]=e.value;rRev()});
   document.querySelectorAll("[data-rlen]").forEach(b=>b.onclick=()=>{rlen=+b.dataset.rlen;rRev()});
 }
 function rOnboard(){
@@ -2098,10 +2554,11 @@ function rPlay(){
     if(mode==="rev")h+=`<p class="word tr">Tekrar bitti</p><p class="prompt">${esc(revName)}: bu turdaki bütün kelimeleri doğru bildin.</p>`;
     else if(mode==="hard")h+='<p class="word tr">Zorlandığın kelime kalmadı</p><p class="prompt">Hepsini toparladın. Normal çalışmaya dönebilirsin.</p>';
     else{
-      const more=ALL.some(x=>!P.S[x.w]),lots=dueList().length>=15;
-      h+=`<p class="word tr">Bugünlük bu kadar</p><p class="prompt">${more?"Bugünün yeni kelimelerini ve tekrarlarını bitirdin. Kelimelerin kalıcı olması için en iyisi yarın tekrarlarla devam etmek.":"Listedeki bütün kelimeleri çalıştın. Tekrar zamanı gelenler ana menüde görünecek."}</p>
+      const more=ALL.some(x=>inW(x)&&!P.S[x.w]),lots=dueList().filter(inW).length>=15,ow=WORLDS.find(w=>w.id!==playW),od=dueList().filter(x=>!inW(x)).length;
+      h+=`<p class="word tr">Bugünlük bu kadar</p><p class="prompt">${more?"Bugünün yeni kelimelerini ve tekrarlarını bitirdin. Kelimelerin kalıcı olması için en iyisi yarın tekrarlarla devam etmek.":"Buradaki bütün kelimeleri çalıştın. Tekrar zamanı gelenler ana menüde görünecek."}</p>
+        ${od?`<p class="hint">${ow.name} haritasında tekrar bekleyen ${od} ${ow.id==="ates"?"bağlaç":"kelime"} var.</p>`:""}
         ${more&&!lots?'<button class="btn" id="more" type="button">10 yeni kelime daha aç</button>':""}
-        ${learned().length?'<button class="btn ghost" id="extra" type="button">Öğrendiklerimi karışık tekrar et</button>':""}`;
+        ${learned().filter(inW).length?'<button class="btn ghost" id="extra" type="button">Öğrendiklerimi karışık tekrar et</button>':""}`;
     }
     h+='<button class="btn ghost" id="home2" type="button">Ana menüye dön</button></section></div>';
     $("view").innerHTML=h;$("quit").onclick=$("home2").onclick=endPlay;
@@ -2274,13 +2731,14 @@ function rMap(){
       <text x="${lx}" y="${o.y-2}" text-anchor="${left?"start":"end"}" font-size="${o.name.length>14?14.5:17}" font-weight="700" fill="#fff" paint-order="stroke" stroke="${T.edge}" stroke-width="4" style="font-family:var(--body)">${o.name}</text>
       <text x="${lx}" y="${o.y+17}" text-anchor="${left?"start":"end"}" font-size="12.5" fill="${T.sub}" paint-order="stroke" stroke="${T.edge}" stroke-width="3.5" style="font-family:var(--body)">${o.done?"Tamamlandı":o.n+"/"+o.t+" kelime"}</text>
       ${cur?`<g class="bob">${petSVG(true).replace("<svg ",`<svg x="${o.x-36}" y="${o.y-66}" width="72" height="81" `)}</g>`:""}</g>`}).join("");
+  const dn=id=>dueList().filter(x=>(x.world||"uzay")===id).length;
   const wn=id=>{const ws=BASE.filter(x=>x.world===id);return ws.filter(x=>P.S[x.w]&&P.S[x.w].s===4).length+"/"+ws.length};
   const top=fire?`<path d="M-10 262 L46 176 L70 204 L104 150 L132 196 L150 262Z M210 262 L250 190 L276 216 L318 140 L372 262Z" fill="#170707"/><path d="M96 152 l8 -6 l8 6 l-3 8 h-10z M310 142 l8 -6 l8 6 l-3 8 h-10z" fill="#ff5a1f"/><circle cx="104" cy="140" r="16" fill="#ff7a2d" opacity=".25"/><circle cx="318" cy="130" r="18" fill="#ff7a2d" opacity=".25"/>`
     :`<circle cx="316" cy="52" r="20" fill="#fdf3c4"/><circle cx="308" cy="46" r="18" fill="#2a1f6e"/>`;
   const ground=fire?`<path d="M-10 ${H} C60 ${H-34} 120 ${H-8} 180 ${H-26} S300 ${H-40} 370 ${H-12} V${H+10} H-10Z" fill="#ff5a1f"/><path d="M-10 ${H+4} C70 ${H-18} 130 ${H} 180 ${H-12} S300 ${H-22} 370 ${H} V${H+10} H-10Z" fill="#ffc24a" opacity=".8"/>`
     :`<ellipse cx="180" cy="${H+30}" rx="290" ry="96" fill="#221c5c"/><ellipse cx="60" cy="${H+34}" rx="170" ry="80" fill="#1b1650"/>`;
   $("view").innerHTML=`<div style="display:flex;flex-direction:column;gap:14px">
-  <div class="worlds" role="tablist" aria-label="Dünyalar">${WORLDS.map(w=>`<button type="button" role="tab" data-world="${w.id}" aria-selected="${w.id===W}" class="${w.id}"><b>${w.name}</b><span>${w.sub} · ${wn(w.id)}</span></button>`).join("")}</div>
+  <div class="worlds" role="tablist" aria-label="Dünyalar">${WORLDS.map(w=>`<button type="button" role="tab" data-world="${w.id}" aria-selected="${w.id===W}" class="${w.id}"><b>${w.name}</b><span>${w.sub} · ${wn(w.id)}${dn(w.id)?" · "+dn(w.id)+" tekrar":""}</span></button>`).join("")}</div>
   <div class="map" style="background:${T.bg};border-color:${T.bd}"><svg viewBox="0 0 360 ${H}" role="group" aria-label="${T.title} haritası">
     <defs><linearGradient id="mapSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${T.sky[0]}"/><stop offset=".55" stop-color="${T.sky[1]}"/><stop offset="1" stop-color="${T.sky[2]}"/></linearGradient>
       <radialGradient id="mapGlow"><stop offset="0" stop-color="${fire?"#ff7a2d":"#ffd23f"}" stop-opacity=".45"/><stop offset="1" stop-color="${fire?"#ff7a2d":"#ffd23f"}" stop-opacity="0"/></radialGradient>
@@ -2300,8 +2758,8 @@ function rMap(){
       <text x="180" y="${H-6}" text-anchor="middle" font-size="12" fill="${fire?"#2a0d08":T.sub}" font-weight="${fire?800:400}" letter-spacing="2" style="font-family:var(--body)">${allDone?"YDT'YE HAZIRSIN":"HEDEF: YDT"}</text></g>
     ${nodes}</svg></div>
   <button class="btn big" id="mgo" type="button">${info[ci].started?"Devam et":"Başla"}: ${info[ci].name}</button>
-  <p class="hint">${fire?"Bağlaçlar anlamlarına göre duraklara ayrıldı: aynı işi yapanları birlikte öğrenirsin. ":""}Bir durağa dokunursan oradan çalışırsın. Sarı halka o durakta öğrendiğin kelimeleri gösterir. Tekrar zamanı gelen ve pekiştirilecek kelimeler hangi durakta olursan ol önce sorulur.</p></div>`;
-  const run=id=>{P.focus=id;save();startPlay("normal")};
+  <p class="hint">${fire?"Bağlaçlar anlamlarına göre duraklara ayrıldı: aynı işi yapanları birlikte öğrenirsin. ":""}Bir durağa dokunursan oradan çalışırsın. Sarı halka o durakta öğrendiğin kelimeleri gösterir. Tekrar zamanı gelen ve pekiştirilecek ${fire?"bağlaçlar":"kelimeler"} hangi durakta olursan ol önce sorulur. ${fire?"Bu haritada yalnızca bağlaçlar, Uzay haritasında yalnızca kelimeler sorulur.":"Bu haritada yalnızca kelimeler, Ateş Diyarı haritasında yalnızca bağlaçlar sorulur."}</p></div>`;
+  const run=id=>{P.focus=id;playW=STOPBY[id].world;save();startPlay("normal")};
   $("mgo").onclick=()=>run(info[ci].id);
   document.querySelectorAll("[data-world]").forEach(b=>b.onclick=()=>{mapW=b.dataset.world;rMap()});
   document.querySelectorAll(".node").forEach(g=>{g.onclick=()=>run(g.dataset.stop);g.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();run(g.dataset.stop)}}});
