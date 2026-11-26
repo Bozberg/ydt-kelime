@@ -1816,6 +1816,7 @@ const ITEMS=[
  {id:"party",slot:"head",name:"Parti şapkası",price:300,d:'<path d="M100 0 L126 54 L74 54Z" fill="#ff7ab0"/><path d="M91 18 L116 34 M84 34 L122 46" stroke="#fff" stroke-width="4"/><circle cx="100" cy="0" r="7" fill="#ffd23f"/>'},
  {id:"grad",slot:"head",name:"Mezuniyet kepi",price:600,d:'<path d="M70 42 h60 v16 q-30 10 -60 0z" fill="#22263a"/><path d="M100 20 L158 37 L100 54 L42 37Z" fill="#343b58"/><path d="M150 38 v20" stroke="#ffd23f" stroke-width="3"/><circle cx="150" cy="61" r="4.5" fill="#ffd23f"/>'},
  {id:"crown",slot:"head",name:"Taç",price:1200,d:'<path d="M68 56 L62 20 L84 38 L100 12 L116 38 L138 20 L132 56Z" fill="#ffd23f" stroke="#d9a400" stroke-width="2" stroke-linejoin="round"/><circle cx="100" cy="44" r="4.5" fill="#d9483b"/><circle cx="80" cy="46" r="3" fill="#2b4acb"/><circle cx="120" cy="46" r="3" fill="#2b4acb"/>'},
+ {id:"ribbon",slot:"head",name:"Pembe kurdele",price:250,d:'<g transform="translate(134 50) rotate(24)"><path d="M0 0 L-17 -11 Q-21 0 -17 11Z M0 0 L17 -11 Q21 0 17 11Z" fill="#ff7ab0" stroke="#e0508c" stroke-width="1.5" stroke-linejoin="round"/><path d="M-3 4 L-9 19 L-2 15 L1 6Z M3 4 L9 19 L2 15 L-1 6Z" fill="#f0609c"/><rect x="-5" y="-6" width="10" height="12" rx="4" fill="#e0508c"/><path d="M-13 -5 Q-9 0 -13 5 M13 -5 Q9 0 13 5" stroke="#ffc1dc" stroke-width="1.5" fill="none" stroke-linecap="round"/></g>'},
  {id:"glasses",slot:"eyes",name:"Gözlük",price:250,d:'<g fill="rgba(255,255,255,.3)" stroke="#22263a" stroke-width="3.5"><circle cx="78" cy="96" r="14"/><circle cx="122" cy="96" r="14"/><path d="M92 94 Q100 89 108 94" fill="none"/></g>'},
  {id:"sun",slot:"eyes",name:"Güneş gözlüğü",price:400,d:'<g fill="#15182a"><rect x="61" y="85" width="34" height="21" rx="8"/><rect x="105" y="85" width="34" height="21" rx="8"/></g><path d="M95 91 h10 M61 91 L47 87 M139 91 L153 87" stroke="#15182a" stroke-width="3.5" stroke-linecap="round"/>'},
  {id:"bow",slot:"neck",name:"Papyon",price:150,d:'<path d="M100 158 L76 145 V171Z M100 158 L124 145 V171Z" fill="#d9483b"/><circle cx="100" cy="158" r="5.5" fill="#a8322a"/>'},
@@ -2111,6 +2112,7 @@ function mergeSave(o){
   P.tests=P.tests||[];{const have=new Set(P.tests.map(x=>JSON.stringify(x)));for(const x of o.tests||[])if(!have.has(JSON.stringify(x)))P.tests.push(x)}
   if(o.wst){P.wst=P.wst||{};for(const k in o.wst){const x=P.wst[k]||(P.wst[k]={t:0,ok:0}),y=o.wst[k]||{};x.t=Math.max(x.t,y.t||0);x.ok=Math.max(x.ok,y.ok||0)}}
   if(o.dpaid){P.dpaid=P.dpaid||{};for(const k in o.dpaid)P.dpaid[k]=1}
+  if(o.tel){P.tel=P.tel||{};for(const k in o.tel)P.tel[k]=1}
   if(!P.code&&o.code)P.code=o.code;
   return sig()!==b0;
 }
@@ -2367,11 +2369,13 @@ async function sendGift(f,itemId){
 }
 async function claimGifts(){
   const{F,db}=fb,q=await F.getDocs(F.query(F.collection(db,"gifts"),F.where("to","==",fbUser.uid)));let msg="";
-  for(const d of q.docs){const g=d.data(),i=ITEM[g.item];
-    if(i){if(!P.owned.includes(i.id)){P.owned.push(i.id);msg=`${g.fromName||"Bir arkadaşın"} sana ${i.name} hediye etti. Mağazadan giyebilirsin.`}
+  for(const d of q.docs){const g=d.data(),i=ITEM[g.item],pts=Math.round(+g.pts||0);
+    // telafi puanı: yalnızca proje sahibinin Firebase'den eklediği kayıtlar (from:"telafi"); oyuncular bu kaydı oluşturamaz
+    if(g.from==="telafi"&&pts>0&&pts<=100000&&!(P.tel=P.tel||{})[d.id]){P.tel[d.id]=1;addC(pts);P.score=(P.score||0)+pts;msg=`${g.fromName||"YDT Kelime"}: kaybolan ${pts} puanın hesabına geri eklendi.`}
+    else if(i){if(!P.owned.includes(i.id)){P.owned.push(i.id);msg=`${g.fromName||"Bir arkadaşın"} sana ${i.name} hediye etti. Mağazadan giyebilirsin.`}
       else{const r=Math.round(i.price/2);addC(r);msg=`${g.fromName||"Bir arkadaşın"} sana ${i.name} gönderdi; sende vardı, ${r} puan eklendi.`}}
     await F.deleteDoc(F.doc(db,"gifts",d.id)).catch(()=>{})}
-  if(msg){checkSets();notify("gift",msg);toast(msg);if(view==="menu"||view==="shop")render()}
+  if(msg){checkSets();save();notify("gift",msg);toast(msg);$("coins").textContent=P.coins;if(view==="menu"||view==="shop")render()}
 }
 /* ---- düello: iki oyuncu aynı soruları çözer; ikisi de çevrim içiyse ilerleme canlı görünür ---- */
 const DQ=10,DSEC=15;
